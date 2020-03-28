@@ -5,6 +5,7 @@ const path = require('path')
 const user = require("./routes/user");
 const InitiateMongoServer = require("./config/db");
 
+InitiateMongoServer();
 
 // Create the server
 const app = express()
