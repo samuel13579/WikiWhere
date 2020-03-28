@@ -25,7 +25,7 @@ app.get('*', (req, res) => {
     res.sendFile(path.join(__dirname + '/frontend/build/index.html'))
   })
 
-app.use("/api/", user);
+app.use("/api", user);
 
 
 // Choose the port and start the server

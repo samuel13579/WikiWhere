@@ -13,7 +13,7 @@ const User = require("../model/User");
  */
 
 router.post(
-    "signup",
+    "/signup",
     async (req, res) => {
         const {
             username,
@@ -76,7 +76,7 @@ router.post(
  */
 
 router.post(
-    "login",
+    "/login",
     async (req, res) => {
         const {
             username, 
@@ -139,7 +139,7 @@ router.post(
  */
 
 
-router.get("me", auth, async (req, res) => {
+router.get("/me", auth, async (req, res) => {
     try {
       // request.user is getting fetched from the auth function defined in middleware
       // after token authentication
