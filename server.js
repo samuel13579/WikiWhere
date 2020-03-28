@@ -1,5 +1,6 @@
 require('dotenv').config()
 const express = require('express')
+const bodyParser = require("body-parser");
 const cors = require('cors')
 const path = require('path')
 const user = require("./routes/user");
@@ -19,11 +20,16 @@ app.use(function(req, res, next) {
   res.header("Access-Control-Allow-Methods", "GET, POST, PUT, OPTIONS, UPDATE, DELETE");
   next();
 });
+app.use(cors());
+app.use(bodyParser.json());
 
 // Anything that doesn't match the above, send back index.html
 app.get('*', (req, res) => {
     res.sendFile(path.join(__dirname + '/frontend/build/index.html'))
   })
+app.get('/api/test', (req, res) => {
+  res.json({message: "API working"});
+});
 
 app.use("/api/", user);
 
