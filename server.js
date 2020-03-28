@@ -3,8 +3,8 @@ const express = require('express')
 const cowsay = require('cowsay')
 const cors = require('cors')
 const path = require('path')
-const user = require("routes/user");
-const InitiateMongoServer = require("config/db");
+const user = require("./routes/user");
+const InitiateMongoServer = require("./config/db");
 
 
 // Create the server
