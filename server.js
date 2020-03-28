@@ -31,7 +31,7 @@ app.get('/api/test', (req, res) => {
   res.json({message: "API working"});
 });
 
-app.use("/api/", user);
+app.use("/api", user);
 
 
 // Choose the port and start the server
