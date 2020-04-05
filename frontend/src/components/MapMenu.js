@@ -5,7 +5,9 @@ class MapMenu extends Component {
     render() {
         return(
             <div>
-                <h1>this is where the menu bar will go</h1>
+                {/* Add some special font either through CSS or imported font */}
+                <h1>WikiWhere</h1>
+                {/* Add a log out methid */}
             </div>
         )
 

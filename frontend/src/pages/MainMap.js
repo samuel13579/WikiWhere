@@ -1,10 +1,13 @@
 import React, { Component } from 'react';
 import { Map, GoogleApiWrapper, Marker } from 'google-maps-react';
 import MapMenu from '../components/MapMenu';
+import ArticleList from '../components/ArticleList';
+import SplitPane, { Pane } from 'react-split-pane';
 
 const mapStyles = {
-  width: '100%',
-  height: '90%'
+  width: '70%',
+  height: '85%',
+  marginLeft: 208,
 };
 
 class MainMap extends Component {
@@ -20,7 +23,7 @@ class MainMap extends Component {
 
   componentDidMount(){
     if (!!navigator.geolocation) {
-      navigator.geolocation.watchPosition((position) => {
+      navigator.geolocation.getCurrentPosition((position) => {
          this.setState({
           lat: position.coords.latitude,
           lng: position.coords.longitude,
@@ -32,13 +35,40 @@ class MainMap extends Component {
     }
   }
 
+  // TODO:
+  //
+  // Design:
+  //
+  // Add dark background
+  // Find best side menu from antd lib
+  // Fill map out on screen proportianlly (Check out 'Labels' on antd components.
+  // Page should be modeled after one of those.)
+  // Add a logout button at the top right
+  // Possibly add something to the top left of menu bar
+  // Create a custom marker for Google map user location
+  // Create a custom marker for Wiki article location
+  // Flesh out menu with favorites, list of all articles, and account info
+  // 
+  // API:
+  //
+  // Look into wikipedia api
+  // Look into google map api not loading correct coordinates? (Happening to me)
+  // Figure out how to load wiki results into google maps
+  // Assist mobile
+
   render() {
 
     return (
             <body>
-              
               <div>
                 <MapMenu></MapMenu>
+              </div>
+
+            <SplitPane
+              split='vertical'
+            >
+              <div>
+                <ArticleList></ArticleList>
               </div>
 
               <div>
@@ -46,7 +76,6 @@ class MainMap extends Component {
                   google={this.props.google}
                   zoom={14}
                   style={mapStyles}
-                  initialCenter={this.props.center}
                   center={{
                     lat: this.state.lat,
                     lng: this.state.lng
@@ -58,6 +87,7 @@ class MainMap extends Component {
                   ></Marker>
                 </Map>
               </div>
+              </SplitPane>
 
             </body>
     );
