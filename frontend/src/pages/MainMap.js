@@ -15,14 +15,33 @@ const mapStyles = {
 };
 
 class MainMap extends Component {
-  state = {
-    collapsed: false,
-  };
+  
+  constructor(props){
+    super(props);
+
+    this.state = {
+      lat: 0,
+      lng: 0
+    }
+  }
+
 
   onCollapse = collapsed => {
     console.log(collapsed);
     this.setState({ collapsed });
   };
+
+  componentDidMount(){
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition((position) => {
+          this.setState({
+                  lat: position.coords.latitude,
+                  lng: position.coords.longitude
+              }
+          );
+      });
+    }
+  }
 
   render() {
     return (
