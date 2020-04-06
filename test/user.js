@@ -24,7 +24,7 @@ describe('User DataBase', () => {
             let user = {
                 username: "goingforit",
                 password: "testsetsets",
-                email: "bestemailNA.com"
+                email: "samuel32259@gmail.com"
             }
 
             chai.request(server)
