@@ -3,6 +3,8 @@ const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const router = express.Router();
 const auth = require("../middleware/auth");
+const emailauth = require("../middleware/emailauth");
+const generateEmailtoken = require("../middleware/generateEmailToken");
 
 const User = require("../model/User");
 
@@ -18,7 +20,9 @@ router.post(
         const {
             username,
             password,
-            email
+            email,
+            vtoken,
+            isVerified
         } = req.body;
         try {
             let user = await User.findOne({
@@ -33,11 +37,13 @@ router.post(
             //Hashes the passwords
             const salt = await bcrypt.genSalt(10);
             const hashedPassword = await bcrypt.hash(password.trim(), salt);
-            
+            const etoken = generateEmailtoken(username);
             user = new User({
                 username,
                 password:hashedPassword,
-                email
+                email,
+                vtoken:etoken,
+                isVerified:false
             });
 
             await user.save();
@@ -62,6 +68,9 @@ router.post(
                     });
                 }
             );
+            
+            emailauth(user, etoken);
+
         } catch (err) {
             console.log(err.message);
             res.status(500).send("Error in Saving");
