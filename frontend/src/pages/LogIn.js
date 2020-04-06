@@ -2,18 +2,18 @@ import React, { Component } from 'react';
 import { Layout } from 'antd';
 import LoginHeader from '../components/LoginHeader';
 import { withRouter } from 'react-router-dom';
+import SignUpCredentials from '../components/SignUpCredentials';
 
-const { Header, Content, Footer } = Layout;
+const { Header, Content, Footer, Sider } = Layout;
 
 class LogIn extends Component {
 
 // TODO:
 //
 // Design:
-// Make in the stlye of Facebook maybe.
-// Right side can be sign up page, eliminates need for another file,
-// just make sure to atomize it
-//
+// Error message for incorrect login information
+// Error message for incorrect/already taken information for sign up
+// 
 // API:
 // Login handling
 // Sign up handling
@@ -22,18 +22,20 @@ class LogIn extends Component {
     render() {
         return(
             <Layout>
-                <LoginHeader/>
-                <Layout className="site-layout" style={{ marginRight: 400 }}>
-                    <Header className="site-layout-background" style={{ padding: 0 }} />
+                <Layout className="site-layout">
+                    <LoginHeader/>
+                    <Header className="site-layout-background"/>
                         <Content style={{ margin: '24px 16px 0', overflow: 'initial' }}>
-                            <div className="site-layout-background" style={{ padding: 24, textAlign: 'center' }}>
+                            <div className="site-layout-background" style={{ padding: 24, textAlign: 'center'}}>
                                 This will be where the title will be,
                                 along with a description. This should be scrollable while
                                 everything else is fixed.
                             </div>
                         </Content>
-                    <Footer style={{ textAlign: 'center' }}>Ant Design ©2018 Created by Ant UED</Footer>
                 </Layout>
+                <Sider style={{marginTop:86, marginRight:10}} theme="dark" width={600}>
+                    <SignUpCredentials/>
+                </Sider>
             </Layout>
         );
     }
