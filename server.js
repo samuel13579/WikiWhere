@@ -4,6 +4,7 @@ const bodyParser = require("body-parser");
 const cors = require('cors')
 const path = require('path')
 const user = require("./routes/user");
+const email = require("./routes/email");
 const InitiateMongoServer = require("./config/db");
 
 InitiateMongoServer();
@@ -30,6 +31,7 @@ app.get('/api/test', (req, res) => {
 });
 
 app.use("/api", user);
+app.use("/api", email);
 
 // Anything that doesn't match the above, send back index.html
 app.get('*', (req, res) => {
