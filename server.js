@@ -27,7 +27,7 @@ app.use(bodyParser.json());
 
 
 app.get('/api/test', (req, res) => {
-  res.json({message: "API working"});
+  res.json({message: process.env.SENDGRID_API_KEY});
 });
 
 app.use("/api", user);
