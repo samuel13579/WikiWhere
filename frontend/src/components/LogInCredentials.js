@@ -34,6 +34,9 @@ class LoginCredentials extends Component{
         return this.props.history.push('/mainmap');
     }
 
+    // MAKE SURE TO CHANGE ROW MARGINRIGHT: 100 AND BUTTON MARGELEFT: 300
+    // WHEN DONE
+
     render(){
 
         return(
@@ -47,7 +50,7 @@ class LoginCredentials extends Component{
                     initialValues={{
                         remember: true,
                     }}>
-                    <Row style={{float: "right", marginTop: 0}}>
+                    <Row style={{float: "right", marginBottom: -10, marginRight: 10}}>
                         <div style={{float: "right"}}>
                             <Form.Item
                                 label={<p style={{color: "white", marginTop: 60, fontSize: 16}}>Username:</p>}
@@ -66,7 +69,7 @@ class LoginCredentials extends Component{
                         </div>
                         <div style={{marginLeft: 200, marginRight: 0, float: "right"}}>
                         <Link to="/mainmap">
-                                <Button type="Primary" ghost={true} style={{marginLeft: 1, marginTop: 26}} onClick={this.onLogin}>Log in</Button>
+                                <Button type="Primary" size="small" ghost={true} style={{marginLeft: 1, marginTop: 26}} onClick={this.onLogin}>Log in</Button>
                         </Link>
                         </div>
                     </Row>
