@@ -162,9 +162,7 @@ router.get("/me", auth, async (req, res) => {
 
   router.post("/checkuser", async (req,res) => {
     const {
-        username, 
-        password,
-        email
+        username
     } = req.body;
     try {
 
@@ -173,9 +171,9 @@ router.get("/me", auth, async (req, res) => {
                 return res.status(400).json({
                     message: "Username not found"
                 });
-        res.json({message: "Username already exist"});
+        res.status(200).json({message: "Username already exist"});
     } catch(e) {
-        res.send({message: "Username not found"});
+        res.status(400).send({message: "Username not found"});
     }
   })
   
