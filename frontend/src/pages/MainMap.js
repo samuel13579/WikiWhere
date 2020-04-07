@@ -6,8 +6,7 @@ import 'antd/dist/antd.css';
 import MapMenu from '../components/MapMenu';
 import MapHeader from '../components/MapHeader';
 
-const { Header, Content, Footer, Sider } = Layout;
-const { SubMenu } = Menu;
+const { Content, Footer } = Layout;
 
 const mapStyles = {
   width: '78%',

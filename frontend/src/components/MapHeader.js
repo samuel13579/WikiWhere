@@ -18,7 +18,7 @@ class MapHeader extends Component {
                         <Title style={{marginLeft: 400}}>
                             WikiWhere 
                             <Link to= "/">
-                                <Button type="primary" style={{marginLeft: 315}}>Log out</Button>
+                                <Button type="primary" style={{marginLeft: 315}} position="fixed">Log out</Button>
                             </Link>
                         </Title>
                         {/* Add a log out methid */}

@@ -1,5 +1,5 @@
-import React, { Component } from "react";
-import { Form, Input, Row, Button} from "antd";
+import React, { Component, useState } from "react";
+import { Form, Input, Row, Button, Affix} from "antd";
 import { Link, withRouter } from 'react-router-dom';
 
 class LoginCredentials extends Component{
@@ -35,40 +35,43 @@ class LoginCredentials extends Component{
     }
 
     render(){
+
         return(
-            <Form
-                style={{
-                    marginLeft:480,
-                    marginTop: 15    
-                }}
-                theme="dark"
-                layout="horizontal"
-                name="basic"
-                initialValues={{
-                    remember: true,
-                }}>
-                <Row >
-                    <div>
-                        <Form.Item
-                            label={<p style={{color: "white", marginTop: 15, fontSize: 16}}>Username:</p>}
-                            name="username"
-                        >
-                            <Input onChange={this.onUsernameChange}/>
-                        </Form.Item>
-                    </div>
-                    <div style={{marginLeft: 50}}>
-                        <Form.Item
-                            label={<p style={{color: "white", marginTop: 15, fontSize: 16}}>Password:</p>}
-                            name="password"
+                <Form
+                    style={{
+                        marginLeft:480,
+                        marginTop: 15    
+                    }}
+                    theme="dark"
+                    layout="horizontal"
+                    name="basic"
+                    initialValues={{
+                        remember: true,
+                    }}>
+                    <Row>
+                        <div style={{position: "absolute"}}>
+                            <Form.Item
+                                label={<p style={{color: "white", marginTop: 15, fontSize: 16}}>Username:</p>}
+                                name="username"
                             >
-                        <Input onChange={this.onPasswordChange}/>
-                        </Form.Item>
-                    </div>
-                    <Link to="/mainmap">
-                        <Button type="Primary" ghost={true} style={{marginLeft: 40}} onClick={this.onLogin}>Log in</Button>
-                    </Link>
-                </Row>
-            </Form>
+                                <Input onChange={this.onUsernameChange} style={{marginTop: -17, position: "absolute", width: 200}}/>
+                            </Form.Item>
+                        </div>
+                        <div style={{marginLeft: 325}}>
+                            <Form.Item
+                                label={<p style={{color: "white", marginTop: 15, fontSize: 16}}>Password:</p>}
+                                name="password"
+                                >
+                            <Input onChange={this.onPasswordChange} style={{ marginTop: -17, position: "absolute", width: 200}}/>
+                            </Form.Item>
+                        </div>
+                        <div style={{position: "absolute", marginLeft: 600}}>
+                        <Link to="/mainmap">
+                                <Button type="Primary" ghost={true} style={{marginLeft: 40}} onClick={this.onLogin}>Log in</Button>
+                        </Link>
+                        </div>
+                    </Row>
+                </Form>
         );
     }
 }
