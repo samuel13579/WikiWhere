@@ -9,8 +9,8 @@ import MapHeader from '../components/MapHeader';
 const { Content, Footer } = Layout;
 
 const mapStyles = {
-  width: '78%',
-  height: '68%',
+  width: '83%',
+  height: '78%',
 };
 
 class MainMap extends Component {

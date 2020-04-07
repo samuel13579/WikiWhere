@@ -19,7 +19,7 @@ class LogIn extends Component {
 
     render() {
         return(
-            <div style={{marginTop: -20}}>
+            <div style={{marginTop: 0}}>
                 <LoginHeader/>
                     <Layout className="layout" style={{marginTop: 0}}>
                         <Content className="content-container" style={{ margin: '24px 16px 0', overflow: 'initial'}}>
