@@ -29,7 +29,7 @@ class LogIn extends Component {
                                 everything else is fixed. UPDATED.
                             </div>
                         </Content>
-                    <Sider className='sidebar-layout' style={{marginTop:24}} theme="dark" width={600}>
+                    <Sider className='sidebar-layout' style={{marginTop:24, marginRight: "1%"}} theme="dark" width={600}>
                         <SignUpCredentials/>
                     </Sider>
                 </Layout>
