@@ -50,7 +50,7 @@ class LoginCredentials extends Component{
                     initialValues={{
                         remember: true,
                     }}>
-                    <Row style={{float: "right", marginBottom: -10, marginRight: 10}}>
+                    <Row style={{float: "right", marginBottom: -10, marginRight: 0, width: 1000}} align="middle">
                         <div style={{float: "right"}}>
                             <Form.Item
                                 label={<p style={{color: "white", marginTop: 60, fontSize: 16}}>Username:</p>}
@@ -67,9 +67,9 @@ class LoginCredentials extends Component{
                             <Input onChange={this.onPasswordChange} style={{ marginTop: 10, position: "absolute", width: 200}}/>
                             </Form.Item>
                         </div>
-                        <div style={{marginLeft: 200, marginRight: 0, float: "right"}}>
+                        <div style={{marginLeft: 250, marginRight: 0, marginBottom: 15, float: "right"}}>
                         <Link to="/mainmap">
-                                <Button type="Primary" size="small" ghost={true} style={{marginLeft: 1, marginTop: 26}} onClick={this.onLogin}>Log in</Button>
+                                <Button type="Primary" size="medium" ghost={true} style={{marginLeft: 1, marginTop: 26}} onClick={this.onLogin}>Log in</Button>
                         </Link>
                         </div>
                     </Row>
