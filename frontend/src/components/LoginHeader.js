@@ -9,9 +9,8 @@ class LoginHeader extends Component {
 
     render() {
         return(
-            <Header style={{ position: 'fixed', zIndex: 1, width: '100%' }}>
-                <div className="logo" />
-                <LoginCredentials style={{float: "right"}}/>
+            <Header className="site-layout-background">
+                <LoginCredentials/>
             </Header>
         );
     }

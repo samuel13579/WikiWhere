@@ -38,7 +38,6 @@ class LoginCredentials extends Component{
 
         return(
                 <Form
-                    className="login-header-layout"
                     style={{
                         marginLeft:480,
                         marginTop: 15    
@@ -52,23 +51,23 @@ class LoginCredentials extends Component{
                     <Row>
                         <div style={{position: "absolute"}}>
                             <Form.Item
-                                label={<p style={{color: "white", marginTop: 15, fontSize: 16}}>Username:</p>}
+                                label={<p style={{color: "white", marginTop: 50, fontSize: 16}}>Username:</p>}
                                 name="username"
                             >
-                                <Input onChange={this.onUsernameChange} style={{marginTop: -17, position: "absolute", width: 200}}/>
+                                <Input onChange={this.onUsernameChange} style={{marginTop: 0, position: "absolute", width: 200}}/>
                             </Form.Item>
                         </div>
                         <div style={{marginLeft: 325}}>
                             <Form.Item
-                                label={<p style={{color: "white", marginTop: 15, fontSize: 16}}>Password:</p>}
+                                label={<p style={{color: "white", marginTop: 50, fontSize: 16}}>Password:</p>}
                                 name="password"
                                 >
-                            <Input onChange={this.onPasswordChange} style={{ marginTop: -17, position: "absolute", width: 200}}/>
+                            <Input onChange={this.onPasswordChange} style={{ marginTop: 0, position: "absolute", width: 200}}/>
                             </Form.Item>
                         </div>
                         <div style={{position: "absolute", marginLeft: 600}}>
                         <Link to="/mainmap">
-                                <Button type="Primary" ghost={true} style={{marginLeft: 40}} onClick={this.onLogin}>Log in</Button>
+                                <Button type="Primary" ghost={true} style={{marginLeft: 40, marginTop: 17}} onClick={this.onLogin}>Log in</Button>
                         </Link>
                         </div>
                     </Row>

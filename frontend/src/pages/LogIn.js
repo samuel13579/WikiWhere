@@ -19,25 +19,21 @@ class LogIn extends Component {
 
     render() {
         return(
-            <Affix>
-            <Layout className="site-layout">
-                <Layout className="content-layout" style={{position: "absolute"}}>
-                    <LoginHeader/>
-                    <Header className="site-layout-background"/>
-                        <Content style={{ margin: '24px 16px 0', overflow: 'initial'}}>
+            <div style={{marginTop: -20}}>
+                <LoginHeader/>
+                    <Layout className="layout">
+                        <Content className="content-container" style={{ margin: '24px 16px 0', overflow: 'initial'}}>
                             <div className="content-div" style={{ textAlign: 'center'}}>
                                 This will be where the title will be,
                                 along with a description. This should <br/> be scrollable while
                                 everything else is fixed. UPDATED.
                             </div>
                         </Content>
+                    <Sider className='sidebar-layout' style={{marginTop:24}} theme="dark" width={600}>
+                        <SignUpCredentials/>
+                    </Sider>
                 </Layout>
-
-                <Sider className='sidebar-layout' style={{marginTop:88, marginLeft: 660, float: "right"}} theme="dark" width={600}>
-                    <SignUpCredentials/>
-                </Sider>
-            </Layout>
-            </Affix>
+            </div>
         );
     }
 }

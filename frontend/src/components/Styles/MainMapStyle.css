@@ -1,8 +1,8 @@
-/* #components-layout-demo-side .logo {
+#components-layout-demo-side .logo {
     height: 32px;
     background: rgba(255, 255, 255, 0.2);
     margin: 16px;
-  } */
+  }
   
   .site-layout .site-layout-background {
     background: #fff;
@@ -13,9 +13,20 @@
     width: 100%
   }
 
+  .layout {
+    width: 100%;
+    height: 100%;
+  }
+
   .content-layout {
     height: 70%;
     width: 50%;
+  }
+
+  .content-container {
+    background: rgba(255, 255, 255, 0.2);;
+    width: 100%;
+    height: 70%
   }
 
   .content-div {
