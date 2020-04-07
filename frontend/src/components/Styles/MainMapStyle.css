@@ -6,4 +6,25 @@
   
   .site-layout .site-layout-background {
     background: #fff;
+    width: 100%;
+  }
+
+  .login-header-layout {
+    float: right
+  }
+
+  .content-layout {
+    height: 70%;
+    width: 50%;
+  }
+
+  .content-div {
+    background: #fff;
+    width: 100%;
+    height: 100%;
+  }
+
+  .sidebar-layout {
+    position: "absolute";
+    float: right;
   }

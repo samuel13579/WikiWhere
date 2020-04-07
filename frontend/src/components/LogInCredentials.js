@@ -38,6 +38,7 @@ class LoginCredentials extends Component{
 
         return(
                 <Form
+                    className="login-header-layout"
                     style={{
                         marginLeft:480,
                         marginTop: 15    
