@@ -158,5 +158,27 @@ router.get("/me", auth, async (req, res) => {
       res.send({ message: "Error in Fetching user" });
     }
   });
+
+
+  router.post("/checkuser", async (req,res) => {
+    const {
+        username, 
+        password,
+        email
+    } = req.body;
+    try {
+
+        let user = await User.findOne({ username });
+        if(!user)
+                return res.status(400).json({
+                    message: "Username not found"
+                });
+        res.json({message: "Username already exist"});
+    } catch(e) {
+        res.send({message: "Username not found"});
+    }
+  })
   
 module.exports = router;
+
+
