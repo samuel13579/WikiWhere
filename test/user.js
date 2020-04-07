@@ -22,8 +22,8 @@ describe('User DataBase', () => {
     describe(' /POST user signup correct', () => {
         it(' it should add a user with all the fields correctly', (done) => {
             let user = {
-                username: "goingforit",
-                password: "testsetsets",
+                username: "a",
+                password: "a",
                 email: "samuel32259@gmail.com"
             }
 
@@ -55,15 +55,15 @@ describe('User DataBase', () => {
 
         });
     }); 
-
+    
     describe(' /POST user login correct', () => {
         it(' User Logs in with correct user', (done) => {
             let user = {
-                username: "goingforit",
-                password: "testsetsets",
-                email: "bestemailNA.com"
+                username: "a",
+                password: "a",
+                email: "samuel32259@gmail.com"
             }
-
+            try {
             chai.request(server)
                 .post('/api/login')
                 .send(user)
@@ -72,6 +72,50 @@ describe('User DataBase', () => {
                     res.body.should.be.a('object');
                     done();
                 });
+            }catch(e) {
+                console.log('error:', err);
+            }
+
+        });
+    }); 
+
+    describe(' /POST check if user exists', () => {
+        it(' User already exists', (done) => {
+            let user = {
+                username: "a"
+            }
+            try {
+            chai.request(server)
+                .post('/api/checkuser')
+                .send(user)
+                .end((err, res) => {
+                    res.should.have.status(200);
+                    res.body.should.be.a('object');
+                    done();
+                });
+            }catch(e) {
+                console.log('error:', err);
+            }
+
+        });
+    }); 
+    describe(' /POST check if user does not exists', () => {
+        it(' User does not already exists', (done) => {
+            let user = {
+                username: "aa"
+            }
+            try {
+            chai.request(server)
+                .post('/api/checkuser')
+                .send(user)
+                .end((err, res) => {
+                    res.should.have.status(400);
+                    res.body.should.be.a('object');
+                    done();
+                });
+            }catch(e) {
+                console.log('error:', err);
+            }
 
         });
     }); 
