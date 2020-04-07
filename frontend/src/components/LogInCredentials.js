@@ -1,5 +1,5 @@
-import React, { Component, useState } from "react";
-import { Form, Input, Row, Button, Affix} from "antd";
+import React, { Component } from "react";
+import { Form, Input, Row, Button } from "antd";
 import { Link, withRouter } from 'react-router-dom';
 
 class LoginCredentials extends Component{
