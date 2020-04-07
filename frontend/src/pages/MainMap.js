@@ -10,7 +10,7 @@ const { Content, Footer } = Layout;
 
 const mapStyles = {
   width: '78%',
-  height: '70%',
+  height: '68%',
 };
 
 class MainMap extends Component {
@@ -49,8 +49,8 @@ class MainMap extends Component {
         <Layout className="site-layout">
           <MapHeader/>
           <br></br>
-          <Content style={{ margin: '0 16px' }}>
-            <div className="site-layout-background" style={{ padding: 24, minHeight: 500 }}>
+          <Content style={{ margin: '0 16px', width: "100%"}}>
+            <div className="site-layout-background" style={{ padding: 24, minHeight: 425, width: "97%", height: "100%"}}>
               <Map
                 google={this.props.google}
                 zoom={14}
