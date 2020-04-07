@@ -39,8 +39,7 @@ class LoginCredentials extends Component{
         return(
                 <Form
                     style={{
-                        marginLeft:480,
-                        marginTop: 15    
+                        marginLeft:480
                     }}
                     theme="dark"
                     layout="horizontal"
@@ -48,7 +47,7 @@ class LoginCredentials extends Component{
                     initialValues={{
                         remember: true,
                     }}>
-                    <Row style={{float: "right"}}>
+                    <Row style={{float: "right", marginTop: -5}}>
                         <div style={{float: "right"}}>
                             <Form.Item
                                 label={<p style={{color: "white", marginTop: 50, fontSize: 16}}>Username:</p>}
