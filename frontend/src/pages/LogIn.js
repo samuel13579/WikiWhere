@@ -21,7 +21,7 @@ class LogIn extends Component {
         return(
             <div style={{marginTop: -20}}>
                 <LoginHeader/>
-                    <Layout className="layout">
+                    <Layout className="layout" style={{marginTop: -50}}>
                         <Content className="content-container" style={{ margin: '24px 16px 0', overflow: 'initial'}}>
                             <div className="content-div" style={{ textAlign: 'center'}}>
                                 This will be where the title will be,
