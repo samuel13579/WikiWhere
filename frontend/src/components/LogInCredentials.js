@@ -50,26 +50,26 @@ class LoginCredentials extends Component{
                     initialValues={{
                         remember: true,
                     }}>
-                    <Row style={{float: "right", marginBottom: -10, marginRight: 0, width: 1000}} align="middle">
+                    <Row style={{float: "right", marginBottom: -10, marginRight: -200, width: 1000}} align="middle">
                         <div style={{float: "right"}}>
                             <Form.Item
-                                label={<p style={{color: "white", marginTop: 60, fontSize: 16}}>Username:</p>}
+                                label={<p style={{color: "white", marginTop: 80, fontSize: 16}}>Username:</p>}
                                 name="username"
                             >
-                                <Input onChange={this.onUsernameChange} style={{marginTop: 10, position: "absolute", width: 200}}/>
+                                <Input onChange={this.onUsernameChange} style={{marginTop: 15, position: "absolute", width: 200}}/>
                             </Form.Item>
                         </div>
                         <div style={{marginLeft: 250, float: "right"}}>
                             <Form.Item
-                                label={<p style={{color: "white", marginTop: 60, fontSize: 16}}>Password:</p>}
+                                label={<p style={{color: "white", marginTop: 80, fontSize: 16}}>Password:</p>}
                                 name="password"
                                 >
-                            <Input onChange={this.onPasswordChange} style={{ marginTop: 10, position: "absolute", width: 200}}/>
+                            <Input onChange={this.onPasswordChange} style={{ marginTop: 15, position: "absolute", width: 200}}/>
                             </Form.Item>
                         </div>
                         <div style={{marginLeft: 250, marginRight: 0, marginBottom: 15, float: "right"}}>
                         <Link to="/mainmap">
-                                <Button type="Primary" size="medium" ghost={true} style={{marginLeft: 1, marginTop: 26}} onClick={this.onLogin}>Log in</Button>
+                                <Button type="Primary" size="medium" ghost={true} style={{marginLeft: 1, marginTop: 25}} onClick={this.onLogin}>Log in</Button>
                         </Link>
                         </div>
                     </Row>

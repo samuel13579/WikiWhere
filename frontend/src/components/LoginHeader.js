@@ -9,7 +9,7 @@ class LoginHeader extends Component {
 
     render() {
         return(
-            <Header className="site-layout-background">
+            <Header className="site-layout-background" style={{height: 80}}>
                 <LoginCredentials/>
             </Header>
         );
