@@ -33,7 +33,7 @@ class LogIn extends Component {
                         </Content>
                 </Layout>
 
-                <Sider className='sidebar-layout' style={{marginTop:88, marginLeft: 660}} theme="dark" width={600}>
+                <Sider className='sidebar-layout' style={{marginTop:88, marginLeft: 660, float: "right"}} theme="dark" width={600}>
                     <SignUpCredentials/>
                 </Sider>
             </Layout>

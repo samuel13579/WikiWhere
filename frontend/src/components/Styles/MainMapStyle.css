@@ -10,7 +10,7 @@
   }
 
   .login-header-layout {
-    float: right
+    width: 100%
   }
 
   .content-layout {
@@ -25,6 +25,5 @@
   }
 
   .sidebar-layout {
-    position: "absolute";
     float: right;
   }

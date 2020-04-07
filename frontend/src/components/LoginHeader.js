@@ -11,7 +11,7 @@ class LoginHeader extends Component {
         return(
             <Header style={{ position: 'fixed', zIndex: 1, width: '100%' }}>
                 <div className="logo" />
-                <LoginCredentials/>
+                <LoginCredentials style={{float: "right"}}/>
             </Header>
         );
     }
