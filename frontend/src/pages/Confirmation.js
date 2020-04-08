@@ -1,13 +1,35 @@
 import React, { Component } from 'react';
+import { Result, Button } from 'antd';
+import { Link, withRouter } from 'react-router-dom';
 
 class Confirmation extends Component {
 
-// TODO:
-//
-// Figure out a design for this.
-// Can be really simple, just dont have an idea on how to make
-// it look good.
-// Put a link / button that takes you back to login, ez
+    constructor(props){
+        super(props);
 
+        this.onButtonClick = this.onButtonClick.bind(this);
+    }
 
+    onButtonClick = () => {
+        return this.props.history.push('/');
+    }
+
+    render() {
+        return (
+            <Result
+            status="success"
+            title="Email successfully confirmed!"
+            subTitle="Click the button below to go back to the login page."
+            extra={
+                <Link to="/">
+                    <Button type="primary" key="console" onClick={this.onButtonClick}>
+                        Back to login
+                    </Button>
+                </Link>
+            }
+          /> 
+        );
+    }
 }
+
+export default withRouter(Confirmation)
