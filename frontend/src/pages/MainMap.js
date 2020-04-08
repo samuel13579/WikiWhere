@@ -1,71 +1,46 @@
 import React, { Component } from 'react';
 import { Layout, Menu } from 'antd';
-import { Map, GoogleApiWrapper, Marker } from 'google-maps-react';
 import '../components/Styles/MainMapStyle.css';
 import 'antd/dist/antd.css';
 import MapMenu from '../components/MapMenu';
 import MapHeader from '../components/MapHeader';
+import MapExport from '../components/MapExport';
 
 const { Content, Footer } = Layout;
 
-const mapStyles = {
-  width: '83%',
-  height: '78%',
-};
-
 class MainMap extends Component {
-  
-  constructor(props){
-    super(props);
-
-    this.state = {
-      lat: 0,
-      lng: 0
-    }
-  }
-
 
   onCollapse = collapsed => {
     console.log(collapsed);
     this.setState({ collapsed });
   };
 
-  componentDidMount(){
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition((position) => {
-          this.setState({
-                  lat: position.coords.latitude,
-                  lng: position.coords.longitude
-              }
-          );
-      });
-    }
+  apiHasLoaded = (map, mapsApi) => {
+    this.setState({
+      mapsApi,
+      autoCompleteService: new mapsApi.places.AutocompleteService(),
+      placesService: new mapsApi.places.PlacesService(map),
+      directionService: new mapsApi.DirectionsService(),
+      geoCoderService: new mapsApi.Geocoder(),
+      singaporeLatLng: new mapsApi.LatLng(1.3521, 103.8198)
+    });
   }
 
   render() {
+    
     return (
       <Layout style={{ minHeight: '100vh' }}>
         <MapMenu/>
         <Layout className="site-layout">
           <MapHeader/>
           <br></br>
-          <Content style={{ margin: '0 16px', width: "99%"}}>
-            <div className="site-layout-background" style={{ padding: 24, minHeight: 500, width: "97%", height: "100%"}}>
-              <Map
-                google={this.props.google}
-                zoom={14}
-                style={mapStyles}
-                center={{
-                  lat: this.state.lat,
-                  lng: this.state.lng
-                }}
-              >
-                <Marker
+          <Content className="content-div" style={{ margin: '0 16px'}}>
+            <MapExport/>
+
+                {/* <Marker
                   position={{lat: this.state.lat, lng: this.state.lng}}
                   name="Current Location"
-                ></Marker>
-              </Map>
-            </div>
+                ></Marker> */}
           </Content>
           <Footer style={{ textAlign: 'center' }}>Ant Design ©2018 Created by Ant UED</Footer>
         </Layout>
@@ -74,6 +49,4 @@ class MainMap extends Component {
   }
 }
 
-export default GoogleApiWrapper({
-    apiKey: 'AIzaSyCaXl8zW54lcJjxWBjbTWn4I1vPcXkPeyk'
-  })(MainMap);
+export default MainMap
