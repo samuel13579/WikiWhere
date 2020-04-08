@@ -6,6 +6,7 @@ const router = express.Router();
 const auth = require("../middleware/auth");
 const emailauth = require("../middleware/emailauth");
 const generateEmailtoken = require("../middleware/generateEmailToken");
+const sgMail = require('@sendgrid/mail');
 
 const User = require("../model/User");
 
