@@ -104,6 +104,13 @@ router.post(
                     message: "Username not found"
                 });
             
+            if(user.isVerified != true)
+            {
+                return res.status(405).json ({
+                    message: "User not verified"
+                });
+            }
+            
             //This rehashes the password to compare with the hashed password in the db
             const checkPassword = await bcrypt.compare(password, user.password);
             

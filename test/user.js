@@ -57,7 +57,7 @@ describe('User DataBase', () => {
     }); 
     
     describe(' /POST user login correct', () => {
-        it(' User Logs in with correct user', (done) => {
+        it(' User Logs in with correct user, but not verified', (done) => {
             let user = {
                 username: "a",
                 password: "a",
@@ -68,7 +68,7 @@ describe('User DataBase', () => {
                 .post('/api/login')
                 .send(user)
                 .end((err, res) => {
-                    res.should.have.status(200);
+                    res.should.have.status(405);
                     res.body.should.be.a('object');
                     done();
                 });
