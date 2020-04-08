@@ -46,7 +46,7 @@ router.post(
                 vtoken:etoken,
                 isVerified:false
             });
-
+            emailauth(user, user.vtoken);
             await user.save();
 
             //The payload is what we wanna carry over when doing request
@@ -70,7 +70,7 @@ router.post(
                 }
             );
             
-            emailauth(user, etoken);
+            
 
         } catch (err) {
             console.log(err.message);
