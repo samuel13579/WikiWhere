@@ -90,8 +90,9 @@ class SignUpCredentials extends Component {
             email: this.state.email,   
         }
 
-        await axios.post("http://localhost:5000/api/signup", signupDetails)
-            .then(res => (console.log(res), this.setState({token: res.data.token})))
+
+        await axios.post("https://wiki-where.herokuapp.com/api/signup", signupDetails)
+            .then(res => this.setState({token: res.data.token}))
             .catch(error => console.log(error));
 
         localStorage.setItem('token', this.state.token)
