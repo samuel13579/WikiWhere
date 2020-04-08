@@ -68,9 +68,7 @@ class LoginCredentials extends Component{
                             </Form.Item>
                         </div>
                         <div style={{marginLeft: 250, marginRight: 0, marginBottom: 15, float: "right"}}>
-                        <Link to="/mainmap">
-                                <Button type="Primary" size="medium" ghost={true} style={{marginLeft: 1, marginTop: 25}} onClick={this.onLogin}>Log in</Button>
-                        </Link>
+                            <Button type="Primary" size="medium" ghost={true} style={{marginLeft: 1, marginTop: 25}} onClick={this.onLogin}>Log in</Button>
                         </div>
                     </Row>
                 </Form>

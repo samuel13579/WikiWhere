@@ -1,15 +1,47 @@
 import React, { Component } from 'react';
-import { Layout, Typography, Button, Row} from 'antd';
-import { Link, withRouter } from 'react-router-dom';
+import { Layout, Typography, Button, Row, Modal} from 'antd';
+import { withRouter } from 'react-router-dom';
 import 'antd/dist/antd.css';
 import './Styles/MainMapStyle.css';
 
 const { Title } = Typography;
 const { Header } = Layout;
 
+
 class MapHeader extends Component {
 
+    constructor(props){
+        super(props);
+
+        this.state ={
+            visible: false
+        };
+
+        this.confirm = this.confirm.bind(this);
+        this.cancel = this.cancel.bind(this);
+        this.showModal = this.showModal.bind(this)
+    }
+
+    confirm(e) {
+        return this.props.history.push('/');
+    }
+    
+    cancel(e) {
+        this.setState({
+            visible: false
+        });
+    }
+
+    showModal = () => {
+        this.setState({
+          visible: true,
+        });
+
+        this.forceUpdate();
+    };
+
     render() {
+
         return(
             <div>
                 <Header className="site-layout-background" style={{ padding: 10 }}>
@@ -19,9 +51,26 @@ class MapHeader extends Component {
                             WikiWhere 
                         
                         </Title>
-                            <Link to= "/">
-                                <Button type="primary" size="large" style={{marginLeft: 640, marginTop: 4, position: "absolute", float: "right"}}>Log out</Button>
-                            </Link>
+
+                        <Button type="primary" size="large" style={{marginLeft: 1575, marginTop: 4, position: "absolute", float: "right"}} onClick={this.showModal}>
+                            Log out
+                        </Button>
+
+                        <Modal
+                            title="Logout"
+                            visible={this.state.visible}
+                            onOk={this.handleOk}
+                            onCancel={this.cancel}
+                            footer={[
+                                <Button key="back" onClick={this.cancel}>
+                                No
+                                </Button>,
+                                <Button key="submit" type="primary" onClick={this.confirm}>
+                                Yes
+                                </Button>,
+                            ]}>
+                            <p>Are you sure you want to log out?</p>
+                        </Modal>
                         {/* Add a log out methid */}
                     </Row>
                 </Header>

@@ -90,6 +90,7 @@ class SignUpCredentials extends Component {
             email: this.state.email,   
         }
 
+
         await axios.post("https://wiki-where.herokuapp.com/api/signup", signupDetails)
             .then(res => this.setState({token: res.data.token}))
             .catch(error => console.log(error));
