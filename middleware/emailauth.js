@@ -3,7 +3,7 @@ const sgMail = require('@sendgrid/mail');
 
 module.exports = function(user, etoken) {
     sgMail.setApiKey(process.env.SENDGRID_API_KEY);
-    const link = `localhost:5000/api/verify/${etoken}`
+    const link = `https://wiki-where.herokuapp.com//api/verify/${etoken}`
     const msg = {
         to: user.email,
         from: 'noreply@Wiki-Where.com',
