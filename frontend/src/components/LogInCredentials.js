@@ -1,6 +1,7 @@
 import React, { Component } from "react";
-import { Form, Input, Row, Button } from "antd";
-import { Link, withRouter } from 'react-router-dom';
+import { Form, Input, Row, Button, Modal } from "antd";
+import { withRouter } from 'react-router-dom';
+import axios from 'axios';
 
 class LoginCredentials extends Component{
 
@@ -9,12 +10,16 @@ class LoginCredentials extends Component{
     
         this.state ={
             username: '',
-            password: ''
+            password: '',
+            error: false,
+            visible: false
         }
 
         this.onLogin = this.onLogin.bind(this);
         this.onUsernameChange = this.onUsernameChange.bind(this);
         this.onPasswordChange = this.onPasswordChange.bind(this);
+        this.showModal = this.showModal.bind(this);
+        this.cancel = this.cancel.bind(this);
     }
 
     onUsernameChange(e){
@@ -29,13 +34,37 @@ class LoginCredentials extends Component{
         });
     }
 
-    onLogin = event => {
+    showModal() {
+        this.setState({
+            visible: true,
+        });
+    };
+
+    cancel(e) {
+        this.setState({
+            visible: false
+        });
+    }
+
+    onLogin = async event => {
+
+        const loginDetails = {
+            username: this.state.username,
+            password: this.state.password
+        }
+
+        await axios.post("https://wiki-where.herokuapp.com/api/login", loginDetails)
+            .then(res => console.log(res))
+            .catch(err => this.setState({error: true}));
+
+        if (this.state.error)
+        {
+            this.showModal();
+            return null
+        }
 
         return this.props.history.push('/mainmap');
     }
-
-    // MAKE SURE TO CHANGE ROW MARGINRIGHT: 100 AND BUTTON MARGELEFT: 300
-    // WHEN DONE
 
     render(){
 
@@ -71,7 +100,21 @@ class LoginCredentials extends Component{
                             <Button type="Primary" size="medium" ghost={true} style={{marginLeft: 1, marginTop: 25}} onClick={this.onLogin}>Log in</Button>
                         </div>
                     </Row>
-                </Form>
+
+                    <Modal
+                            title="Username Already Exists"
+                            visible={this.state.visible}
+                            onOk={this.cancel}
+                            onCancel={this.cancel}
+                            footer={[
+                                <Button key="back" onClick={this.cancel}>
+                                Okay
+                                </Button>
+                            ]}>
+                            <p>Your username or password is incorrect.</p>
+                        </Modal>
+
+            </Form>
         );
     }
 }

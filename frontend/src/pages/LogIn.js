@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Layout, Affix } from 'antd';
+import { Layout } from 'antd';
 import LoginHeader from '../components/LoginHeader';
 import { withRouter } from 'react-router-dom';
 import SignUpCredentials from '../components/SignUpCredentials';
