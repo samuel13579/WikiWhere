@@ -9,13 +9,15 @@ class Verification extends Component {
 
     async componentDidMount(){
 
-        const token = this.props.match.params.id;
+        const token = this.props.match.params
 
-        await axios.post("https://wiki-where.herokuapp.com/verify/" + token)
-            .then(res => console.log(res))
-            .catch(err => console.log(err));
+        console.log(token);
 
-        return this.props.history.push('/mainmap');
+        // await axios.post("https://wiki-where.herokuapp.com/verify/" + token)
+        //     .then(res => console.log(res))
+        //     .catch(err => console.log(err));
+
+        // return this.props.history.push('/mainmap');
     };
 
 
