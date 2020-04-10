@@ -4,8 +4,14 @@ const router = express.Router();
 
 const User = require("../model/User");
 
+// router.get('/verification/:id', (req,res) => {
+//     console.log(req.params.id);
+//     res.redirect("../verify/" + req.params.id);
+// });
+
 router.post('/verify/:token', 
     async (req,res) => {
+        console.log("Entered verify");
         if(!req.params.token)
             return res.status(400).json({message: "We are unable to find a user for this token"});
         try {
@@ -26,7 +32,7 @@ router.post('/verify/:token',
                     if (err) return res.status(500).json({message:err.message});
         
                     console.log("Trying to Redirect");
-                    res.redirect('https://wiki-where.herokuapp.com');
+                    res.redirect('https://wiki-where.herokuapp.com/confirmation');
                     // res.status(200).send("The account has been verified. Please log in.");
                 });
             });
