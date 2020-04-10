@@ -25,28 +25,81 @@ import {
 const { Sider } = Layout;
 const { SubMenu } = Menu;
 
-
-const AllArticles =  (props) => {
-  var j = 4;
-  var allArticleComponentList = []
-  props.locations.map (i => {
-    j++;
-    console.log(j);
-    allArticleComponentList.push(
-    <div>
-      <Menu.Item key={j}>{i}</Menu.Item> 
-    </div>);
-  })
-  
-  return (allArticleComponentList);
-}
-
 class MapMenu extends Component {
   state = {
     theme: 'dark',
     current: '1',
     collapsed: false,
-    locations: [1, 2, 3]
+    locations: [
+      {
+        name: "John's Fat Cock",
+        articles: [
+          {
+            pageid: 123432,
+            title: "John's Fat Cock - A Measurement"
+          },
+          {
+            pageid: 123323,
+            title: "The Study of Porn"
+          },
+          {
+            pageid: 123645,
+            title: "Fat Cocks"
+          }
+        ]
+      },
+      {
+        name: "Mason's Tight Boypussy",
+        articles: [
+          {
+            pageid: 8906,
+            title: "Mason's Tiny Vaginy"
+          },
+          {
+            pageid: 7543,
+            title: "The Study of Porn"
+          },
+          {
+            pageid: 7856,
+            title: "Tiny Peepees"
+          }
+        ]
+      },
+      {
+        name: "Maurice Laflamme",
+        articles: [
+          {
+            pageid: 76755,
+            title: "Slayer of CORS"
+          },
+          {
+            pageid: 12434,
+            title: "CORS and its downfall"
+          },
+          {
+            pageid: 145435,
+            title: "Cum"
+          }
+        ]
+      },
+      {
+        name: "Beans",
+        articles: [
+          {
+            pageid: 52345,
+            title: "Beans"
+          },
+          {
+            pageid: 2134,
+            title: "Turkey"
+          },
+          {
+            pageid: 34,
+            title: "Epic Cock"
+          }
+        ]
+      }
+    ]
   };
 
   onCollapse = collapsed => {
@@ -62,9 +115,27 @@ class MapMenu extends Component {
   };
 
   render() {
-
-    var j = 4;
-
+    var allArticles = [];
+    for (var i = 0; i < this.state.locations.length; i++)
+    {
+      var articleChildren = []
+      var articles = this.state.locations[i].articles
+      for (var j = 0; j < articles.length; j++)
+      {
+        articleChildren.push(<Menu.Item key={articles[j].pageid} style={{ textAlign: "left" }}>{articles[j].title}</Menu.Item>)
+      }
+      allArticles.push(<SubMenu 
+                          key={i}
+                          title={
+                            <span>
+                              <UnorderedListOutlined/>
+                              <span>{this.state.locations[i].name}</span>
+                            </span>
+                          }
+                          style={{ textAlign: "left" }}
+                          children={articleChildren}>
+                        </SubMenu>)
+    }
     return (
         <Sider collapsible collapsed={this.state.collapsed} onCollapse={this.onCollapse}>
         <div className="logo" />
@@ -90,7 +161,7 @@ class MapMenu extends Component {
                 <span>All Articles</span>
               </span>
             }
-            children={AllArticles}
+            children={allArticles}
           >
           {/* <Menu.Item key="1">Tom</Menu.Item>
           <Menu.Item key="2">Bill</Menu.Item>
