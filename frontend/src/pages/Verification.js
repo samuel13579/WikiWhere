@@ -13,11 +13,11 @@ class Verification extends Component {
 
         console.log(token);
 
-        await axios.post(`https://https://wiki-where.herokuapp.com/api/verify/${token}`)
+        await axios.post(`https://wiki-where.herokuapp.com/api/verify/${token}`)
             .then(res => console.log(res))
             .catch(err => console.log(err));
 
-        return this.props.history.push('/mainmap');
+        return this.props.history.push("/confirmation");
     };
 
 

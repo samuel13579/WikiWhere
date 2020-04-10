@@ -205,7 +205,6 @@ class MapExport extends Component {
             return newres.json()
           })
           .then(newres => {
-            console.log("New Query is: " + newres.query.search)
             this.state.wikiPages.push(newres.query.search);
           })
           .catch(error => {
@@ -214,7 +213,6 @@ class MapExport extends Component {
         }
         else
         {
-          console.log("Query is: " + res.query.search)
           this.state.wikiPages.push(res.query.search); 
         }
         })
@@ -231,18 +229,25 @@ class MapExport extends Component {
 
     for (let places in this.state.wikiPages)
     {
+      console.log("Places " + places);
       for (let article in places)
       {
+        console.log("Article " + article);
+        // console.log("https://en.wikipedia.org/w/api.php?action=query&prop=info&pageids=" + article.pageid + "&inprop=url&origin=*");
         var url = "https://en.wikipedia.org/w/api.php?action=query&prop=info&pageids=" + article.pageid + "&inprop=url&origin=*"
         fetch(url)
         .then(res => 
         {
+          // console.log("First res")
+          console.log(res);
           return res.json()
         })
         .then(res => {
+          // console.log("First res")
+          console.log(res);
         })
         .catch(error => {
-          //console.log(error)
+          console.log(error)
         })
       }
     }
