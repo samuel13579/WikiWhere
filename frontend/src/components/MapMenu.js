@@ -25,11 +25,20 @@ import {
 const { Sider } = Layout;
 const { SubMenu } = Menu;
 
+// const SubMenuWithList = (props) => {
+//   const {number, menuItem , ...other} = props;
+  
+//   return (
+
+//   )
+// }
+
 class MapMenu extends Component {
   state = {
     theme: 'dark',
     current: '1',
-    collapsed: false
+    collapsed: false,
+    locations: [1, 2, 3]
   };
 
   onCollapse = collapsed => {
@@ -45,6 +54,25 @@ class MapMenu extends Component {
   };
 
   render() {
+
+    const AllArticles =  (props) => {
+      var j = 4;
+      var allArticleComponentList = []
+      props.locations.map (i => {
+        j++;
+        console.log(j);
+        allArticleComponentList.push(
+        <div>
+          <Menu.Item key={j}>{i}</Menu.Item> 
+          <Menu.Item key={j}>{i}</Menu.Item>
+        </div>);
+      })
+      
+      return (allArticleComponentList);
+    }
+
+    var j = 4;
+
     return (
         <Sider collapsible collapsed={this.state.collapsed} onCollapse={this.onCollapse}>
         <div className="logo" />
@@ -58,9 +86,9 @@ class MapMenu extends Component {
               </span>
             }
           >
-            <Menu.Item key="3">Tom</Menu.Item>
-            <Menu.Item key="4">Bill</Menu.Item>
-            <Menu.Item key="5">Alex</Menu.Item>
+            <Menu.Item key="1">Tom</Menu.Item>
+            <Menu.Item key="2">Bill</Menu.Item>
+            <Menu.Item key="3">Alex</Menu.Item>
           </SubMenu>
           <SubMenu
             key="sub2"
@@ -70,9 +98,14 @@ class MapMenu extends Component {
                 <span>All Articles</span>
               </span>
             }
+
           >
+          <Menu.Item key="1">Tom</Menu.Item>
+          <Menu.Item key="2">Bill</Menu.Item>
+          <Menu.Item key="3">Alex</Menu.Item>
+          
         </SubMenu>
-            <Menu.Item key="6">
+            <Menu.Item key="10">
                 <span>
                     <SettingOutlined/>
                     <span>Options</span>

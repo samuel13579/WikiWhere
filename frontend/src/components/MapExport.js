@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { Map, GoogleApiWrapper, Marker } from 'google-maps-react';
-import bot from 'nodemw';
 
 const mapStyles = {
   width: '84.5%',

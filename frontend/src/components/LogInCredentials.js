@@ -93,7 +93,7 @@ class LoginCredentials extends Component{
                                 label={<p style={{color: "white", marginTop: 80, fontSize: 16}}>Password:</p>}
                                 name="password"
                                 >
-                            <Input onChange={this.onPasswordChange} style={{ marginTop: 15, position: "absolute", width: 200}}/>
+                            <Input.Password onChange={this.onPasswordChange} style={{ marginTop: 15, position: "absolute", width: 200}}/>
                             </Form.Item>
                         </div>
                         <div style={{marginLeft: 250, marginRight: 0, marginBottom: 15, float: "right"}}>
