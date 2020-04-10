@@ -26,7 +26,6 @@ const { Sider } = Layout;
 const { SubMenu } = Menu;
 
 
-
 const AllArticles =  (props) => {
   var j = 4;
   var allArticleComponentList = []
