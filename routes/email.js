@@ -25,7 +25,9 @@ router.post('/verify/:token',
                 user.save(function (err) {
                     if (err) return res.status(500).json({message:err.message});
         
-                    res.status(200).send("The account has been verified. Please log in.");
+                    console.log("Trying to Redirect");
+                    res.redirect('https://wiki-where.herokuapp.com');
+                    // res.status(200).send("The account has been verified. Please log in.");
                 });
             });
         } catch (error) {
