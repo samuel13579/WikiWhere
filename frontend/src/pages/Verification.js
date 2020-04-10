@@ -17,7 +17,7 @@ class Verification extends Component {
             .then(res => console.log(res))
             .catch(err => console.log(err));
 
-        return this.props.history.push("/confirmation");
+        //return this.props.history.push("/confirmation");
     };
 
 
