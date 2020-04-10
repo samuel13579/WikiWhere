@@ -20,7 +20,8 @@ class MapExport extends Component {
       },
 
       radius: 2000,
-      places_list: []
+      places_list: [],
+      wikiPages: []
     }
 
     this.fetchNearestPlacesFromGoogle = this.fetchNearestPlacesFromGoogle.bind(this);
@@ -183,14 +184,13 @@ class MapExport extends Component {
 
   getWikiArticles(places)
   {
-    const proxyurl = "https://cors-anywhere.herokuapp.com/";
     console.log(places)
-    console.log("Printing")
     var url = ''
-    var wikiPages = []
+    var i = -1
     for (let place of places)
     {
-      url = proxyurl + "https://en.wikipedia.org/w/api.php?action=query&list=search&srsearch=" + place.placeName + "%22" + place.placeName + "%22&format=json&srlimit=3"
+      i += 1
+      url = "https://en.wikipedia.org/w/api.php?action=query&list=search&srsearch=" + place.placeName + "%22" + place.placeName + "%22&format=json&srlimit=3&origin=*"
       fetch(url)
       .then(res => {
         return res.json()
@@ -199,13 +199,13 @@ class MapExport extends Component {
         // If there is no results with specific searches, return three general searches. (Can be disabled by just deleting this)
         if (res.query.search.length==0)
         {
-          url = proxyurl + "https://en.wikipedia.org/w/api.php?action=query&list=search&srsearch=" + place.placeName + "&format=json&srlimit=3"
+          url = "https://en.wikipedia.org/w/api.php?action=query&list=search&srsearch=" + place.placeName + "&format=json&srlimit=3&origin=*"
           fetch(url)
           .then(newres => {
             return newres.json()
           })
           .then(newres => {
-            wikiPages.push(newres);
+            this.state.wikiPages[i] = (newres.query.search);
           })
           .catch(error => {
             console.log(error)
@@ -213,15 +213,40 @@ class MapExport extends Component {
         }
         else
         {
-          wikiPages.push(res); 
+          this.state.wikiPages[i] = (res.query.search); 
         }
         })
       .catch(error => {
         console.log(error)
       })
     }
-    console.log(wikiPages)
-    
+    this.getTheLinks()
+  }
+
+  getTheLinks()
+  {
+    console.log("SHIT", this.state.wikiPages)
+    for (let palces in this.state.wikiPages)
+    {
+      console.log(palces)
+    }
+    for (let places in this.state.wikiPages)
+    {
+      for (let article in places)
+      {
+        var url = "https://en.wikipedia.org/w/api.php?action=query&prop=info&pageids=" + article.pageid + "&inprop=url&origin=*"
+        fetch(url)
+        .then(res => 
+        {
+          return res.json()
+        })
+        .then(res => {
+        })
+        .catch(error => {
+          //console.log(error)
+        })
+      }
+    }
   }
 
   render(){
