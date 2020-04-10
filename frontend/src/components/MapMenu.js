@@ -25,13 +25,22 @@ import {
 const { Sider } = Layout;
 const { SubMenu } = Menu;
 
-// const SubMenuWithList = (props) => {
-//   const {number, menuItem , ...other} = props;
-  
-//   return (
 
-//   )
-// }
+
+const AllArticles =  (props) => {
+  var j = 4;
+  var allArticleComponentList = []
+  props.locations.map (i => {
+    j++;
+    console.log(j);
+    allArticleComponentList.push(
+    <div>
+      <Menu.Item key={j}>{i}</Menu.Item> 
+    </div>);
+  })
+  
+  return (allArticleComponentList);
+}
 
 class MapMenu extends Component {
   state = {
@@ -54,22 +63,6 @@ class MapMenu extends Component {
   };
 
   render() {
-
-    const AllArticles =  (props) => {
-      var j = 4;
-      var allArticleComponentList = []
-      props.locations.map (i => {
-        j++;
-        console.log(j);
-        allArticleComponentList.push(
-        <div>
-          <Menu.Item key={j}>{i}</Menu.Item> 
-          <Menu.Item key={j}>{i}</Menu.Item>
-        </div>);
-      })
-      
-      return (allArticleComponentList);
-    }
 
     var j = 4;
 
@@ -98,11 +91,11 @@ class MapMenu extends Component {
                 <span>All Articles</span>
               </span>
             }
-
+            children={AllArticles}
           >
-          <Menu.Item key="1">Tom</Menu.Item>
+          {/* <Menu.Item key="1">Tom</Menu.Item>
           <Menu.Item key="2">Bill</Menu.Item>
-          <Menu.Item key="3">Alex</Menu.Item>
+          <Menu.Item key="3">Alex</Menu.Item> */}
           
         </SubMenu>
             <Menu.Item key="10">
