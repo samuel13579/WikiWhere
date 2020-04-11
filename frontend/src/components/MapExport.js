@@ -106,11 +106,12 @@ class MapExport extends Component {
         this.setState({
           places_list: places
         })
-        if (next_page_token != '')
-        {
-          this.sleep(2);
-          this.findNextPage(next_page_token, this.state.places_list, props);
-        }
+        this.getWikiArticles(this.state.places_list, props)
+        //if (next_page_token != '')
+        //{
+        //  this.sleep(2);
+        //  this.findNextPage(next_page_token, this.state.places_list, props);
+        //}
       })
       .catch(error => {
         console.log(error);
@@ -260,11 +261,12 @@ class MapExport extends Component {
     console.log(this.state.wikiPages);
 
     var i = 0;
-
+    
+    const articlesAndPlaces = []
     for (var page of this.state.wikiPages)
     {
-      const articleArray = []
-
+      var articleArray = []
+      articleArray['placeName'] = this.state.places_list[i].placeName
       for (var article of page)
       {
         var url = "https://en.wikipedia.org/w/api.php?action=query&prop=info&pageids=" + article.pageid + "&inprop=url&format=json&origin=*";
@@ -276,12 +278,11 @@ class MapExport extends Component {
 
         articleArray.push(article)
       }
-
-      this.props.loadWikiData(articleArray);
+      articlesAndPlaces.push(articleArray)
       this.props.loadCoords(this.state.places_coord[i]);
-
       i++;
     }
+    this.props.loadWikiData(articlesAndPlaces);
   }
 
   render(){
