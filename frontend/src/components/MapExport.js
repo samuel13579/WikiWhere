@@ -223,34 +223,27 @@ class MapExport extends Component {
     this.getTheLinks()
   }
 
-  getTheLinks()
+  async getTheLinks()
   {
     console.log("SHIT", this.state.wikiPages)
+    var jsonshit;
 
-    for (let places in this.state.wikiPages)
-    {
-      console.log("Places " + places);
-      for (let article in places)
-      {
-        console.log("Article " + article);
-        // console.log("https://en.wikipedia.org/w/api.php?action=query&prop=info&pageids=" + article.pageid + "&inprop=url&origin=*");
-        var url = "https://en.wikipedia.org/w/api.php?action=query&prop=info&pageids=" + article.pageid + "&inprop=url&origin=*"
-        fetch(url)
+    await this.state.wikiPages.forEach(async page => {
+      await page.forEach(async article => {
+        
+        var url = "https://en.wikipedia.org/w/api.php?action=query&prop=info&pageids=" + article.pageid + "&inprop=url&format=json&origin=*";
+
+        await fetch(url)
         .then(res => 
         {
-          // console.log("First res")
           console.log(res);
-          return res.json()
-        })
-        .then(res => {
-          // console.log("First res")
-          console.log(res);
+          console.log(res.json())
         })
         .catch(error => {
           console.log(error)
         })
-      }
-    }
+      }); 
+    });
   }
 
   render(){
