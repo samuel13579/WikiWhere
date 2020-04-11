@@ -72,7 +72,7 @@ class MapExport extends Component {
     const longitude = this.state.userlocation.lng
     let radMetter = this.state.radius // Search withing 2 KM radius
   
-    const proxyurl = "";
+    const proxyurl = "https://humongo-brain.herokuapp.com/";
     const url = 'https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=' + latitude + ',' + longitude + '&radius=' + radMetter + '&key=' + 'AIzaSyCaXl8zW54lcJjxWBjbTWn4I1vPcXkPeyk'
     var next_page_token = ''
     fetch(proxyurl + url)
@@ -124,7 +124,7 @@ class MapExport extends Component {
     const longitude = this.state.userlocation.lng
     let radMetter = this.state.radius // Search withing 2 KM radius
     var next_next_page_token = ''
-    const proxyurl = "https://cors-anywhere.herokuapp.com/";
+    const proxyurl = "https://humongo-brain.herokuapp.com/";
     const url = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?pagetoken="+ next_page_token + "&key=AIzaSyCaXl8zW54lcJjxWBjbTWn4I1vPcXkPeyk"
     fetch(proxyurl + url)
       .then(res => {
@@ -173,7 +173,7 @@ class MapExport extends Component {
     const longitude = this.state.userlocation.lng
     let radMetter = this.state.radius // Search withing 2 KM radius
     var next_next_page_token = ''
-    const proxyurl = "https://cors-anywhere.herokuapp.com/";
+    const proxyurl = "https://humongo-brain.herokuapp.com/";
     const url = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?pagetoken="+ next_page_token + "&key=AIzaSyCaXl8zW54lcJjxWBjbTWn4I1vPcXkPeyk"
     fetch(proxyurl + url)
       .then(res => {

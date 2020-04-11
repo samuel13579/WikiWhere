@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import 'antd/dist/antd.css';
+import {Link} from 'react-router-dom'
 import { Layout, Menu } from 'antd';
 import {
   UnorderedListOutlined,
@@ -144,11 +145,14 @@ class MapMenu extends Component {
     for (let place of this.props.articleInfo)
     {
       var articleChildren = []
-      for (let article in place.articles)
+      for (let article of place.articles)
       {
-        articleChildren.push(<Menu.Item key={article.pageid} style={{ textAlign: "left" }}>{article.title}</Menu.Item>)
-      }
+        articleChildren.push(
+          <Menu.Item key={article.timestamp} style={{ textAlign: "left" }} onClick={()=> window.open(article.timestamp, "_blank")}>{article.title}</Menu.Item>
+          )
+      } 
       allArticles.push(<SubMenu 
+                          key = {place.placeName}
                           title={
                             <span>
                               <UnorderedListOutlined/>
