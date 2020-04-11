@@ -26,81 +26,96 @@ const { Sider } = Layout;
 const { SubMenu } = Menu;
 
 class MapMenu extends Component {
-  state = {
-    theme: 'dark',
-    current: '1',
-    collapsed: false,
-    locations: [
-      {
-        name: "John's Fat Cock",
-        articles: [
-          {
-            pageid: 123432,
-            title: "John's Fat Cock - A Measurement"
-          },
-          {
-            pageid: 123323,
-            title: "The Study of Porn"
-          },
-          {
-            pageid: 123645,
-            title: "Fat Cocks"
-          }
-        ]
-      },
-      {
-        name: "Mason's Tight Boypussy",
-        articles: [
-          {
-            pageid: 8906,
-            title: "Mason's Tiny Vaginy"
-          },
-          {
-            pageid: 7543,
-            title: "The Study of Porn"
-          },
-          {
-            pageid: 7856,
-            title: "Tiny Peepees"
-          }
-        ]
-      },
-      {
-        name: "Maurice Laflamme",
-        articles: [
-          {
-            pageid: 76755,
-            title: "Slayer of CORS"
-          },
-          {
-            pageid: 12434,
-            title: "CORS and its downfall"
-          },
-          {
-            pageid: 145435,
-            title: "Cum"
-          }
-        ]
-      },
-      {
-        name: "Beans",
-        articles: [
-          {
-            pageid: 52345,
-            title: "Beans"
-          },
-          {
-            pageid: 2134,
-            title: "Turkey"
-          },
-          {
-            pageid: 34,
-            title: "Epic Cock"
-          }
-        ]
-      }
-    ]
-  };
+
+  constructor(props){
+    super(props);
+
+    this.state = {
+      theme: 'dark',
+      current: '1',
+      collapsed: false,
+      wikiInfo: [{
+        name: '',
+        coordinates: {
+          lat: 0,
+          lng: 0
+        },
+        url: ''
+      }],
+      locations: [
+        {
+          name: "John's Fat Cock",
+          articles: [
+            {
+              pageid: 123432,
+              title: "John's Fat Cock - A Measurement"
+            },
+            {
+              pageid: 123323,
+              title: "The Study of Porn"
+            },
+            {
+              pageid: 123645,
+              title: "Fat Cocks"
+            }
+          ]
+        },
+        {
+          name: "Mason's Tight Boypussy",
+          articles: [
+            {
+              pageid: 8906,
+              title: "Mason's Tiny Vaginy"
+            },
+            {
+              pageid: 7543,
+              title: "The Study of Porn"
+            },
+            {
+              pageid: 7856,
+              title: "Tiny Peepees"
+            }
+          ]
+        },
+        {
+          name: "Maurice Laflamme",
+          articles: [
+            {
+              pageid: 76755,
+              title: "Slayer of CORS"
+            },
+            {
+              pageid: 12434,
+              title: "CORS and its downfall"
+            },
+            {
+              pageid: 145435,
+              title: "Cum"
+            }
+          ]
+        },
+        {
+          name: "Beans",
+          articles: [
+            {
+              pageid: 52345,
+              title: "Beans"
+            },
+            {
+              pageid: 2134,
+              title: "Turkey"
+            },
+            {
+              pageid: 34,
+              title: "Epic Cock"
+            }
+          ]
+        }
+      ]
+    };
+
+    this.setState({wikiInfo: this.props.articleInfo})
+  }
 
   onCollapse = collapsed => {
     console.log(collapsed);
@@ -116,24 +131,35 @@ class MapMenu extends Component {
 
   render() {
     var allArticles = [];
-    for (var i = 0; i < this.state.locations.length; i++)
+    // this.setState({wikiInfo: this.props.articleInfo})
+
+    console.log(this.props.articleInfo.length);
+
+    console.log("The artciles in the side menu: ");
+    console.log(this.props.articleInfo);
+
+    console.log("The wiki info state is: ");
+    console.log(this.state.wikiInfo);
+
+    for (var i = 0; i < this.props.articleInfo.length; i++)
     {
       var articleChildren = []
-      var articles = this.state.locations[i].articles
-      for (var j = 0; j < articles.length; j++)
-      {
-        articleChildren.push(<Menu.Item key={articles[j].pageid} style={{ textAlign: "left" }}>{articles[j].title}</Menu.Item>)
-      }
+      var articles = this.props.articleInfo.length
+      // for (var j = 0; j < articles; j++)
+      // {
+      //   articleChildren.push(<Menu.Item key={articles[j].pageid} style={{ textAlign: "left" }}>{articles[j].title}</Menu.Item>)
+      // }
       allArticles.push(<SubMenu 
                           key={i}
                           title={
                             <span>
                               <UnorderedListOutlined/>
-                              <span>{this.state.locations[i].name}</span>
+                              <span>{this.props.articleInfo[i].name}</span>
                             </span>
                           }
                           style={{ textAlign: "left" }}
-                          children={articleChildren}>
+                          // children={articleChildren}
+                          >
                         </SubMenu>)
     }
     return (

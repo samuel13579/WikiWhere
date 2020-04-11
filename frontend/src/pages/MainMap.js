@@ -10,6 +10,32 @@ const { Content, Footer } = Layout;
 
 class MainMap extends Component {
 
+  constructor(props){
+    super(props);
+
+    this.state = {
+
+      wikiInfo: [{
+        name: '',
+        coordinates: {
+          lat: 0,
+          lng: 0
+        },
+        url: ''
+      }]
+    }
+
+    this.onCollapse = this.onCollapse.bind(this);
+    this.apiHasLoaded = this.apiHasLoaded.bind(this);
+    this.wikiInfoRecieived = this.wikiInfoRecieived.bind(this);
+  }
+
+  wikiInfoRecieived(info){
+    console.log("Inside of wiki info recienved");
+    this.state.wikiInfo.push(info);
+    console.log(this.state.wikiInfo);
+  }
+
   onCollapse = collapsed => {
     console.log(collapsed);
     this.setState({ collapsed });
@@ -26,16 +52,18 @@ class MainMap extends Component {
     });
   }
 
+
+
   render() {
     
     return (
       <Layout style={{ minHeight: '100vh' }}>
-        <MapMenu/>
+        <MapMenu articleInfo={this.state.wikiInfo}/>
         <Layout className="site-layout">
           <MapHeader/>
           <br></br>
           <Content className="content-div" style={{ margin: '0 16px'}}>
-            <MapExport/>
+            <MapExport loadWikiData={this.wikiInfoRecieived}/>
 
                 {/* <Marker
                   position={{lat: this.state.lat, lng: this.state.lng}}

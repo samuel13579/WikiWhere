@@ -21,7 +21,24 @@ class MapExport extends Component {
 
       radius: 2000,
       places_list: [],
-      wikiPages: []
+      places_names: [],
+      places_coord: [],
+
+      wikiPages: [],
+      wikiArticles: [],
+
+      filteredNames: [],
+      filteredLocations: [],
+      filteredUrls: [], 
+
+      info: [{
+        name: '',
+        coordinates: {
+          lat: 0,
+          lng: 0
+        },
+        url: ''
+      }]  
     }
 
     this.fetchNearestPlacesFromGoogle = this.fetchNearestPlacesFromGoogle.bind(this);
@@ -46,7 +63,7 @@ class MapExport extends Component {
     while (new Date().getTime() <= e) {}
   }
 
-  fetchNearestPlacesFromGoogle = () => {
+  fetchNearestPlacesFromGoogle = (props) => {
 
     const latitude = this.state.userlocation.lat // you can update it with user's latitude & Longitude
     const longitude = this.state.userlocation.lng
@@ -77,6 +94,9 @@ class MapExport extends Component {
           place['coordinate'] = coordinate
           place['placeId'] = googlePlace.place_id
           place['placeName'] = googlePlace.name
+
+          this.state.places_coord.push(coordinate);
+          this.state.places_names.push(googlePlace.name);
   
           places.push(place);
         }
@@ -86,7 +106,7 @@ class MapExport extends Component {
         if (next_page_token != '')
         {
           this.sleep(2);
-          this.findNextPage(next_page_token, this.state.places_list);
+          this.findNextPage(next_page_token, this.state.places_list, props);
         }
       })
       .catch(error => {
@@ -94,7 +114,7 @@ class MapExport extends Component {
       });
     }
 
-  findNextPage(next_page_token, places)
+  findNextPage(next_page_token, places, props)
   {
     const latitude = this.state.userlocation.lat // you can update it with user's latitude & Longitude
     const longitude = this.state.userlocation.lng
@@ -123,6 +143,9 @@ class MapExport extends Component {
           place['coordinate'] = coordinate
           place['placeId'] = googlePlace.place_id
           place['placeName'] = googlePlace.name
+
+          this.state.places_coord.push(coordinate);
+          this.state.places_names.push(googlePlace.name);
     
           places.push(place);
         }
@@ -132,7 +155,7 @@ class MapExport extends Component {
         if (next_next_page_token != '')
         {
           this.sleep(1.5)
-          this.thisFunctionExistsPrimarilyDueToActualAutism(next_next_page_token, this.state.places_list)
+          this.thisFunctionExistsPrimarilyDueToActualAutism(next_next_page_token, this.state.places_list, props)
         }
       })
     .catch(error => {
@@ -140,7 +163,7 @@ class MapExport extends Component {
     });
   }
 
-  thisFunctionExistsPrimarilyDueToActualAutism(next_page_token, places)
+  thisFunctionExistsPrimarilyDueToActualAutism(next_page_token, places, props)
   {
     const latitude = this.state.userlocation.lat // you can update it with user's latitude & Longitude
     const longitude = this.state.userlocation.lng
@@ -165,24 +188,28 @@ class MapExport extends Component {
             latitude: lat,
             longitude: lng,
           }
+
           place['placeTypes'] = googlePlace.types
           place['coordinate'] = coordinate
           place['placeId'] = googlePlace.place_id
           place['placeName'] = googlePlace.name
+
+          this.state.places_coord.push(coordinate);
+          this.state.places_names.push(googlePlace.name);
     
           places.push(place);
         }
         this.setState({
           places_list: places
         })
-        this.getWikiArticles(this.state.places_list)
+        this.getWikiArticles(this.state.places_list, props)
       })
     .catch(error => {
       console.log(error);
     });
   }
 
-  async getWikiArticles(places)
+  async getWikiArticles(places, props)
   {
     console.log(places)
     var url = ''
@@ -220,30 +247,57 @@ class MapExport extends Component {
         console.log(error)
       })
     }
-    this.getTheLinks()
+    this.getTheLinks(props)
   }
 
-  async getTheLinks()
+  async getTheLinks(props)
   {
-    console.log("SHIT", this.state.wikiPages)
-    var jsonshit;
-
-    await this.state.wikiPages.forEach(async page => {
-      await page.forEach(async article => {
-        
+    for (var page of this.state.wikiPages)
+    {
+      for (var article of page)
+      {
         var url = "https://en.wikipedia.org/w/api.php?action=query&prop=info&pageids=" + article.pageid + "&inprop=url&format=json&origin=*";
+        
+        let response = await fetch(url);
+        let data = await response.json();
 
-        await fetch(url)
-        .then(res => 
+        await this.state.wikiArticles.push(data.query.pages[article.pageid.toString()]);
+      }
+    }
+
+    this.findRelated(props)
+  }
+
+  findRelated(props){
+
+    for (var i in this.state.wikiArticles)
+    {      
+      for (var j in this.state.places_list)
+      {
+        if (this.state.wikiArticles[i].title == this.state.places_list[j].placeName)
         {
-          console.log(res);
-          console.log(res.json())
-        })
-        .catch(error => {
-          console.log(error)
-        })
-      }); 
-    });
+          const filteredInfo = {
+            name: this.state.wikiArticles[i].title,
+            coordinates: this.state.places_list[j].coordinate,
+            url: this.state.wikiArticles[i].fullurl
+          }
+
+          if (this.state.places_list[j].placeName == "" && this.state.wikiArticles[i].title=="")
+          {
+            break;
+          }
+
+          console.log(filteredInfo);
+          this.props.loadWikiData(filteredInfo);
+          // this.state.info.push(filteredInfo);
+
+          break;
+        }
+      }
+    }
+
+    // console.log("Filtered results are: ");
+    // console.log(this.state.info);
   }
 
   render(){
