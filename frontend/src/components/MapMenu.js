@@ -133,13 +133,13 @@ class MapMenu extends Component {
     var allArticles = [];
     // this.setState({wikiInfo: this.props.articleInfo})
 
-    console.log(this.props.articleInfo.length);
+    // console.log(this.props.articleInfo.length);
 
-    console.log("The artciles in the side menu: ");
-    console.log(this.props.articleInfo);
+    // console.log("The artciles in the side menu: ");
+    // console.log(this.props.articleInfo);
 
-    console.log("The wiki info state is: ");
-    console.log(this.state.wikiInfo);
+    // console.log("The wiki info state is: ");
+    // console.log(this.state.wikiInfo);
     
     for (let place of this.props.articleInfo)
     {

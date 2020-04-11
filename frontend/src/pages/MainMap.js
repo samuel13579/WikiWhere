@@ -16,19 +16,28 @@ class MainMap extends Component {
     this.state = {
 
       wikiInfo: [],
-      map_coords: []
+      map_coords: [],
+
+      wikiDataLoaded: false
     }
 
     this.onCollapse = this.onCollapse.bind(this);
     this.apiHasLoaded = this.apiHasLoaded.bind(this);
     this.wikiInfoRecieived = this.wikiInfoRecieived.bind(this);
     this.coordinates = this.coordinates.bind(this);
+    this.wikiInfoFinishedLoading = this.wikiInfoFinishedLoading.bind(this);
   }
 
   wikiInfoRecieived(info){
     console.log("Inside of wiki info recienved");
     this.setState({wikiInfo : info});
     console.log(this.state.wikiInfo);
+  }
+
+  async wikiInfoFinishedLoading() {
+    console.log("Setting wiki data loaded to true");
+    await this.setState({wikiDataLoaded: true});
+    console.log(this.state.wikiDataLoaded)
   }
 
   coordinates(info){
@@ -59,10 +68,10 @@ class MainMap extends Component {
       <Layout style={{ minHeight: '100vh' }}>
         <MapMenu articleInfo={this.state.wikiInfo}/>
         <Layout className="site-layout">
-          <MapHeader/>
+          <MapHeader wikiDataLoaded={this.state.wikiDataLoaded}/>
           <br></br>
           <Content className="content-div" style={{ margin: '0 16px'}}>
-            <MapExport loadWikiData={this.wikiInfoRecieived} loadCoords={this.coordinates}/>
+            <MapExport wikiDataLoaded={this.wikiInfoFinishedLoading} loadWikiData={this.wikiInfoRecieived} loadCoords={this.coordinates}/>
 
                 {/* <Marker
                   position={{lat: this.state.lat, lng: this.state.lng}}

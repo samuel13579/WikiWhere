@@ -1,12 +1,37 @@
 import React, { Component } from 'react';
-import { Layout, Typography, Button, Row, Modal} from 'antd';
+import { Layout, Typography, Button, Row, Modal, Spin} from 'antd';
 import { withRouter } from 'react-router-dom';
 import 'antd/dist/antd.css';
 import './Styles/MainMapStyle.css';
+import {
+    LoadingOutlined
+  } from '@ant-design/icons';
 
 const { Title } = Typography;
 const { Header } = Layout;
 
+const antIcon = <LoadingOutlined style={{ fontSize: 24 }} spin />;
+
+function LoadingBar(props){
+
+    console.log("Changing loading bar. Loading is: ");
+    console.log(props.doneLoading);
+    if (props.doneLoading)
+    {
+        return (
+            <div></div>
+        )
+    }
+    else
+    {
+        return (
+            <Row>
+                <Spin indicator={antIcon} size="large" style={{marginTop: "10px"}}></Spin>
+                <p style={{marginLeft: "10px", marginTop: "-8px"}}>Loading WikiPedia articles...</p>
+            </Row>
+        )
+    }
+}
 
 class MapHeader extends Component {
 
@@ -14,7 +39,8 @@ class MapHeader extends Component {
         super(props);
 
         this.state ={
-            visible: false
+            visible: false,
+            wikiDataLoaded: this.props.wikiDataLoaded
         };
 
         this.confirm = this.confirm.bind(this);
@@ -47,7 +73,9 @@ class MapHeader extends Component {
                 <Header className="site-layout-background" style={{ padding: 10 }}>
                     <Row style={{position:"absolute"}}>
                         {/* Add some special font either through CSS or imported font */}
-                        <Title style={{marginLeft: 745}}>
+                        
+                        <LoadingBar doneLoading ={this.props.wikiDataLoaded}></LoadingBar>
+                        <Title style={{marginLeft: 745, position: 'fixed'}}>
                             WikiWhere 
                         
                         </Title>
