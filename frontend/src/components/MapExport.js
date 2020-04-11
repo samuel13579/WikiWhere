@@ -26,6 +26,9 @@ class MapExport extends Component {
 
       wikiPages: [],
       wikiArticles: [],
+      wikiCoords: [{
+
+      }],
 
       filteredNames: [],
       filteredLocations: [],
@@ -252,6 +255,10 @@ class MapExport extends Component {
 
   async getTheLinks(props)
   {
+
+    console.log("The wiki pages are: ");
+    console.log(this.state.wikiPages);
+
     for (var page of this.state.wikiPages)
     {
       for (var article of page)
@@ -262,16 +269,27 @@ class MapExport extends Component {
         let data = await response.json();
 
         await this.state.wikiArticles.push(data.query.pages[article.pageid.toString()]);
+
+        console.log("The specific article is: ");
+        console.log(article);
+
+        article.timestamp = data.query.pages[article.pageid.toString()].fullurl;
+
+        console.log(article);
       }
     }
+
+    // console.log("The wiki articles are: ");
+    // console.log(this.state.wikiArticles);
 
     this.findRelated(props)
   }
 
   findRelated(props){
 
+    
     for (var i in this.state.wikiArticles)
-    {      
+    { 
       for (var j in this.state.places_list)
       {
         if (this.state.wikiArticles[i].title == this.state.places_list[j].placeName)
