@@ -72,7 +72,7 @@ class MapExport extends Component {
     const longitude = this.state.userlocation.lng
     let radMetter = this.state.radius // Search withing 2 KM radius
   
-    const proxyurl = "https://cors-anywhere.herokuapp.com/";
+    const proxyurl = "";
     const url = 'https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=' + latitude + ',' + longitude + '&radius=' + radMetter + '&key=' + 'AIzaSyCaXl8zW54lcJjxWBjbTWn4I1vPcXkPeyk'
     var next_page_token = ''
     fetch(proxyurl + url)
@@ -267,6 +267,7 @@ class MapExport extends Component {
     {
       var articleArray = []
       articleArray['placeName'] = this.state.places_list[i].placeName
+      articleArray['articles'] = []
       for (var article of page)
       {
         var url = "https://en.wikipedia.org/w/api.php?action=query&prop=info&pageids=" + article.pageid + "&inprop=url&format=json&origin=*";
@@ -276,7 +277,7 @@ class MapExport extends Component {
 
         article.timestamp = data.query.pages[article.pageid.toString()].fullurl;
 
-        articleArray.push(article)
+        articleArray['articles'].push(article)
       }
       articlesAndPlaces.push(articleArray)
       placeCoords.push(this.state.places_coord[i]);
