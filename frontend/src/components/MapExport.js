@@ -261,7 +261,7 @@ class MapExport extends Component {
     console.log(this.state.wikiPages);
 
     var i = 0;
-    
+    const placeCoords = []
     const articlesAndPlaces = []
     for (var page of this.state.wikiPages)
     {
@@ -279,10 +279,11 @@ class MapExport extends Component {
         articleArray.push(article)
       }
       articlesAndPlaces.push(articleArray)
-      this.props.loadCoords(this.state.places_coord[i]);
+      placeCoords.push(this.state.places_coord[i]);
       i++;
     }
     this.props.loadWikiData(articlesAndPlaces);
+    this.props.loadCoords(placeCoords);
   }
 
   render(){

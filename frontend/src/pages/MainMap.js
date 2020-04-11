@@ -32,7 +32,7 @@ class MainMap extends Component {
   }
 
   coordinates(info){
-    this.state.map_coords.push(info);
+    this.setState({map_coords: info})
     console.log(this.state.map_coords);
   }
 
