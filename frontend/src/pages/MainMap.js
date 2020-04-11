@@ -15,19 +15,14 @@ class MainMap extends Component {
 
     this.state = {
 
-      wikiInfo: [{
-        name: '',
-        coordinates: {
-          lat: 0,
-          lng: 0
-        },
-        url: ''
-      }]
+      wikiInfo: [],
+      map_coords: []
     }
 
     this.onCollapse = this.onCollapse.bind(this);
     this.apiHasLoaded = this.apiHasLoaded.bind(this);
     this.wikiInfoRecieived = this.wikiInfoRecieived.bind(this);
+    this.coordinates = this.coordinates.bind(this);
   }
 
   wikiInfoRecieived(info){
@@ -35,6 +30,12 @@ class MainMap extends Component {
     this.state.wikiInfo.push(info);
     console.log(this.state.wikiInfo);
   }
+
+  coordinates(info){
+    this.state.map_coords.push(info);
+    console.log(this.state.map_coords);
+  }
+
 
   onCollapse = collapsed => {
     console.log(collapsed);
@@ -63,7 +64,7 @@ class MainMap extends Component {
           <MapHeader/>
           <br></br>
           <Content className="content-div" style={{ margin: '0 16px'}}>
-            <MapExport loadWikiData={this.wikiInfoRecieived}/>
+            <MapExport loadWikiData={this.wikiInfoRecieived} loadCoords={this.coordinates}/>
 
                 {/* <Marker
                   position={{lat: this.state.lat, lng: this.state.lng}}

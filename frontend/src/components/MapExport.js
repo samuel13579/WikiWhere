@@ -259,8 +259,12 @@ class MapExport extends Component {
     console.log("The wiki pages are: ");
     console.log(this.state.wikiPages);
 
+    var i = 0;
+
     for (var page of this.state.wikiPages)
     {
+      const articleArray = []
+
       for (var article of page)
       {
         var url = "https://en.wikipedia.org/w/api.php?action=query&prop=info&pageids=" + article.pageid + "&inprop=url&format=json&origin=*";
@@ -268,54 +272,16 @@ class MapExport extends Component {
         let response = await fetch(url);
         let data = await response.json();
 
-        await this.state.wikiArticles.push(data.query.pages[article.pageid.toString()]);
-
-        console.log("The specific article is: ");
-        console.log(article);
-
         article.timestamp = data.query.pages[article.pageid.toString()].fullurl;
 
-        console.log(article);
+        articleArray.push(article)
       }
+
+      this.props.loadWikiData(articleArray);
+      this.props.loadCoords(this.state.places_coord[i]);
+
+      i++;
     }
-
-    // console.log("The wiki articles are: ");
-    // console.log(this.state.wikiArticles);
-
-    this.findRelated(props)
-  }
-
-  findRelated(props){
-
-    
-    for (var i in this.state.wikiArticles)
-    { 
-      for (var j in this.state.places_list)
-      {
-        if (this.state.wikiArticles[i].title == this.state.places_list[j].placeName)
-        {
-          const filteredInfo = {
-            name: this.state.wikiArticles[i].title,
-            coordinates: this.state.places_list[j].coordinate,
-            url: this.state.wikiArticles[i].fullurl
-          }
-
-          if (this.state.places_list[j].placeName == "" && this.state.wikiArticles[i].title=="")
-          {
-            break;
-          }
-
-          console.log(filteredInfo);
-          this.props.loadWikiData(filteredInfo);
-          // this.state.info.push(filteredInfo);
-
-          break;
-        }
-      }
-    }
-
-    // console.log("Filtered results are: ");
-    // console.log(this.state.info);
   }
 
   render(){
