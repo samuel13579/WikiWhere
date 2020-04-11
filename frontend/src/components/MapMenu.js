@@ -148,10 +148,14 @@ class MapMenu extends Component {
                 <span>Favorites</span>
               </span>
             }
+            style={{ textAlign: "left" }}
           >
-            <Menu.Item key="1">Tom</Menu.Item>
-            <Menu.Item key="2">Bill</Menu.Item>
-            <Menu.Item key="3">Alex</Menu.Item>
+            <Menu.Item key="1" 
+            style={{ textAlign: "left" }}>Tom</Menu.Item>
+            <Menu.Item key="2" 
+            style={{ textAlign: "left" }}>Bill</Menu.Item>
+            <Menu.Item key="3" 
+            style={{ textAlign: "left" }}>Alex</Menu.Item>
           </SubMenu>
           <SubMenu
             key="sub2"
@@ -161,6 +165,7 @@ class MapMenu extends Component {
                 <span>All Articles</span>
               </span>
             }
+            style={{ textAlign: "left" }}
             children={allArticles}
           >
           {/* <Menu.Item key="1">Tom</Menu.Item>
@@ -168,7 +173,7 @@ class MapMenu extends Component {
           <Menu.Item key="3">Alex</Menu.Item> */}
           
         </SubMenu>
-            <Menu.Item key="10">
+            <Menu.Item key="10" style={{ textAlign: "left" }}>
                 <span>
                     <SettingOutlined/>
                     <span>Options</span>
