@@ -26,22 +26,9 @@ class MapExport extends Component {
 
       wikiPages: [],
       wikiArticles: [],
-      wikiCoords: [{
+      wikiMapNames: [],
 
-      }],
-
-      filteredNames: [],
-      filteredLocations: [],
-      filteredUrls: [], 
-
-      info: [{
-        name: '',
-        coordinates: {
-          lat: 0,
-          lng: 0
-        },
-        url: ''
-      }]  
+      markerList: []
     }
 
     this.fetchNearestPlacesFromGoogle = this.fetchNearestPlacesFromGoogle.bind(this);
@@ -279,28 +266,72 @@ class MapExport extends Component {
 
         articleArray['articles'].push(article)
       }
-      articlesAndPlaces.push(articleArray)
-      placeCoords.push(this.state.places_coord[i]);
-      i++;
+
+      this.props.loadWikiData(articleArray);
+      this.props.loadCoords(this.state.places_coord[i]);
+
+      if (articleArray[0])
+      {
+        console.log("Adding wiki map name");
+        this.state.wikiMapNames.push(articleArray[0].title);
+        i++;
+      }
     }
-    this.props.loadWikiData(articlesAndPlaces);
-    this.props.loadCoords(placeCoords);
+
+    this.setState({
+      userlocation: this.state.userlocation
+    });
   }
 
   render(){
+    // var AllMarkers = [];
+    // for (var i = 0; i < this.state.places_coord.length; i++)
+    // {
+    //   console.log("Creating marker");
+    //   console.log(this.state.wikiMapNames[i]);
+    //   console.log(this.state.places_coord[i]);
+    //   AllMarkers.push(
+    //     <Marker
+    //       key={i}
+    //       position={this.state.places_coord[i]}
+    //       name={this.state.wikiMapNames[i]}
+    //     ></Marker>
+    //   )
+    // }
+    // function AllMarkers(coords, names) {
+    //   var allMarkers = [];
+    //   for (var i = 0; i < this.state.places_coord.length; i++)
+    //   {
+    //     console.log("Creating marker");
+    //     allMarkers.push(
+    //       <Marker
+    //         key={i}
+    //         position={this.state.places_coord[i]}
+    //         name={this.state.wikiMapNames[i]}
+    //       ></Marker>
+    //     )
+    //   }
+    
+    //   this.setState({markerList: allMarkers});
+    // }
     
     return(
       <Map
+        id="map"
         google={this.props.google}
         onReady={this.fetchNearestPlacesFromGoogle}
         zoom={14}
         style={mapStyles}
         center={this.state.userlocation}
       >
+
+        {/* <div>{AllMarkers()}</div> */}
         <Marker
             position={this.state.userlocation}
             name="Current Location"
         ></Marker>
+
+
       </Map>
     );
   }
