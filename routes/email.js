@@ -11,7 +11,7 @@ const User = require("../model/User");
 
 router.post('/verify/:token', 
     async (req,res) => {
-        console.log("Entered verify");
+        // console.log("Entered verify");
         if(!req.params.token)
             return res.status(400).json({message: "We are unable to find a user for this token"});
         try {
@@ -31,9 +31,9 @@ router.post('/verify/:token',
                 user.save(function (err) {
                     if (err) return res.status(500).json({message:err.message});
         
-                    console.log("Trying to Redirect");
-                    res.redirect('https://wiki-where.herokuapp.com/confirmation');
-                    // res.status(200).send("The account has been verified. Please log in.");
+                    // console.log("Trying to Redirect");
+                    // res.redirect('https://wiki-where.herokuapp.com/confirmation');
+                    res.status(200).send("The account has been verified. Please log in.");
                 });
             });
         } catch (error) {
