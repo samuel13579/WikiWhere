@@ -27,12 +27,12 @@ class MainMap extends Component {
 
   wikiInfoRecieived(info){
     console.log("Inside of wiki info recienved");
-    this.state.wikiInfo.push(info);
+    this.setState({wikiInfo : info});
     console.log(this.state.wikiInfo);
   }
 
   coordinates(info){
-    this.state.map_coords.push(info);
+    this.setState({map_coords: info})
     console.log(this.state.map_coords);
   }
 
@@ -52,8 +52,6 @@ class MainMap extends Component {
       singaporeLatLng: new mapsApi.LatLng(1.3521, 103.8198)
     });
   }
-
-
 
   render() {
     

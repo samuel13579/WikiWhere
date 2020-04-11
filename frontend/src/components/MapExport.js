@@ -59,7 +59,7 @@ class MapExport extends Component {
     const longitude = this.state.userlocation.lng
     let radMetter = this.state.radius // Search withing 2 KM radius
   
-    const proxyurl = "https://cors-anywhere.herokuapp.com/";
+    const proxyurl = "";
     const url = 'https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=' + latitude + ',' + longitude + '&radius=' + radMetter + '&key=' + 'AIzaSyCaXl8zW54lcJjxWBjbTWn4I1vPcXkPeyk'
     var next_page_token = ''
     fetch(proxyurl + url)
@@ -93,12 +93,12 @@ class MapExport extends Component {
         this.setState({
           places_list: places
         })
-        // if (next_page_token != '')
-        // {
-        //   this.sleep(2);
-        //   this.findNextPage(next_page_token, this.state.places_list, props);
-        // }
-        this.getWikiArticles(this.state.places_list)
+        this.getWikiArticles(this.state.places_list, props)
+        //if (next_page_token != '')
+        //{
+        //  this.sleep(2);
+        //  this.findNextPage(next_page_token, this.state.places_list, props);
+        //}
       })
       .catch(error => {
         console.log(error);
@@ -248,11 +248,13 @@ class MapExport extends Component {
     console.log(this.state.wikiPages);
 
     var i = 0;
-
+    const placeCoords = []
+    const articlesAndPlaces = []
     for (var page of this.state.wikiPages)
     {
-      const articleArray = []
-
+      var articleArray = []
+      articleArray['placeName'] = this.state.places_list[i].placeName
+      articleArray['articles'] = []
       for (var article of page)
       {
         var url = "https://en.wikipedia.org/w/api.php?action=query&prop=info&pageids=" + article.pageid + "&inprop=url&format=json&origin=*";
@@ -262,7 +264,7 @@ class MapExport extends Component {
 
         article.timestamp = data.query.pages[article.pageid.toString()].fullurl;
 
-        articleArray.push(article)
+        articleArray['articles'].push(article)
       }
 
       this.props.loadWikiData(articleArray);

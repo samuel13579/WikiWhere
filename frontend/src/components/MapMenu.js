@@ -140,25 +140,23 @@ class MapMenu extends Component {
 
     console.log("The wiki info state is: ");
     console.log(this.state.wikiInfo);
-
-    for (var i = 0; i < this.props.articleInfo.length; i++)
+    
+    for (let place of this.props.articleInfo)
     {
       var articleChildren = []
-      var articles = this.props.articleInfo.length
-      // for (var j = 0; j < articles; j++)
-      // {
-      //   articleChildren.push(<Menu.Item key={articles[j].pageid} style={{ textAlign: "left" }}>{articles[j].title}</Menu.Item>)
-      // }
+      for (let article in place.articles)
+      {
+        articleChildren.push(<Menu.Item key={article.pageid} style={{ textAlign: "left" }}>{article.title}</Menu.Item>)
+      }
       allArticles.push(<SubMenu 
-                          key={i}
                           title={
                             <span>
                               <UnorderedListOutlined/>
-                              <span>{this.props.articleInfo[i].name}</span>
+                              <span>{place.placeName}</span>
                             </span>
                           }
                           style={{ textAlign: "left" }}
-                          // children={articleChildren}
+                          children={articleChildren}
                           >
                         </SubMenu>)
     }
