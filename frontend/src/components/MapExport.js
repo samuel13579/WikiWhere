@@ -223,7 +223,13 @@ class MapExport extends Component {
             return newres.json()
           })
           .then(newres => {
-            this.state.wikiPages.push(newres.query.search);
+            var object = [
+              {
+                placeName: place.placeName,
+                articles: newres.query.search
+              }
+            ]
+            this.state.wikiPages.push(object);
           })
           .catch(error => {
             console.log(error)
@@ -231,7 +237,13 @@ class MapExport extends Component {
         }
         else
         {
-          this.state.wikiPages.push(res.query.search); 
+          var object = [
+            {
+              placeName: place.placeName,
+              articles: res.query.search
+            }
+          ]
+          this.state.wikiPages.push(object); 
         }
         })
       .catch(error => {
@@ -253,9 +265,9 @@ class MapExport extends Component {
     for (var page of this.state.wikiPages)
     {
       var articleArray = []
-      articleArray['placeName'] = this.state.places_list[i].placeName
+      articleArray['placeName'] = page[0].placeName
       articleArray['articles'] = []
-      for (var article of page)
+      for (var article of page[0].articles)
       {
         var url = "https://en.wikipedia.org/w/api.php?action=query&prop=info&pageids=" + article.pageid + "&inprop=url&format=json&origin=*";
         
@@ -266,18 +278,12 @@ class MapExport extends Component {
 
         articleArray['articles'].push(article)
       }
-
-      this.props.loadWikiData(articleArray);
-      this.props.loadCoords(this.state.places_coord[i]);
-
-      if (articleArray[0])
-      {
-        console.log("Adding wiki map name");
-        this.state.wikiMapNames.push(articleArray[0].title);
-        i++;
-      }
+      console.log(articleArray)
+      articlesAndPlaces.push(articleArray);
+      placeCoords.push(this.state.places_coord[i++]);
     }
-
+    this.props.loadWikiData(articlesAndPlaces);
+    this.props.loadCoords(placeCoords)
     this.props.wikiDataLoaded();
   }
 

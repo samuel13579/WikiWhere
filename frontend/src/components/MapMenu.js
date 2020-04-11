@@ -142,6 +142,7 @@ class MapMenu extends Component {
     // console.log("The wiki info state is: ");
     // console.log(this.state.wikiInfo);
     
+    console.log(this.props.articleInfo)
     for (let place of this.props.articleInfo)
     {
       var articleChildren = []
@@ -151,6 +152,12 @@ class MapMenu extends Component {
           <Menu.Item key={article.timestamp} style={{ textAlign: "left" }} onClick={()=> window.open(article.timestamp, "_blank")}>{article.title}</Menu.Item>
           )
       } 
+      if (place.articles.length == 0)
+      {
+        articleChildren.push(
+          <Menu.Item key={999} style={{ textAlign: "left"}}>No Articles Found</Menu.Item>
+        )
+      }
       allArticles.push(<SubMenu 
                           key = {place.placeName}
                           title={
