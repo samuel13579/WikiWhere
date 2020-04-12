@@ -24,7 +24,6 @@ class MainMap extends Component {
     this.onCollapse = this.onCollapse.bind(this);
     this.apiHasLoaded = this.apiHasLoaded.bind(this);
     this.wikiInfoRecieived = this.wikiInfoRecieived.bind(this);
-    this.coordinates = this.coordinates.bind(this);
     this.wikiInfoFinishedLoading = this.wikiInfoFinishedLoading.bind(this);
   }
 
@@ -39,12 +38,6 @@ class MainMap extends Component {
     await this.setState({wikiDataLoaded: true});
     console.log(this.state.wikiDataLoaded)
   }
-
-  coordinates(info){
-    this.setState({map_coords: info})
-    console.log(this.state.map_coords);
-  }
-
 
   onCollapse = collapsed => {
     console.log(collapsed);
