@@ -15,16 +15,22 @@ class LogIn extends Component {
         super(props);
 
         this.getCoords = this.getCoords.bind(this);
+        this.getToken = this.getToken.bind(this);
     }
 
     getCoords = (userlocation) => {
         this.props.getCoords(userlocation)
     }
 
+
+    getToken = (token) => {
+        this.props.getToken(token);
+    }
+
     render() {
         return(
             <div style={{marginTop: 0, height: "700px"}}>
-                <LoginHeader getCoords={this.getCoords}/>
+                <LoginHeader getCoords={this.getCoords} getToken={this.getToken}/>
                     <Layout className="layout" style={{marginTop: 0}}>
                         <Content className="content-container" style={{ margin: '24px 16px 0', overflow: 'initial'}}>
                             <div className="content-div" style={{ textAlign: 'center', width: "1250px", height: "600px"}}>

@@ -16,9 +16,12 @@ class App extends Component {
       userlocation: {
         lat:0,
         lng:0
-      }
+      },
+
+      token: ''
     }
     this.getCoords = this.getCoords.bind(this);
+    this.getToken = this.getToken.bind(this);
   }
 
   getCoords = (userlocation) => {
@@ -27,12 +30,18 @@ class App extends Component {
     })
   }
 
+  getToken = (token) => {
+    this.setState({
+      token: token
+    })
+  }
+
   render(){
     return (
         <BrowserRouter>
           <div className="App">
             <Switch>
-              <Route exact path ="/" render={props=><LogIn getCoords={this.getCoords}></LogIn>}/>
+              <Route exact path ="/" render={props=><LogIn getCoords={this.getCoords} getToken={this.getToken}></LogIn>}/>
               <Route exact path ="/mainmap" render={props=><MainMap userlocation={this.state.userlocation} {...props}></MainMap>}/>
               <Route exact path ='/confirmation' component={Confirmation}/>
               <Route exact path ='/verification/:token' component={Verification}/>

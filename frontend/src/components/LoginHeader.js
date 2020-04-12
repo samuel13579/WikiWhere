@@ -12,10 +12,15 @@ class LoginHeader extends Component {
         super(props);
 
         this.getCoords = this.getCoords.bind(this);
+        this.getToken = this.getToken.bind(this);
     }
 
     getCoords = (userlocation) =>{
         this.props.getCoords(userlocation)
+    }
+
+    getToken = (token) => {
+        this.props.getToken(token);
     }
 
     render() {
@@ -24,7 +29,7 @@ class LoginHeader extends Component {
                 <Title style={{ color: "white", position: 'absolute', marginTop: "25px"}}>
                     WikiWhere 
                 </Title>
-                <LoginCredentials getCoords={this.getCoords}/>
+                <LoginCredentials getCoords={this.getCoords} getToken={this.getToken}/>
             </Header>
         );
     }

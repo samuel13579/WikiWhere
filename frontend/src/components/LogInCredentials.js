@@ -78,8 +78,6 @@ class LoginCredentials extends Component{
     
             console.log(this.state.userlocation)
     
-
-        console.log("On login error is " + this.state.error);
         const loginDetails = {
             username: this.state.username,
             password: this.state.password
@@ -89,13 +87,9 @@ class LoginCredentials extends Component{
             error: false
         })
 
-        console.log("After initial set state error is " + this.state.error);
-
         await axios.post("https://wiki-where.herokuapp.com/api/login", loginDetails)
             .then(res => (console.log(res) , console.log("Then")))
             .catch(err => (console.log("catch"), console.log(err), this.setState({error: true})));
-
-        console.log("After axios call, error is " + this.state.error);
         
         if (this.state.error)
         {
