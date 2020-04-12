@@ -6,8 +6,8 @@ import {
 } from '@ant-design/icons';
 
 const mapStyles = {
-  width: '78.5%',
-  height: '80%',
+  width: '79%',
+  height: '79%',
   left: '20px',
   top: '20px'
 };
@@ -22,10 +22,7 @@ class MapExport extends Component {
     super(props);
 
     this.state = {
-      userlocation: {
-        lat: 0,
-        lng: 0
-      },
+      userlocation: this.props.userlocation,
 
       radius: 2000,
       places_list: [],
@@ -53,18 +50,18 @@ class MapExport extends Component {
     this.favoriteClick = this.favoriteClick.bind(this);
   }
 
-  async componentDidMount(){
-    if (navigator.geolocation) {
-      await navigator.geolocation.getCurrentPosition(async (position) => {
-            await this.setState({
-                    userlocation: {
-                    lat: position.coords.latitude,
-                    lng: position.coords.longitude
-                    }
-            });
-      });
-    }
-  }
+  // async componentDidMount(){
+  //   if (navigator.geolocation) {
+  //     await navigator.geolocation.getCurrentPosition(async (position) => {
+  //           await this.setState({
+  //                   userlocation: {
+  //                   lat: position.coords.latitude,
+  //                   lng: position.coords.longitude
+  //                   }
+  //           });
+  //     });
+  //   }
+  // }
 
   sleep(seconds) 
   {
@@ -74,16 +71,21 @@ class MapExport extends Component {
 
   fetchNearestPlacesFromGoogle = async (props) => {
 
-    if (navigator.geolocation) {
-      await navigator.geolocation.getCurrentPosition(async (position) => {
-            await this.setState({
-                    userlocation: {
-                    lat: position.coords.latitude,
-                    lng: position.coords.longitude
-                    }
-            });
-      });
-    }
+    // console.log("Yessor")
+
+    // if (navigator.geolocation) {
+    //   await navigator.geolocation.getCurrentPosition(async (position) => {
+    //         await this.setState({
+    //                 userlocation: {
+    //                 lat: position.coords.latitude,
+    //                 lng: position.coords.longitude
+    //                 }
+    //         });
+    //   });
+    // }
+
+    console.log("Userlocation: ")
+    console.log(this.state.userlocation);
 
     const latitude = this.state.userlocation.lat // you can update it with user's latitude & Longitude
     const longitude = this.state.userlocation.lng
@@ -412,6 +414,7 @@ class MapExport extends Component {
         style={mapStyles}
         onClick={this.onMapClicked}
         center={this.state.userlocation}
+        initialCenter={this.state.userlocation}
         visible={this.state.mapVisible}
       >
         {AllMarkers}

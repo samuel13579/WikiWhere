@@ -26,7 +26,7 @@ function LoadingBar(props){
     {
         return (
             <Row>
-                <Spin indicator={antIcon} size="large" style={{marginTop: "10px"}}></Spin>
+                <Spin indicator={antIcon} size="large" style={{marginTop: "10px", marginLeft: "20px"}}></Spin>
                 <p style={{marginLeft: "10px", marginTop: "-8px"}}>Loading Wikipedia articles...</p>
             </Row>
         )
@@ -80,7 +80,7 @@ class MapHeader extends Component {
                         
                         </Title>
 
-                        <Button type="primary" size="large" style={{marginLeft: 1465, marginTop: 4, position: "absolute", float: "right"}} onClick={this.showModal}>
+                        <Button type="primary" size="large" style={{marginLeft: 1480, marginTop: 4, position: "absolute", float: "right"}} onClick={this.showModal}>
                             Log out
                         </Button>
 

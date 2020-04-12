@@ -18,7 +18,8 @@ class MainMap extends Component {
       wikiInfo: [],
       map_coords: [],
       expandedMenus: ['sub2'],
-      wikiDataLoaded: false
+      wikiDataLoaded: false,
+      userlocation: this.props.userlocation
     }
 
     this.onCollapse = this.onCollapse.bind(this);
@@ -69,7 +70,7 @@ class MainMap extends Component {
           <MapHeader wikiDataLoaded={this.state.wikiDataLoaded}/>
           <br></br>
           <Content className="content-div" style={{ width: "81%", marginLeft: "330px"}}>
-            <MapExport wikiDataLoaded={this.wikiInfoFinishedLoading} loadWikiData={this.wikiInfoRecieived} expandMenu={this.expandMenu} loadCoords={this.coordinates}/>
+            <MapExport userlocation={this.state.userlocation} wikiDataLoaded={this.wikiInfoFinishedLoading} loadWikiData={this.wikiInfoRecieived} expandMenu={this.expandMenu} loadCoords={this.coordinates}/>
 
                 {/* <Marker
                   position={{lat: this.state.lat, lng: this.state.lng}}

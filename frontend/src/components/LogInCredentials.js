@@ -12,7 +12,11 @@ class LoginCredentials extends Component{
             username: '',
             password: '',
             error: false,
-            visible: false
+            visible: false,
+            userlocation: {
+                lat: 0,
+                lng: 0
+            }
         }
 
         this.onLogin = this.onLogin.bind(this);
@@ -46,7 +50,34 @@ class LoginCredentials extends Component{
         });
     }
 
+    async componentDidMount(){
+        if (navigator.geolocation) {
+          await navigator.geolocation.getCurrentPosition(async (position) => {
+                await this.setState({
+                        userlocation: {
+                        lat: position.coords.latitude,
+                        lng: position.coords.longitude
+                        }
+                });
+          });
+        }
+    }
+
     onLogin = async event => {
+
+            if (navigator.geolocation) {
+              await navigator.geolocation.getCurrentPosition(async (position) => {
+                    await this.setState({
+                            userlocation: {
+                            lat: position.coords.latitude,
+                            lng: position.coords.longitude
+                            }
+                    });
+              });
+            }
+    
+            console.log(this.state.userlocation)
+    
 
         console.log("On login error is " + this.state.error);
         const loginDetails = {
@@ -71,7 +102,8 @@ class LoginCredentials extends Component{
             this.showModal();
             return null
         }
-
+        
+        this.props.getCoords(this.state.userlocation);
         return this.props.history.push('/mainmap');
     }
 

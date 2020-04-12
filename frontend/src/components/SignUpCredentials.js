@@ -2,6 +2,35 @@ import React, {Component} from 'react';
 import 'antd/dist/antd.css';
 import { Form, Input, Button, Modal } from 'antd';
 import axios from 'axios';
+import { CheckCircleFilled } from '@ant-design/icons';
+
+function SuccessText(props){
+    if (props.success)
+    {
+        return(
+            <p style={{color: "white"}}>Sign up successful! A verification email has been sent.</p>
+        )
+    }
+    else
+    {
+        return (<div></div>)
+    }
+}
+
+function ButtonOrCheck(props){
+    if (props.success)
+    {
+        return(
+            <CheckCircleFilled style={{color: "green", fontSize: "21"}}></CheckCircleFilled>
+        )
+    }
+    else
+    {
+        return (
+            <Button type="Primary" ghost={true} style={{marginTop: "10px"}} onClick={props.showModal}>Sign up</Button>
+        )
+    }
+}
 
 class SignUpCredentials extends Component {
 
@@ -18,7 +47,8 @@ class SignUpCredentials extends Component {
             userExists: false,
             userConfirm: false,
             passwordConfrim: false,
-            emailConfirm: false
+            emailConfirm: false,
+            success: false
           };
 
           this.onUsernameChange = this.onUsernameChange.bind(this);
@@ -121,7 +151,6 @@ class SignUpCredentials extends Component {
 
         if (!this.getSignUpAcceptState())
         {
-            console.log("Bad")
             return null;
         }
 
@@ -132,10 +161,9 @@ class SignUpCredentials extends Component {
         }
 
         await axios.post("https://wiki-where.herokuapp.com/api/signup", signupDetails)
-            .then(res => this.setState({token: res.data.token}))
+            .then(res => this.setState({token: res.data.token, success: true}))
             .catch(error => this.setState({error: true}));
 
-        console.log(this.state.token);
         // localStorage.setItem('token', this.state.token)
    }
 
@@ -150,11 +178,11 @@ class SignUpCredentials extends Component {
                     remember: true,
                 }}
             >
-                    {<p style={{color: "white", fontSize: 32}}>Sign Up!</p>}
+                    {<p style={{color: "white", fontSize: 32, marginTop: "20px"}}>Sign Up!</p>}
                     <Form.Item
                         label={<p style={{color: "white", marginTop: 15, fontSize: 16}}>Username:</p>}
                         name="username"
-                        style={{marginLeft: 100, marginRight: 30}}
+                        style={{marginLeft: 100, marginRight: 30, marginTop: "20px"}}
                         rules={[
                             {
                                 required: true,
@@ -168,7 +196,7 @@ class SignUpCredentials extends Component {
                     <Form.Item
                         label={<p style={{color: "white", marginTop: 35, fontSize: 16}}>Password:</p>}
                         name="password"
-                        style={{marginLeft: 105, marginRight: 30}}
+                        style={{marginLeft: 105, marginRight: 30, marginTop: "50px"}}
                         rules={[
                             {
                               required: true,
@@ -183,7 +211,7 @@ class SignUpCredentials extends Component {
                     <Form.Item
                     label={<p style={{color: "white", marginTop: 35, fontSize: 16}}>Confirm Password:</p>}
                         name="confirmpassword"
-                        style={{marginLeft: 45, marginRight: 30}}
+                        style={{marginLeft: 45, marginRight: 30, marginTop: "50px"}}
                         dependencies={['password']}
                         hasFeedback
                         rules={[
@@ -207,7 +235,7 @@ class SignUpCredentials extends Component {
                     <Form.Item
                         label={<p style={{color: "white", marginTop: 35, fontSize: 16}}>Email:</p>}
                         name="email"
-                        style={{marginLeft: 135, marginRight: 30}}
+                        style={{marginLeft: 135, marginRight: 30, marginTop: "50px"}}
                         rules={[
                             {
                               required: true,
@@ -221,7 +249,7 @@ class SignUpCredentials extends Component {
                     <Form.Item
                         label={<p style={{color: "white", marginTop: 35, fontSize: 16}}>Confirm Email:</p>}
                         name="emailconfirm"
-                        style={{marginLeft: 73, marginRight: 30}}
+                        style={{marginLeft: 73, marginRight: 30, marginTop: "50px"}}
                         dependencies={['email']}
                         hasFeedback
                         rules={[
@@ -242,7 +270,9 @@ class SignUpCredentials extends Component {
                     <Input style={{marginTop:10}} onChange={this.onConfirmEmailChange}/>
                     </Form.Item>
 
-                <Button type="Primary" ghost={true} style={{marginBottom:20}} onClick={this.showModal}>Sign up</Button>
+                <ButtonOrCheck success={this.state.success} showModal={this.showModal}></ButtonOrCheck>
+                <SuccessText success={this.state.success}></SuccessText>
+                
 
                 <Modal
                             title="Username Already Exists"

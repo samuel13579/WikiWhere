@@ -3,6 +3,7 @@ import { Layout, Typography } from 'antd';
 import LoginHeader from '../components/LoginHeader';
 import { withRouter } from 'react-router-dom';
 import SignUpCredentials from '../components/SignUpCredentials';
+import { Map, GoogleApiWrapper, Marker, InfoWindow, InfoBox } from 'google-maps-react';
 
 const { Header, Content, Footer, Sider } = Layout;
 const { Title } = Typography;
@@ -10,21 +11,32 @@ const { Text } = Typography;
 
 class LogIn extends Component {
 
+    constructor(props){
+        super(props);
+
+        this.getCoords = this.getCoords.bind(this);
+    }
+
+    getCoords = (userlocation) => {
+        this.props.getCoords(userlocation)
+    }
+
     render() {
         return(
             <div style={{marginTop: 0, height: "700px"}}>
-                <LoginHeader/>
+                <LoginHeader getCoords={this.getCoords}/>
                     <Layout className="layout" style={{marginTop: 0}}>
                         <Content className="content-container" style={{ margin: '24px 16px 0', overflow: 'initial'}}>
                             <div className="content-div" style={{ textAlign: 'center', width: "1250px", height: "600px"}}>
                                 <Title>
+                                    <br/>
                                      What is WikiWhere?
                                 </Title>
                                 <Text style={{fontSize: 20}}>
                                     WikiWhere is a culmination of technology, utilizing Google's API
                                     services to derive <br/> user location and information on places around the user.
                                     The information on places<br/> is then sent through Wikipedia, which finds the most
-                                    relevent and germaine article, and returns <br/> it as a point for the user.
+                                    relevent and germaine article, and returns <br/> it as a point for the user.<br/><br/>
                                 </Text>
                                 
                                 
