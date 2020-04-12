@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import 'antd/dist/antd.css';
 import {Link} from 'react-router-dom'
-import { Layout, Menu } from 'antd';
+import { Layout, Menu, Dropdown, Button } from 'antd';
 import {
   UnorderedListOutlined,
   StarOutlined,
@@ -25,6 +25,14 @@ import {
 
 const { Sider } = Layout;
 const { SubMenu } = Menu;
+
+const contextMenu = (
+  <Menu>
+    <Menu.Item key="1">1st menu item</Menu.Item>
+    <Menu.Item key="2">2nd menu item</Menu.Item>
+    <Menu.Item key="3">3rd menu item</Menu.Item>
+  </Menu>
+)
 
 class MapMenu extends Component {
 
@@ -88,13 +96,14 @@ class MapMenu extends Component {
       for (let article of place.articles)
       {
         articleChildren.push(
-          <Menu.Item key={article.timestamp} style={{ textAlign: "left" }} onClick={()=> 
+          <Menu.Item key={article.timestamp} style={{ textAlign: "left"}} onClick={()=> 
               {
                 console.log(article.timestamp)
                 window.open(article.timestamp, "_blank")
               }
-            }>{article.title}</Menu.Item>
-          )
+            }>{article.title}
+          </Menu.Item>
+        )
       } 
       if (place.articles.length == 0)
       {
@@ -131,6 +140,7 @@ class MapMenu extends Component {
                 <span>Favorites</span>
               </span>
             }
+            onTitleClick = { this.onMenuClick }
             style={{ textAlign: "left" }}
           >
             <Menu.Item key="999" 
@@ -148,6 +158,7 @@ class MapMenu extends Component {
                 <span>All Articles</span>
               </span>
             }
+            onTitleClick = { this.onMenuClick }
             style={{ textAlign: "left" }}
             children={allArticles}
           >

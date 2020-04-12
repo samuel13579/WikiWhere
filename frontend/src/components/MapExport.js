@@ -377,6 +377,7 @@ class MapExport extends Component {
             name = {placeName}
             onClick = {this.onMarkerClick}
             icon={wikiMarker}
+            avaliable_index={index}
             url={this.returnUrl(index)}
             >
           </Marker>
@@ -405,10 +406,8 @@ class MapExport extends Component {
 
         <InfoWindow
           marker={this.state.activeMarker}
-          visible={this.state.showingInfoWindow}
-          OnInfoWindowLongClickListener={console.log("Clicked button")}>
+          visible={this.state.showingInfoWindow}>
             <div>
-              <button icon={<StarTwoTone></StarTwoTone>}></button>
               <h1>{this.state.selectedPlace.name}</h1>
               <a target="_blank" href={this.state.selectedPlace.url}>Wikipedia Article</a>
             </div>

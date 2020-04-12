@@ -63,7 +63,7 @@ class MainMap extends Component {
   render() {
     
     return (
-      <Layout style={{ minHeight: '100vh' }}>
+      <Layout style={{ minHeight: '100vh', position: 'fixed', width: '1910px'}}>
         <MapMenu articleInfo={this.state.wikiInfo} expandedMenus={this.state.expandedMenus}/>
         <Layout className="site-layout">
           <MapHeader wikiDataLoaded={this.state.wikiDataLoaded}/>
