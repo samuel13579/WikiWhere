@@ -90,11 +90,11 @@ class MapMenu extends Component {
     }
   }
 
-  onFavoritesClick = async (wikiId) => {
+  onFavoritesClick = async (wikiName) => {
 
     const details = {
       userid: localStorage.getItem("token"),
-      wikifav: wikiId
+      wikifav: wikiName
     }
 
     await axios.post("https://wiki-where.herokuapp.com/api/wiki/add", details)
