@@ -1,9 +1,13 @@
 import React, { Component } from 'react';
 import { Map, GoogleApiWrapper, Marker, InfoWindow } from 'google-maps-react';
+import { Button } from 'antd';
+import {
+  StarTwoTone
+} from '@ant-design/icons';
 
 const mapStyles = {
-  width: '84.5%',
-  height: '78%',
+  width: '78.5%',
+  height: '80%',
   left: '20px',
   top: '20px'
 };
@@ -33,6 +37,7 @@ class MapExport extends Component {
       wikiMapNames: [],
 
       markerList: [],
+      articlesAndPlaces: [],
 
       activeMarker: {},
       selectedPlace: {},
@@ -42,6 +47,8 @@ class MapExport extends Component {
     this.fetchNearestPlacesFromGoogle = this.fetchNearestPlacesFromGoogle.bind(this);
     this.onMapClicked = this.onMapClicked.bind(this);
     this.onMarkerClick = this.onMarkerClick.bind(this);
+    this.returnUrl = this.returnUrl.bind(this);
+    this.favoriteClick = this.favoriteClick.bind(this);
   }
 
   componentDidMount(){
@@ -297,6 +304,12 @@ class MapExport extends Component {
     }
     this.props.loadWikiData(articlesAndPlaces);
     this.props.wikiDataLoaded();
+
+    this.setState({
+      articlesAndPlaces: articlesAndPlaces
+    })
+
+    console.log(this.state.articlesAndPlaces);
   }
 
   onMarkerClick = (props, marker, e) => {
@@ -322,7 +335,28 @@ class MapExport extends Component {
 
   }
 
+
+  returnUrl(index){  
+    if (this.state.articlesAndPlaces)
+    {
+      if (this.state.articlesAndPlaces[index])
+      {
+        if (this.state.articlesAndPlaces[index].articles[0])
+        {
+          return this.state.articlesAndPlaces[index].articles[0].timestamp;
+        }
+      }
+    }
+
+    return null;
+  }
+
+  favoriteClick = () => {
+    console.log("Favorite clicked");
+  }
+
   render(){
+
     const AllMarkers = [];
     for (var array of this.state.wikiPages)
     {
@@ -334,7 +368,7 @@ class MapExport extends Component {
           lat: location.coordinate.latitude,
           lng: location.coordinate.longitude
         }
-        console.log("CREATING MARKER FOR", placeName, "AT INDEX", array.index, "LOCATION", coords)
+        // console.log("CREATING MARKER FOR", placeName, "AT INDEX", array.index, "LOCATION", coords)
         AllMarkers.push(
           <Marker
             key = {index}
@@ -342,8 +376,7 @@ class MapExport extends Component {
             name = {placeName}
             onClick = {this.onMarkerClick}
             icon={wikiMarker}
-            avaliable_index = {index}
-            // url={}
+            url={this.returnUrl(index)}
             >
           </Marker>
         )
@@ -371,10 +404,12 @@ class MapExport extends Component {
 
         <InfoWindow
           marker={this.state.activeMarker}
-          visible={this.state.showingInfoWindow}>
+          visible={this.state.showingInfoWindow}
+          OnInfoWindowLongClickListener={console.log("Clicked button")}>
             <div>
+              <button icon={<StarTwoTone></StarTwoTone>}></button>
               <h1>{this.state.selectedPlace.name}</h1>
-              <a target="_blank" href={this.state.selectedPlace.url}>Policies</a>
+              <a target="_blank" href={this.state.selectedPlace.url}>Wikipedia Article</a>
             </div>
         </InfoWindow>
       </Map>

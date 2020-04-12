@@ -61,7 +61,7 @@ class MainMap extends Component {
         <Layout className="site-layout">
           <MapHeader wikiDataLoaded={this.state.wikiDataLoaded}/>
           <br></br>
-          <Content className="content-div" style={{ margin: '0 16px'}}>
+          <Content className="content-div" style={{ width: "81%", marginLeft: "330px"}}>
             <MapExport wikiDataLoaded={this.wikiInfoFinishedLoading} loadWikiData={this.wikiInfoRecieived} loadCoords={this.coordinates}/>
 
                 {/* <Marker
@@ -69,7 +69,7 @@ class MainMap extends Component {
                   name="Current Location"
                 ></Marker> */}
           </Content>
-          <Footer style={{ textAlign: 'center' }}>Ant Design ©2018 Created by Ant UED</Footer>
+          <Footer style={{ textAlign: 'center', marginLeft: "300px"}}>Ant Design ©2018 Created by Ant UED</Footer>
         </Layout>
       </Layout>
     );

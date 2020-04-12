@@ -71,16 +71,16 @@ class MapHeader extends Component {
         return(
             <div>
                 <Header className="site-layout-background" style={{ padding: 10 }}>
-                    <Row style={{position:"absolute"}}>
+                    <Row style={{position:"absolute", marginLeft: "300px"}}>
                         {/* Add some special font either through CSS or imported font */}
                         
                         <LoadingBar doneLoading ={this.props.wikiDataLoaded}></LoadingBar>
-                        <Title style={{marginLeft: 745, position: 'fixed'}}>
+                        <Title style={{marginLeft: 745, position: 'absolute'}}>
                             WikiWhere 
                         
                         </Title>
 
-                        <Button type="primary" size="large" style={{marginLeft: 1575, marginTop: 4, position: "absolute", float: "right"}} onClick={this.showModal}>
+                        <Button type="primary" size="large" style={{marginLeft: 1465, marginTop: 4, position: "absolute", float: "right"}} onClick={this.showModal}>
                             Log out
                         </Button>
 

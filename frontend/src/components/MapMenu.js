@@ -42,77 +42,7 @@ class MapMenu extends Component {
           lng: 0
         },
         url: ''
-      }],
-      locations: [
-        {
-          name: "John's Fat Cock",
-          articles: [
-            {
-              pageid: 123432,
-              title: "John's Fat Cock - A Measurement"
-            },
-            {
-              pageid: 123323,
-              title: "The Study of Porn"
-            },
-            {
-              pageid: 123645,
-              title: "Fat Cocks"
-            }
-          ]
-        },
-        {
-          name: "Mason's Tight Boypussy",
-          articles: [
-            {
-              pageid: 8906,
-              title: "Mason's Tiny Vaginy"
-            },
-            {
-              pageid: 7543,
-              title: "The Study of Porn"
-            },
-            {
-              pageid: 7856,
-              title: "Tiny Peepees"
-            }
-          ]
-        },
-        {
-          name: "Maurice Laflamme",
-          articles: [
-            {
-              pageid: 76755,
-              title: "Slayer of CORS"
-            },
-            {
-              pageid: 12434,
-              title: "CORS and its downfall"
-            },
-            {
-              pageid: 145435,
-              title: "Cum"
-            }
-          ]
-        },
-        {
-          name: "Beans",
-          articles: [
-            {
-              pageid: 52345,
-              title: "Beans"
-            },
-            {
-              pageid: 2134,
-              title: "Turkey"
-            },
-            {
-              pageid: 34,
-              title: "Epic Cock"
-            }
-          ]
-        }
-      ]
+      }]
     };
 
     this.setState({wikiInfo: this.props.articleInfo})
@@ -132,15 +62,6 @@ class MapMenu extends Component {
 
   render() {
     var allArticles = [];
-    // this.setState({wikiInfo: this.props.articleInfo})
-
-    // console.log(this.props.articleInfo.length);
-
-    // console.log("The artciles in the side menu: ");
-    // console.log(this.props.articleInfo);
-
-    // console.log("The wiki info state is: ");
-    // console.log(this.state.wikiInfo);
     
     for (let place of this.props.articleInfo)
     {
@@ -173,7 +94,7 @@ class MapMenu extends Component {
     }
     console.log(allArticles)
     return (
-        <Sider collapsible collapsed={this.state.collapsed} onCollapse={this.onCollapse}>
+        <Sider collapsed={this.state.collapsed} width={300} style={{ overflow: 'auto',height: '100vh', position: 'fixed',}}onCollapse={this.onCollapse}>
         <div className="logo" />
         <Menu theme="dark" defaultSelectedKeys={['1']} mode="inline">
         <SubMenu
