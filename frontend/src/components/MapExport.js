@@ -332,7 +332,6 @@ class MapExport extends Component {
     }
   };
 
-<<<<<<< HEAD
   onWikiLinkClicked = () => {
 
   }
@@ -357,8 +356,6 @@ class MapExport extends Component {
     console.log("Favorite clicked");
   }
 
-=======
->>>>>>> f6a5638850b9f8d152117dd22bdc82492f6a7556
   render(){
 
     const AllMarkers = [];
