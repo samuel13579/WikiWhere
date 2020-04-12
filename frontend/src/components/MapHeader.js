@@ -27,7 +27,7 @@ function LoadingBar(props){
         return (
             <Row>
                 <Spin indicator={antIcon} size="large" style={{marginTop: "10px"}}></Spin>
-                <p style={{marginLeft: "10px", marginTop: "-8px"}}>Loading WikiPedia articles...</p>
+                <p style={{marginLeft: "10px", marginTop: "-8px"}}>Loading Wikipedia articles...</p>
             </Row>
         )
     }

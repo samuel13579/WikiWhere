@@ -208,10 +208,8 @@ class MapExport extends Component {
   {
     console.log(places)
     var url = ''
-    var i = -1
     for (let place of places)
     {
-      i += 1
       url = "https://en.wikipedia.org/w/api.php?action=query&list=search&srsearch=" + place.placeName + "%22" + place.placeName + "%22&format=json&srlimit=3&origin=*"
       await fetch(url)
       .then(res => {
@@ -227,7 +225,14 @@ class MapExport extends Component {
             return newres.json()
           })
           .then(newres => {
-            this.state.wikiPages.push(newres.query.search);
+            var object = [
+              {
+                coordinate: place.coordinate,
+                placeName: place.placeName,
+                articles: newres.query.search
+              }
+            ]
+            this.state.wikiPages.push(object);
           })
           .catch(error => {
             console.log(error)
@@ -235,9 +240,16 @@ class MapExport extends Component {
         }
         else
         {
-          this.state.wikiPages.push(res.query.search); 
+          var object = [
+            {
+              coordinate: place.coordinate,
+              placeName: place.placeName,
+              articles: res.query.search
+            }
+          ]
+          this.state.wikiPages.push(object); 
         }
-        })
+      })
       .catch(error => {
         console.log(error)
       })
@@ -247,19 +259,16 @@ class MapExport extends Component {
 
   async getTheLinks(props)
   {
+    this.setState({wikiPages: this.state.wikiPages})
 
-    console.log("The wiki pages are: ");
-    console.log(this.state.wikiPages);
-
-    var i = 0;
     const placeCoords = []
     const articlesAndPlaces = []
-    for (var page of this.state.wikiPages)
+    for (var place of this.state.wikiPages)
     {
       var articleArray = []
-      articleArray['placeName'] = this.state.places_list[i].placeName
+      articleArray['placeName'] = place[0].placeName
       articleArray['articles'] = []
-      for (var article of page)
+      for (var article of place[0].articles)
       {
         var url = "https://en.wikipedia.org/w/api.php?action=query&prop=info&pageids=" + article.pageid + "&inprop=url&format=json&origin=*";
         
@@ -270,36 +279,50 @@ class MapExport extends Component {
 
         articleArray['articles'].push(article)
       }
-
-      this.props.loadWikiData(articleArray);
-      this.props.loadCoords(this.state.places_coord[i]);
-
-      if (articleArray[0])
-      {
-        console.log("Adding wiki map name");
-        this.state.wikiMapNames.push(articleArray[0].title);
-        i++;
-      }
+      articlesAndPlaces.push(articleArray);
+      placeCoords.push(this.state.places_coord[i++]);
     }
-
+    var i = 0
+    var wikiPages = this.state.wikiPages
+    for (var article of articlesAndPlaces)
+    {
+      article['index'] = i
+      wikiPages[i]['index'] = i++
+    }
+    this.props.loadWikiData(articlesAndPlaces);
     this.props.wikiDataLoaded();
   }
 
   render(){
-    // var AllMarkers = [];
-    // for (var i = 0; i < this.state.places_coord.length; i++)
-    // {
-    //   console.log("Creating marker");
-    //   console.log(this.state.wikiMapNames[i]);
-    //   console.log(this.state.places_coord[i]);
-    //   AllMarkers.push(
-    //     <Marker
-    //       key={i}
-    //       position={this.state.places_coord[i]}
-    //       name={this.state.wikiMapNames[i]}
-    //     ></Marker>
-    //   )
-    // }
+    const AllMarkers = [];
+    for (var array of this.state.wikiPages)
+    {
+      for (var location of array)
+      {
+        var placeName = location.placeName
+        var index = array.index
+        var coords = {
+          lat: location.coordinate.latitude,
+          lng: location.coordinate.longitude
+        }
+        console.log("CREATING MARKER FOR", placeName, "AT INDEX", array.index, "LOCATION", coords)
+        AllMarkers.push(
+          <Marker
+            key = {index}
+            position = {coords}
+            name = {placeName}
+            onClick = {() => {console.log("FUCK", this)}}
+            >
+          </Marker>
+        )
+      }
+    }
+    const myMarker = 
+    <Marker
+        key = {1010100}
+        position={this.state.userlocation}
+        name="Current Location"
+    ></Marker>
     // function AllMarkers(coords, names) {
     //   var allMarkers = [];
     //   for (var i = 0; i < this.state.places_coord.length; i++)
@@ -316,7 +339,6 @@ class MapExport extends Component {
     
     //   this.setState({markerList: allMarkers});
     // }
-    
     return(
       <Map
         id="map"
@@ -326,15 +348,8 @@ class MapExport extends Component {
         style={mapStyles}
         center={this.state.userlocation}
       >
-
-        {/* <div>{AllMarkers()}</div> */}
-        <Marker
-            position={this.state.userlocation}
-            name="Current Location"
-            icon={wikiMarker}
-        ></Marker>
-
-
+        {AllMarkers}
+        {myMarker}
       </Map>
     );
   }

@@ -151,8 +151,15 @@ class MapMenu extends Component {
           <Menu.Item key={article.timestamp} style={{ textAlign: "left" }} onClick={()=> window.open(article.timestamp, "_blank")}>{article.title}</Menu.Item>
           )
       } 
+      if (place.articles.length == 0)
+      {
+        articleChildren.push(
+          <Menu.Item key={999} style={{ textAlign: "left"}}>No Articles Found</Menu.Item>
+        )
+      }
+      console.log("CREATING SUBMENU FOR", place.placeName, "AT INDEX", place.index)
       allArticles.push(<SubMenu 
-                          key = {place.placeName}
+                          key = {place.index}
                           title={
                             <span>
                               <UnorderedListOutlined/>
@@ -164,6 +171,7 @@ class MapMenu extends Component {
                           >
                         </SubMenu>)
     }
+    console.log(allArticles)
     return (
         <Sider collapsible collapsed={this.state.collapsed} onCollapse={this.onCollapse}>
         <div className="logo" />
@@ -178,11 +186,11 @@ class MapMenu extends Component {
             }
             style={{ textAlign: "left" }}
           >
-            <Menu.Item key="1" 
+            <Menu.Item key="999" 
             style={{ textAlign: "left" }}>Tom</Menu.Item>
-            <Menu.Item key="2" 
+            <Menu.Item key="456" 
             style={{ textAlign: "left" }}>Bill</Menu.Item>
-            <Menu.Item key="3" 
+            <Menu.Item key="123" 
             style={{ textAlign: "left" }}>Alex</Menu.Item>
           </SubMenu>
           <SubMenu
@@ -201,7 +209,7 @@ class MapMenu extends Component {
           <Menu.Item key="3">Alex</Menu.Item> */}
           
         </SubMenu>
-            <Menu.Item key="10" style={{ textAlign: "left" }}>
+            <Menu.Item key="54656" style={{ textAlign: "left" }}>
                 <span>
                     <SettingOutlined/>
                     <span>Options</span>
