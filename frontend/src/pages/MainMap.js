@@ -26,7 +26,6 @@ class MainMap extends Component {
     this.wikiInfoRecieived = this.wikiInfoRecieived.bind(this);
     this.wikiInfoFinishedLoading = this.wikiInfoFinishedLoading.bind(this);
     this.expandMenu = this.expandMenu.bind(this);
-    this.accordionIn = this.accordionIn.bind(this);
   }
 
   wikiInfoRecieived(info){
@@ -44,21 +43,8 @@ class MainMap extends Component {
     this.setState({ collapsed });
   };
 
-  accordionIn(index)
-  {
-    console.log("FUCK", this.state.expandedMenus)
-    for(var i = this.state.expandedMenus.length - 1; i >= 0; i--) {
-      if(this.state.expandedMenus[i] === index) {
-          this.state.expandedMenus.splice(i, 1);
-      }
-    }
-    console.log("FUCK", this.state.expandedMenus)
-    this.setState({expandedMenus: this.state.expandedMenus})
-  }
-
   expandMenu(index)
   {
-    console.log("think", this.state.expandedMenus)
     this.state.expandedMenus.push(index.toString())
     this.setState({expandedMenus: this.state.expandedMenus})
   }
