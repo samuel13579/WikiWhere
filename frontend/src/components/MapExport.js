@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Map, GoogleApiWrapper, Marker } from 'google-maps-react';
+import { Map, GoogleApiWrapper, Marker, InfoWindow } from 'google-maps-react';
 
 const mapStyles = {
   width: '84.5%',
@@ -32,10 +32,16 @@ class MapExport extends Component {
       wikiArticles: [],
       wikiMapNames: [],
 
-      markerList: []
+      markerList: [],
+
+      activeMarker: {},
+      selectedPlace: {},
+      showingInfoWindow: false
     }
 
     this.fetchNearestPlacesFromGoogle = this.fetchNearestPlacesFromGoogle.bind(this);
+    this.onMapClicked = this.onMapClicked.bind(this);
+    this.onMarkerClick = this.onMarkerClick.bind(this);
   }
 
   componentDidMount(){
@@ -293,6 +299,29 @@ class MapExport extends Component {
     this.props.wikiDataLoaded();
   }
 
+  onMarkerClick = (props, marker, e) => {
+    console.log("Props is: ");
+    console.log(props)
+    this.setState({
+      selectedPlace: props,
+      activeMarker: marker,
+      showingInfoWindow: true
+    })
+  };
+
+  onMapClicked = (props) => {
+    if (this.state.showingInfoWindow) {
+      this.setState({
+        showingInfoWindow: false,
+        activeMarker: null
+      })
+    }
+  };
+
+  onWikiLinkClicked = () => {
+
+  }
+
   render(){
     const AllMarkers = [];
     for (var array of this.state.wikiPages)
@@ -311,7 +340,10 @@ class MapExport extends Component {
             key = {index}
             position = {coords}
             name = {placeName}
-            onClick = {() => {console.log("FUCK", this)}}
+            onClick = {this.onMarkerClick}
+            icon={wikiMarker}
+            avaliable_index = {index}
+            // url={}
             >
           </Marker>
         )
@@ -323,22 +355,7 @@ class MapExport extends Component {
         position={this.state.userlocation}
         name="Current Location"
     ></Marker>
-    // function AllMarkers(coords, names) {
-    //   var allMarkers = [];
-    //   for (var i = 0; i < this.state.places_coord.length; i++)
-    //   {
-    //     console.log("Creating marker");
-    //     allMarkers.push(
-    //       <Marker
-    //         key={i}
-    //         position={this.state.places_coord[i]}
-    //         name={this.state.wikiMapNames[i]}
-    //       ></Marker>
-    //     )
-    //   }
-    
-    //   this.setState({markerList: allMarkers});
-    // }
+
     return(
       <Map
         id="map"
@@ -346,10 +363,20 @@ class MapExport extends Component {
         onReady={this.fetchNearestPlacesFromGoogle}
         zoom={14}
         style={mapStyles}
+        onClick={this.onMapClicked}
         center={this.state.userlocation}
       >
         {AllMarkers}
         {myMarker}
+
+        <InfoWindow
+          marker={this.state.activeMarker}
+          visible={this.state.showingInfoWindow}>
+            <div>
+              <h1>{this.state.selectedPlace.name}</h1>
+              <a target="_blank" href={this.state.selectedPlace.url}>Policies</a>
+            </div>
+        </InfoWindow>
       </Map>
     );
   }
