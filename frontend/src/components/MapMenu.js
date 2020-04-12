@@ -1,11 +1,12 @@
-import React, {Component} from 'react';
+import React, {Component, Fragment} from 'react';
 import 'antd/dist/antd.css';
 import {Link} from 'react-router-dom'
-import { Layout, Menu, Dropdown, Button } from 'antd';
+import { Layout, Menu, Dropdown } from 'antd';
 import {
   UnorderedListOutlined,
   StarOutlined,
-  SettingOutlined
+  SettingOutlined,
+  StarTwoTone
 } from '@ant-design/icons';
 
   // TODO:
@@ -96,13 +97,13 @@ class MapMenu extends Component {
       for (let article of place.articles)
       {
         articleChildren.push(
-          <Menu.Item key={article.timestamp} style={{ textAlign: "left"}} onClick={()=> 
-              {
-                console.log(article.timestamp)
-                window.open(article.timestamp, "_blank")
-              }
-            }>{article.title}
-          </Menu.Item>
+              <Menu.Item key={article.timestamp} style={{ textAlign: "left", marginLeft: "72px"}} onClick={()=> 
+                  {
+                    console.log(article.timestamp)
+                    window.open(article.timestamp, "_blank")
+                  }
+                }>{article.title}
+              </Menu.Item>
         )
       } 
       if (place.articles.length == 0)
@@ -121,7 +122,7 @@ class MapMenu extends Component {
                               <span>{place.placeName}</span>
                             </span>
                           }
-                          style={{ textAlign: "left" }}
+                          style={{ textAlign: "left", marginLeft: "48px"}}
                           children={articleChildren}
                           >
                         </SubMenu>)
@@ -129,19 +130,19 @@ class MapMenu extends Component {
     console.log(allArticles)
     console.log(this.props.expandedMenus)
     return (
-        <Sider collapsed={this.state.collapsed} width={300} style={{ overflow: 'auto',height: '100vh', position: 'fixed',}}onCollapse={this.onCollapse}>
+        <Sider collapsed={this.state.collapsed} width={300} style={{ overflow: 'auto',height: '100vh', position: 'fixed',}} onCollapse={this.onCollapse}>
         <div className="logo" />
-        <Menu theme="dark" defaultOpenKeys={this.props.expandedMenus} openKeys={this.props.expandedMenus} mode="inline">
+        <Menu theme="dark" defaultOpenKeys={this.props.expandedMenus} openKeys={this.props.expandedMenus} inlineIndent={0} mode="inline">
         <SubMenu
             key="sub1"
             title={
-              <span>
+              <span style={{marginLeft: "24px"}}>
                 <StarOutlined/>
                 <span>Favorites</span>
               </span>
             }
             onTitleClick = { this.onMenuClick }
-            style={{ textAlign: "left" }}
+            style={{ textAlign: "left"}}
           >
             <Menu.Item key="999" 
             style={{ textAlign: "left" }}>Tom</Menu.Item>
@@ -153,13 +154,13 @@ class MapMenu extends Component {
           <SubMenu
             key="sub2"
             title={
-              <span>
+              <span style={{marginLeft: "24px"}}>
                 <UnorderedListOutlined/>
-                <span>All Articles</span>
+                <span >All Articles</span>
               </span>
             }
             onTitleClick = { this.onMenuClick }
-            style={{ textAlign: "left" }}
+            style={{ textAlign: "left"}}
             children={allArticles}
           >
           {/* <Menu.Item key="1">Tom</Menu.Item>
@@ -167,7 +168,7 @@ class MapMenu extends Component {
           <Menu.Item key="3">Alex</Menu.Item> */}
           
         </SubMenu>
-            <Menu.Item key="54656" style={{ textAlign: "left" }}>
+            <Menu.Item key="54656" style={{ textAlign: "left", marginLeft: "24px"}}>
                 <span>
                     <SettingOutlined/>
                     <span>Options</span>

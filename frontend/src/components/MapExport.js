@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Map, GoogleApiWrapper, Marker, InfoWindow } from 'google-maps-react';
+import { Map, GoogleApiWrapper, Marker, InfoWindow, InfoBox } from 'google-maps-react';
 import { Button } from 'antd';
 import {
   StarTwoTone
@@ -41,7 +41,9 @@ class MapExport extends Component {
 
       activeMarker: {},
       selectedPlace: {},
-      showingInfoWindow: false
+      showingInfoWindow: false,
+
+      mapVisible: false,
     }
 
     this.fetchNearestPlacesFromGoogle = this.fetchNearestPlacesFromGoogle.bind(this);
@@ -51,10 +53,10 @@ class MapExport extends Component {
     this.favoriteClick = this.favoriteClick.bind(this);
   }
 
-  componentDidMount(){
+  async componentDidMount(){
     if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition((position) => {
-            this.setState({
+      await navigator.geolocation.getCurrentPosition(async (position) => {
+            await this.setState({
                     userlocation: {
                     lat: position.coords.latitude,
                     lng: position.coords.longitude
@@ -70,7 +72,18 @@ class MapExport extends Component {
     while (new Date().getTime() <= e) {}
   }
 
-  fetchNearestPlacesFromGoogle = (props) => {
+  fetchNearestPlacesFromGoogle = async (props) => {
+
+    if (navigator.geolocation) {
+      await navigator.geolocation.getCurrentPosition(async (position) => {
+            await this.setState({
+                    userlocation: {
+                    lat: position.coords.latitude,
+                    lng: position.coords.longitude
+                    }
+            });
+      });
+    }
 
     const latitude = this.state.userlocation.lat // you can update it with user's latitude & Longitude
     const longitude = this.state.userlocation.lng
@@ -306,15 +319,14 @@ class MapExport extends Component {
     this.props.wikiDataLoaded();
 
     this.setState({
-      articlesAndPlaces: articlesAndPlaces
+      articlesAndPlaces: articlesAndPlaces,
+      mapVisible: true
     })
 
     console.log(this.state.articlesAndPlaces);
   }
 
   onMarkerClick = (props, marker, e) => {
-    console.log("Props is: ");
-    console.log(props)
     this.setState({
       selectedPlace: props,
       activeMarker: marker,
@@ -400,10 +412,19 @@ class MapExport extends Component {
         style={mapStyles}
         onClick={this.onMapClicked}
         center={this.state.userlocation}
+        visible={this.state.mapVisible}
       >
         {AllMarkers}
         {myMarker}
 
+        {/* <Popconfirm>
+          marker={this.state.activeMarker}
+          visible={this.state.showingInfoWindow}>
+            <div>
+              <h1>{this.state.selectedPlace.name}</h1>
+              <a target="_blank" href={this.state.selectedPlace.url}>Wikipedia Article</a>
+            </div>
+        </Popconfirm> */}
         <InfoWindow
           marker={this.state.activeMarker}
           visible={this.state.showingInfoWindow}>
