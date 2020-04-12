@@ -34,10 +34,8 @@ class MainMap extends Component {
     console.log(this.state.wikiInfo);
   }
 
-  async wikiInfoFinishedLoading() {
-    console.log("Setting wiki data loaded to true");
-    await this.setState({wikiDataLoaded: true});
-    console.log(this.state.wikiDataLoaded)
+  wikiInfoFinishedLoading() {
+    this.setState({wikiDataLoaded: true});
   }
 
   coordinates(info){

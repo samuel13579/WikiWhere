@@ -8,6 +8,10 @@ const mapStyles = {
   top: '20px'
 };
 
+var wikiMarker = {
+  url: 'https://upload.wikimedia.org/wikipedia/commons/4/48/Light_Blue_Circle.svg'
+}
+
 class MapExport extends Component {
   
   constructor(props){
@@ -327,6 +331,7 @@ class MapExport extends Component {
         <Marker
             position={this.state.userlocation}
             name="Current Location"
+            icon={wikiMarker}
         ></Marker>
 
 
