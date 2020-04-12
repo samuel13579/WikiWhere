@@ -44,7 +44,7 @@ class MapMenu extends Component {
         url: ''
       }]
     };
-
+    this.onMenuClick = this.onMenuClick.bind(this)
     this.setState({wikiInfo: this.props.articleInfo})
   }
 
@@ -60,6 +60,25 @@ class MapMenu extends Component {
     });
   };
 
+  onMenuClick = (props, menu, e) => {
+    console.log(this.props)
+    var index = props.key
+    if (this.props.expandedMenus.includes(index))
+    {
+      for(var i = this.props.expandedMenus.length - 1; i >= 0; i--) {
+        if(this.props.expandedMenus[i] === index) {
+            this.props.expandedMenus.splice(i, 1);
+        }
+      }
+      this.setState({state: this.state})
+    }
+    else
+    {
+      this.props.expandedMenus.push(index)
+      this.setState({state: this.state})
+    }
+  }
+
   render() {
     var allArticles = [];
     
@@ -69,7 +88,12 @@ class MapMenu extends Component {
       for (let article of place.articles)
       {
         articleChildren.push(
-          <Menu.Item key={article.timestamp} style={{ textAlign: "left" }} onClick={()=> window.open(article.timestamp, "_blank")}>{article.title}</Menu.Item>
+          <Menu.Item key={article.timestamp} style={{ textAlign: "left" }} onClick={()=> 
+              {
+                console.log(article.timestamp)
+                window.open(article.timestamp, "_blank")
+              }
+            }>{article.title}</Menu.Item>
           )
       } 
       if (place.articles.length == 0)
@@ -81,6 +105,7 @@ class MapMenu extends Component {
       console.log("CREATING SUBMENU FOR", place.placeName, "AT INDEX", place.index)
       allArticles.push(<SubMenu 
                           key = {place.index}
+                          onTitleClick = { this.onMenuClick }
                           title={
                             <span>
                               <UnorderedListOutlined/>
@@ -93,10 +118,11 @@ class MapMenu extends Component {
                         </SubMenu>)
     }
     console.log(allArticles)
+    console.log(this.props.expandedMenus)
     return (
         <Sider collapsed={this.state.collapsed} width={300} style={{ overflow: 'auto',height: '100vh', position: 'fixed',}}onCollapse={this.onCollapse}>
         <div className="logo" />
-        <Menu theme="dark" defaultSelectedKeys={['1']} mode="inline">
+        <Menu theme="dark" defaultOpenKeys={this.props.expandedMenus} openKeys={this.props.expandedMenus} mode="inline">
         <SubMenu
             key="sub1"
             title={

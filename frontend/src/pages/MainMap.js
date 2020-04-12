@@ -17,7 +17,7 @@ class MainMap extends Component {
 
       wikiInfo: [],
       map_coords: [],
-
+      expandedMenus: ['sub2'],
       wikiDataLoaded: false
     }
 
@@ -25,6 +25,7 @@ class MainMap extends Component {
     this.apiHasLoaded = this.apiHasLoaded.bind(this);
     this.wikiInfoRecieived = this.wikiInfoRecieived.bind(this);
     this.wikiInfoFinishedLoading = this.wikiInfoFinishedLoading.bind(this);
+    this.expandMenu = this.expandMenu.bind(this);
   }
 
   wikiInfoRecieived(info){
@@ -42,6 +43,12 @@ class MainMap extends Component {
     this.setState({ collapsed });
   };
 
+  expandMenu(index)
+  {
+    this.state.expandedMenus.push(index.toString())
+    this.setState({expandedMenus: this.state.expandedMenus})
+  }
+
   apiHasLoaded = (map, mapsApi) => {
     this.setState({
       mapsApi,
@@ -57,12 +64,12 @@ class MainMap extends Component {
     
     return (
       <Layout style={{ minHeight: '100vh' }}>
-        <MapMenu articleInfo={this.state.wikiInfo}/>
+        <MapMenu articleInfo={this.state.wikiInfo} expandedMenus={this.state.expandedMenus}/>
         <Layout className="site-layout">
           <MapHeader wikiDataLoaded={this.state.wikiDataLoaded}/>
           <br></br>
           <Content className="content-div" style={{ width: "81%", marginLeft: "330px"}}>
-            <MapExport wikiDataLoaded={this.wikiInfoFinishedLoading} loadWikiData={this.wikiInfoRecieived} loadCoords={this.coordinates}/>
+            <MapExport wikiDataLoaded={this.wikiInfoFinishedLoading} loadWikiData={this.wikiInfoRecieived} expandMenu={this.expandMenu} loadCoords={this.coordinates}/>
 
                 {/* <Marker
                   position={{lat: this.state.lat, lng: this.state.lng}}
