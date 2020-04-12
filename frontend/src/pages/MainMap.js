@@ -17,7 +17,7 @@ class MainMap extends Component {
 
       wikiInfo: [],
       map_coords: [],
-
+      expandedMenus: ['sub2'],
       wikiDataLoaded: false
     }
 
@@ -25,6 +25,8 @@ class MainMap extends Component {
     this.apiHasLoaded = this.apiHasLoaded.bind(this);
     this.wikiInfoRecieived = this.wikiInfoRecieived.bind(this);
     this.wikiInfoFinishedLoading = this.wikiInfoFinishedLoading.bind(this);
+    this.expandMenu = this.expandMenu.bind(this);
+    this.accordionIn = this.accordionIn.bind(this);
   }
 
   wikiInfoRecieived(info){
@@ -42,6 +44,25 @@ class MainMap extends Component {
     this.setState({ collapsed });
   };
 
+  accordionIn(index)
+  {
+    console.log("FUCK", this.state.expandedMenus)
+    for(var i = this.state.expandedMenus.length - 1; i >= 0; i--) {
+      if(this.state.expandedMenus[i] === index) {
+          this.state.expandedMenus.splice(i, 1);
+      }
+    }
+    console.log("FUCK", this.state.expandedMenus)
+    this.setState({expandedMenus: this.state.expandedMenus})
+  }
+
+  expandMenu(index)
+  {
+    console.log("think", this.state.expandedMenus)
+    this.state.expandedMenus.push(index.toString())
+    this.setState({expandedMenus: this.state.expandedMenus})
+  }
+
   apiHasLoaded = (map, mapsApi) => {
     this.setState({
       mapsApi,
@@ -57,12 +78,12 @@ class MainMap extends Component {
     
     return (
       <Layout style={{ minHeight: '100vh' }}>
-        <MapMenu articleInfo={this.state.wikiInfo}/>
+        <MapMenu articleInfo={this.state.wikiInfo} expandedMenus={this.state.expandedMenus}/>
         <Layout className="site-layout">
           <MapHeader wikiDataLoaded={this.state.wikiDataLoaded}/>
           <br></br>
           <Content className="content-div" style={{ margin: '0 16px'}}>
-            <MapExport wikiDataLoaded={this.wikiInfoFinishedLoading} loadWikiData={this.wikiInfoRecieived} loadCoords={this.coordinates}/>
+            <MapExport wikiDataLoaded={this.wikiInfoFinishedLoading} loadWikiData={this.wikiInfoRecieived} expandMenu={this.expandMenu} loadCoords={this.coordinates}/>
 
                 {/* <Marker
                   position={{lat: this.state.lat, lng: this.state.lng}}

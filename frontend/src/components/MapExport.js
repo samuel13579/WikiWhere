@@ -307,6 +307,7 @@ class MapExport extends Component {
       activeMarker: marker,
       showingInfoWindow: true
     })
+    this.props.expandMenu(props.avaliable_index)
   };
 
   onMapClicked = (props) => {
@@ -317,10 +318,6 @@ class MapExport extends Component {
       })
     }
   };
-
-  onWikiLinkClicked = () => {
-
-  }
 
   render(){
     const AllMarkers = [];
