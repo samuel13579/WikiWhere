@@ -1,12 +1,9 @@
-import React, {Component, Fragment} from 'react';
+import React, {Component } from 'react';
 import 'antd/dist/antd.css';
-import {Link} from 'react-router-dom'
-import { Layout, Menu, Dropdown } from 'antd';
+import { Layout, Menu } from 'antd';
 import {
   UnorderedListOutlined,
-  StarOutlined,
-  SettingOutlined,
-  StarTwoTone
+  StarOutlined
 } from '@ant-design/icons';
 
   // TODO:
@@ -36,18 +33,9 @@ class MapMenu extends Component {
       theme: 'dark',
       current: '1',
       collapsed: false,
-      wikiInfo: [{
-        name: '',
-        coordinates: {
-          lat: 0,
-          lng: 0
-        },
-        url: ''
-      }]
     };
 
     this.onMenuClick = this.onMenuClick.bind(this)
-    this.setState({wikiInfo: this.props.articleInfo})
   }
 
   onCollapse = collapsed => {
@@ -121,7 +109,7 @@ class MapMenu extends Component {
               </Menu.Item>
         )
       } 
-      if (place.articles.length == 0)
+      if (place.articles.length === 0)
       {
         articleChildren.push(
           <Menu.Item key={999} style={{ textAlign: "left"}}>No Articles Found</Menu.Item>

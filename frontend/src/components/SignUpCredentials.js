@@ -86,7 +86,7 @@ class SignUpCredentials extends Component {
             confirmpass: e.target.value
         });
 
-        if (this.state.password == e.target.value)
+        if (this.state.password === e.target.value)
         {
             this.setState({
                 passwordConfrim: true
@@ -99,7 +99,7 @@ class SignUpCredentials extends Component {
             confrimemail: e.target.value
         });
 
-        if (this.state.email == e.target.value)
+        if (this.state.email === e.target.value)
         {
             this.setState({
                 emailConfirm: true

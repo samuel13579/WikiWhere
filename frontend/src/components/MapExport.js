@@ -1,9 +1,5 @@
 import React, { Component } from 'react';
-import { Map, GoogleApiWrapper, Marker, InfoWindow, InfoBox } from 'google-maps-react';
-import { Button } from 'antd';
-import {
-  StarTwoTone
-} from '@ant-design/icons';
+import { Map, GoogleApiWrapper, Marker, InfoWindow } from 'google-maps-react';
 import axios from 'axios';
 
 const mapStyles = {
@@ -52,19 +48,6 @@ class MapExport extends Component {
     this.refreshFavorites = this.refreshFavorites.bind(this)
   }
 
-  // async componentDidMount(){
-  //   if (navigator.geolocation) {
-  //     await navigator.geolocation.getCurrentPosition(async (position) => {
-  //           await this.setState({
-  //                   userlocation: {
-  //                   lat: position.coords.latitude,
-  //                   lng: position.coords.longitude
-  //                   }
-  //           });
-  //     });
-  //   }
-  // }
-
   sleep(seconds) 
   {
     var e = new Date().getTime() + (seconds * 1000);
@@ -99,7 +82,7 @@ class MapExport extends Component {
     this.setState({places_names: emptyShit})
 
     const proxyurl = "https://humongo-brain.herokuapp.com/";
-    const url = 'https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=' + latitude + ',' + longitude + '&radius=' + radMetter + '&key=' + 'AIzaSyCaXl8zW54lcJjxWBjbTWn4I1vPcXkPeyk'
+    const url = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=" + latitude + "," + longitude + "&radius=" + radMetter + "&key=AIzaSyCaXl8zW54lcJjxWBjbTWn4I1vPcXkPeyk"
     var next_page_token = ''
     fetch(proxyurl + url)
       .then(res => {
@@ -436,7 +419,10 @@ class MapExport extends Component {
     {
       for (var location of array)
       {
+        if (array.index == undefined)
+          continue
         var placeName = location.placeName
+        console.log("CUM", array.index)
         var index = array.index
         var coords = {
           lat: location.coordinate.latitude,
@@ -491,6 +477,7 @@ class MapExport extends Component {
         </Popconfirm> */}
         <InfoWindow
           marker={this.state.activeMarker}
+          key = {this.state.activeMarker.key}
           visible={this.state.showingInfoWindow}>
             <div>
               <h1>{this.state.selectedPlace.name}</h1>
