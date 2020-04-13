@@ -40,9 +40,15 @@ router.post('/wiki/add', (req, res) => {
     .catch(console.log);
 })
 
+
+//@route DELETE api/wiki/wiki/:id
+//@desc Get all wiki information
+//@access Public
+
 router.delete('/wiki/:id', (req, res) => {
-    Wiki.findById(req.params.id)
-        .then(contact => contact.remove().then(()=> res.json({success: true})))
+    console.log(req.params.id);
+    Wiki.findOneAndDelete({'_id' : req.params.id})
+        .then(wiki => wiki.remove().then(()=> res.json({success: true})))
         .catch(err => res.status(404).json({success: false}));
 });
 
