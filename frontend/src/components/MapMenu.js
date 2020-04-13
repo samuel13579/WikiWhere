@@ -8,7 +8,6 @@ import {
   SettingOutlined,
   StarTwoTone
 } from '@ant-design/icons';
-import axios from 'axios';
 
   // TODO:
   //
@@ -90,18 +89,6 @@ class MapMenu extends Component {
     }
   }
 
-  onFavoritesClick = async (wikiName) => {
-
-    const details = {
-      userid: localStorage.getItem("token"),
-      wikifav: wikiName
-    }
-
-    await axios.post("https://wiki-where.herokuapp.com/api/wiki/add", details)
-            .then(res => console.log(res))
-            .catch(err => console.log(err));
-  }
-
   render() {
     var allArticles = [];
     
@@ -116,7 +103,11 @@ class MapMenu extends Component {
                     console.log(article.timestamp)
                     window.open(article.timestamp, "_blank")
                   }
-                }>{article.title}
+                } onContextMenu={(e)=>{
+                  e.preventDefault()
+                  console.log(article)
+                  this.props.addFavoritePrompt(article)
+                  }}>{article.title}
               </Menu.Item>
         )
       } 

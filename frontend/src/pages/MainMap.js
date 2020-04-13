@@ -5,6 +5,8 @@ import 'antd/dist/antd.css';
 import MapMenu from '../components/MapMenu';
 import MapHeader from '../components/MapHeader';
 import MapExport from '../components/MapExport';
+import axios from 'axios';
+import { confirmAlert } from 'react-confirm-alert'; 
 
 const { Content, Footer } = Layout;
 
@@ -27,12 +29,18 @@ class MainMap extends Component {
     this.wikiInfoRecieived = this.wikiInfoRecieived.bind(this);
     this.wikiInfoFinishedLoading = this.wikiInfoFinishedLoading.bind(this);
     this.expandMenu = this.expandMenu.bind(this);
+    this.addFavoritePrompt = this.addFavoritePrompt.bind(this)
   }
 
   wikiInfoRecieived(info){
     console.log("Inside of wiki info recienved");
     this.setState({wikiInfo : info});
     console.log(this.state.wikiInfo);
+  }
+
+  addFavoritePrompt(article)
+  {
+    //MAKE THE TEXT BOX 
   }
 
   wikiInfoFinishedLoading() {
@@ -62,10 +70,9 @@ class MainMap extends Component {
   }
 
   render() {
-    
     return (
       <Layout style={{ minHeight: '100vh', position: 'fixed', width: '1910px'}}>
-        <MapMenu articleInfo={this.state.wikiInfo} expandedMenus={this.state.expandedMenus}/>
+        <MapMenu articleInfo={this.state.wikiInfo} expandedMenus={this.state.expandedMenus} addFavoritePrompt = {this.addFavoritePrompt}/>
         <Layout className="site-layout">
           <MapHeader wikiDataLoaded={this.state.wikiDataLoaded}/>
           <br></br>
