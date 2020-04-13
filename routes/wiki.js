@@ -40,5 +40,11 @@ router.post('/wiki/add', (req, res) => {
     .catch(console.log);
 })
 
+router.delete('/wiki/:id', (req, res) => {
+    Wiki.findById(req.params.id)
+        .then(contact => contact.remove().then(()=> res.json({success: true})))
+        .catch(err => res.status(404).json({success: false}));
+});
+
 
 module.exports = router;
