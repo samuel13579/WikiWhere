@@ -80,12 +80,8 @@ class MainMap extends Component {
     })
     var res;
     var token = localStorage.getItem("token");
-    //var token = this.state.token;
     console.log({ headers: { Authorization: `Bearer ${token}` } })
     try {
-      //"Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNWU4ZTE1NmU0ZDQxMWQxOTgyNWFiOGRmIn0sImlhdCI6MTU4NjM2OTkwMiwiZXhwIjoxNTg2Mzc5OTAyfQ.HibBVgUPLZiODtLZrSskyen4B-y4ko0JJfAIar9dc-k"
-      //"Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNWU4ZTE1NmU0ZDQxMWQxOTgyNWFiOGRmIn0sImlhdCI6MTU4NjM2OTkwMiwiZXhwIjoxNTg2Mzc5OTAyfQ.HibBVgUPLZiODtLZrSskyen4B-y4ko0JJfAIar9dc-k"
-      //"Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNWU4ZTE1NmU0ZDQxMWQxOTgyNWFiOGRmIn0sImlhdCI6MTU4NjM2OTkwMiwiZXhwIjoxNTg2Mzc5OTAyfQ.HibBVgUPLZiODtLZrSskyen4B-y4ko0JJfAIar9dc-k"
     res = await axios.get("https://wiki-where.herokuapp.com/api/user/me", { headers: { Authorization: `Bearer ${token}` } });
     console.log(res.data);
   }catch(err){
