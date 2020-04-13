@@ -43,8 +43,11 @@ class MainMap extends Component {
     //MAKE THE TEXT BOX 
   }
 
-  wikiInfoFinishedLoading() {
-    this.setState({wikiDataLoaded: true});
+  wikiInfoFinishedLoading(value) {
+    if (value === 1)
+      this.setState({wikiDataLoaded: true});
+    else
+      this.setState({wikiDataLoaded: false})
   }
 
   onCollapse = collapsed => {
