@@ -1,12 +1,11 @@
 import React, { Component } from 'react';
-import { Layout, Menu } from 'antd';
+import { Layout, Button, Modal } from 'antd';
 import '../components/Styles/MainMapStyle.css';
 import 'antd/dist/antd.css';
 import MapMenu from '../components/MapMenu';
 import MapHeader from '../components/MapHeader';
 import MapExport from '../components/MapExport';
 import axios from 'axios';
-import { confirmAlert } from 'react-confirm-alert'; 
 
 const { Content, Footer } = Layout;
 
@@ -21,7 +20,9 @@ class MainMap extends Component {
       map_coords: [],
       expandedMenus: ['sub2'],
       wikiDataLoaded: false,
-      userlocation: this.props.userlocation
+      userlocation: this.props.userlocation,
+      visible: false,
+      favArticle: ''
     }
 
     this.onCollapse = this.onCollapse.bind(this);
@@ -30,6 +31,8 @@ class MainMap extends Component {
     this.wikiInfoFinishedLoading = this.wikiInfoFinishedLoading.bind(this);
     this.expandMenu = this.expandMenu.bind(this);
     this.addFavoritePrompt = this.addFavoritePrompt.bind(this)
+    this.cancel = this.cancel.bind(this);
+    this.accept = this.accept.bind(this);
   }
 
   wikiInfoRecieived(info){
@@ -40,7 +43,10 @@ class MainMap extends Component {
 
   addFavoritePrompt(article)
   {
-    //MAKE THE TEXT BOX 
+    this.setState({
+      visible: true,
+      favArticle: article
+    })
   }
 
   wikiInfoFinishedLoading(value) {
@@ -59,6 +65,41 @@ class MainMap extends Component {
   {
     this.state.expandedMenus.push(index.toString())
     this.setState({expandedMenus: this.state.expandedMenus})
+  }
+
+  cancel(e){
+    this.setState({
+      visible: false
+    })
+  }
+
+  async accept(){
+
+    this.setState({
+      visible:false
+    })
+
+    var token = localStorage.getItem("token");
+    console.log({ headers: { Authorization: `Bearer ${token}` } })
+    try {
+      
+    let res = await axios.get("https://wiki-where.herokuapp.com/api/user/me", { headers: { Authorization: `Bearer ${token}` } });
+    console.log(res.data);
+  }catch(err){
+    console.log(err);
+  }
+
+
+    const details = {
+      userid: localStorage.getItem("token"),
+      wikifav: this.state.favArticle
+    }
+
+    // await axios.post("https://wiki-where.herokuapp.com/api/wiki/add", details)
+    //   .then(res => console.log(res))
+    //   .catch(err => (console.log(err)));
+
+    console.log("Done")
   }
 
   apiHasLoaded = (map, mapsApi) => {
@@ -81,7 +122,23 @@ class MainMap extends Component {
           <br></br>
           <Content className="content-div" style={{ width: "81%", marginLeft: "330px"}}>
             <MapExport userlocation={this.state.userlocation} wikiDataLoaded={this.wikiInfoFinishedLoading} loadWikiData={this.wikiInfoRecieived} expandMenu={this.expandMenu} loadCoords={this.coordinates}/>
-
+            <Modal
+              title="Add to favorites"
+              visible={this.state.visible}
+              onOk={this.accept}
+              onCancel={this.cancel}
+              footer={[
+                <div>
+                  <Button key="no" onClick={this.cancel}>
+                    No
+                  </Button>
+                  <Button key="yes" onClick={this.accept}>
+                    Yes
+                  </Button>
+                </div>
+              ]}>
+              <p>Would you like to add this article to your favorites?</p>
+              </Modal>
                 {/* <Marker
                   position={{lat: this.state.lat, lng: this.state.lng}}
                   name="Current Location"

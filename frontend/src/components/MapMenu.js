@@ -98,7 +98,7 @@ class MapMenu extends Component {
       for (let article of place.articles)
       {
         articleChildren.push(
-              <Menu.Item key={article.timestamp} style={{ textAlign: "left", marginLeft: "72px"}} onClick={()=> 
+              <Menu.Item key={article.timestamp} style={{ textAlign: "left"}} onClick={()=> 
                   {
                     console.log(article.timestamp)
                     window.open(article.timestamp, "_blank")
@@ -127,7 +127,7 @@ class MapMenu extends Component {
                               <span>{place.placeName}</span>
                             </span>
                           }
-                          style={{ textAlign: "left", marginLeft: "48px"}}
+                          style={{ textAlign: "left"}}
                           children={articleChildren}
                           >
                         </SubMenu>)
@@ -137,11 +137,11 @@ class MapMenu extends Component {
     return (
         <Sider collapsed={this.state.collapsed} width={300} style={{ overflow: 'auto',height: '100vh', position: 'fixed',}} onCollapse={this.onCollapse}>
         <div className="logo" />
-        <Menu theme="dark" defaultOpenKeys={this.props.expandedMenus} openKeys={this.props.expandedMenus} inlineIndent={0} mode="inline">
+        <Menu theme="dark" defaultOpenKeys={this.props.expandedMenus} openKeys={this.props.expandedMenus} mode="inline">
         <SubMenu
             key="sub1"
             title={
-              <span style={{marginLeft: "24px"}}>
+              <span>
                 <StarOutlined/>
                 <span>Favorites</span>
               </span>
@@ -159,7 +159,7 @@ class MapMenu extends Component {
           <SubMenu
             key="sub2"
             title={
-              <span style={{marginLeft: "24px"}}>
+              <span>
                 <UnorderedListOutlined/>
                 <span >All Articles</span>
               </span>
@@ -173,7 +173,7 @@ class MapMenu extends Component {
           <Menu.Item key="3">Alex</Menu.Item> */}
           
         </SubMenu>
-            <Menu.Item key="54656" style={{ textAlign: "left", marginLeft: "24px"}}>
+            <Menu.Item key="54656" style={{ textAlign: "left"}}>
                 <span>
                     <SettingOutlined/>
                     <span>Options</span>

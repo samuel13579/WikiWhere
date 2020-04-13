@@ -28,7 +28,7 @@ describe('User DataBase', () => {
             }
 
             chai.request(server)
-                .post('/api/signup')
+                .post('/api/user/signup')
                 .send(user)
                 .end((err, res) => {
                     res.should.have.status(200);
@@ -45,7 +45,7 @@ describe('User DataBase', () => {
             }
 
             chai.request(server)
-                .post('/api/signup')
+                .post('/api/user/signup')
                 .send(user)
                 .end((err, res) => {
                     res.should.have.status(500);
@@ -65,7 +65,7 @@ describe('User DataBase', () => {
             }
             try {
             chai.request(server)
-                .post('/api/login')
+                .post('/api/user/login')
                 .send(user)
                 .end((err, res) => {
                     res.should.have.status(405);
@@ -86,7 +86,7 @@ describe('User DataBase', () => {
             }
             try {
             chai.request(server)
-                .post('/api/checkuser')
+                .post('/api/user/checkuser')
                 .send(user)
                 .end((err, res) => {
                     res.should.have.status(200);
@@ -106,7 +106,7 @@ describe('User DataBase', () => {
             }
             try {
             chai.request(server)
-                .post('/api/checkuser')
+                .post('/api/user/checkuser')
                 .send(user)
                 .end((err, res) => {
                     res.should.have.status(400);
