@@ -78,26 +78,30 @@ class MainMap extends Component {
     this.setState({
       visible:false
     })
-
+    var res;
     var token = localStorage.getItem("token");
+    //var token = this.state.token;
     console.log({ headers: { Authorization: `Bearer ${token}` } })
     try {
-      
-    let res = await axios.get("localhost:5000/api/user/me", { headers: { Authorization: `Bearer ${token}` } });
+      //"Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNWU4ZTE1NmU0ZDQxMWQxOTgyNWFiOGRmIn0sImlhdCI6MTU4NjM2OTkwMiwiZXhwIjoxNTg2Mzc5OTAyfQ.HibBVgUPLZiODtLZrSskyen4B-y4ko0JJfAIar9dc-k"
+      //"Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNWU4ZTE1NmU0ZDQxMWQxOTgyNWFiOGRmIn0sImlhdCI6MTU4NjM2OTkwMiwiZXhwIjoxNTg2Mzc5OTAyfQ.HibBVgUPLZiODtLZrSskyen4B-y4ko0JJfAIar9dc-k"
+      //"Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNWU4ZTE1NmU0ZDQxMWQxOTgyNWFiOGRmIn0sImlhdCI6MTU4NjM2OTkwMiwiZXhwIjoxNTg2Mzc5OTAyfQ.HibBVgUPLZiODtLZrSskyen4B-y4ko0JJfAIar9dc-k"
+    res = await axios.get("https://wiki-where.herokuapp.com/api/user/me", { headers: { Authorization: `Bearer ${token}` } });
     console.log(res.data);
   }catch(err){
     console.log(err);
   }
 
-
     const details = {
-      userid: localStorage.getItem("token"),
-      wikifav: this.state.favArticle
+      userid: res.data._id,
+      favorite: this.state.favArticle
     }
-
-    // await axios.post("https://wiki-where.herokuapp.com/api/wiki/add", details)
-    //   .then(res => console.log(res))
-    //   .catch(err => (console.log(err)));
+    try{
+      let ress = await axios.post("https://wiki-where.herokuapp.com/api/wiki/wiki/add", details);
+      console.log(ress);
+    } catch(err) {
+      console.log(err);
+    }
 
     console.log("Done")
   }

@@ -125,7 +125,7 @@ class SignUpCredentials extends Component {
             username: this.state.username
         }
 
-        await axios.post("http://localhost:5000/api/user/checkuser", detail)
+        await axios.post("https://wiki-where.herokuapp.com/api/user/checkuser", detail)
             .then(res => this.setState({userExists: true}))
             .catch(error => this.setState({userExists: false}));
 
@@ -164,7 +164,7 @@ class SignUpCredentials extends Component {
             .then(res => this.setState({token: res.data.token, success: true}))
             .catch(error => this.setState({error: true}));
 
-        // localStorage.setItem('token', this.state.token)
+         localStorage.setItem('token', this.state.token)
    }
 
     render() {

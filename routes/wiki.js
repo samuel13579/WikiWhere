@@ -8,7 +8,7 @@ const User = require("../model/User");
 
 
 
-//@route GET api/wiki/get
+//@route GET api/wiki/wiki/get
 //@desc Get all wiki information
 //@access Public
 
@@ -25,14 +25,14 @@ router.get('/wiki/get', auth, async(req,res) => {
     }
 })
 
-//@route POST api/wikifav/add
+//@route POST api/wiki/wiki/add
 //@desc Get all wiki information
 //@access Public
 
 router.post('/wiki/add', (req, res) => {
     const newWiki = new Wiki({
         userid: req.body.userid,
-        wikifav: req.body.wikifav
+        favorite: req.body.favorite
     })
 
     newWiki.save()
