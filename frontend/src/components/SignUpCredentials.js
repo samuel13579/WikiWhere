@@ -164,7 +164,7 @@ class SignUpCredentials extends Component {
             .then(res => this.setState({token: res.data.token, success: true}))
             .catch(error => this.setState({error: true}));
 
-        // localStorage.setItem('token', this.state.token)
+         localStorage.setItem('token', this.state.token)
    }
 
     render() {

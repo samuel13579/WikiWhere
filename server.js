@@ -18,13 +18,14 @@ app.use(express.static(path.join(__dirname, 'frontend/build')))
 
 
 app.use(function(req, res, next) {
-  res.header("Access-Control-Allow-Origin", "https://wiki-where.herokuapp.com, localhost:3000, *");
+  res.header("Access-Control-Allow-Origin", "https://wiki-where.herokuapp.com, http://localhost:3000, http://localhost:5000, *");
   res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization, *");
   res.header("Access-Control-Allow-Methods", "GET, POST, PUT, OPTIONS, UPDATE, DELETE");
   next();
 });
 
 app.use(cors());
+app.options('*', cors());
 app.use(bodyParser.json());
 
 
