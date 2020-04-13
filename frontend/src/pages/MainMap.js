@@ -43,6 +43,7 @@ class MainMap extends Component {
 
   addFavoritePrompt(article)
   {
+    console.log(article)
     this.setState({
       visible: true,
       favArticle: article

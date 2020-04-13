@@ -310,10 +310,11 @@ class MapExport extends Component {
       for (var article of place[0].articles)
       {
         var url = "https://en.wikipedia.org/w/api.php?action=query&prop=info&pageids=" + article.pageid + "&inprop=url&format=json&origin=*";
-        
         let response = await fetch(url);
         let data = await response.json();
 
+        article['location'] = place[0].coordinate
+        article['placeName'] = place[0].placeName
         article.timestamp = data.query.pages[article.pageid.toString()].fullurl;
 
         articleArray['articles'].push(article)
