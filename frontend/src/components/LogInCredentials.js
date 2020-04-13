@@ -87,7 +87,7 @@ class LoginCredentials extends Component{
             error: false
         })
 
-        await axios.post("https://wiki-where.herokuapp.com/api/login", loginDetails)
+        await axios.post("https://wiki-where.herokuapp.com/api/user/login", loginDetails)
             .then(res => (console.log(res) , console.log("Then")))
             .catch(err => (console.log("catch"), console.log(err), this.setState({error: true})));
         

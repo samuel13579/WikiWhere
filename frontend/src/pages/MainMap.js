@@ -77,10 +77,14 @@ class MainMap extends Component {
     })
 
     var token = localStorage.getItem("token");
-
-    await axios.get("https://wiki-where.herokuapp.com/api/me", token)
-      .then(res => console.log(res))
-      .catch(err=> console.log(err));
+    console.log({ headers: { Authorization: `Bearer ${token}` } })
+    try {
+      
+    let res = await axios.get("https://wiki-where.herokuapp.com/api/user/me", { headers: { Authorization: `Bearer ${token}` } });
+    console.log(res.data);
+  }catch(err){
+    console.log(err);
+  }
 
 
     const details = {
