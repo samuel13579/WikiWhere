@@ -80,7 +80,7 @@ class MainMap extends Component {
     console.log({ headers: { Authorization: `Bearer ${token}` } })
     try {
       
-    let res = await axios.get("https://wiki-where.herokuapp.com/api/user/me", { headers: { Authorization: `Bearer ${token}` } });
+    let res = await axios.get("localhost:5000/api/user/me", { headers: { Authorization: `Bearer ${token}` } });
     console.log(res.data);
   }catch(err){
     console.log(err);
