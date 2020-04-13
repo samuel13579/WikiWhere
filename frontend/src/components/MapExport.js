@@ -4,6 +4,7 @@ import { Button } from 'antd';
 import {
   StarTwoTone
 } from '@ant-design/icons';
+import axios from 'axios';
 
 const mapStyles = {
   width: '79%',
@@ -48,6 +49,7 @@ class MapExport extends Component {
     this.onMarkerClick = this.onMarkerClick.bind(this);
     this.returnUrl = this.returnUrl.bind(this);
     this.favoriteClick = this.favoriteClick.bind(this);
+    this.refreshFavorites = this.refreshFavorites.bind(this)
   }
 
   // async componentDidMount(){
@@ -131,6 +133,7 @@ class MapExport extends Component {
           places_list: places
         })
         this.getWikiArticles(this.state.places_list, props)
+        this.refreshFavorites()
         //if (next_page_token != '')
         //{
         //  this.sleep(2);
@@ -141,6 +144,21 @@ class MapExport extends Component {
         console.log(error);
       });
     }
+
+  async refreshFavorites()
+  {
+    var res;
+    var token = localStorage.getItem("token");
+    try{
+      console.log(token)
+      res = await axios.get("https://wiki-where.herokuapp.com/api/wiki/wiki/get", { headers: { Authorization: `Bearer ${token}` }});
+      console.log(res);
+    } 
+    catch(err) {
+      console.log(err);
+    }
+    this.props.loadFavorites(res.data)
+  }
 
   findNextPage(next_page_token, places, props)
   {
@@ -313,8 +331,20 @@ class MapExport extends Component {
         let response = await fetch(url);
         let data = await response.json();
 
-        article['location'] = place[0].coordinate
-        article['placeName'] = place[0].placeName
+        if (place[0].placeName == "Buying & selling real pure gold shop")
+        {
+          console.log(place[0])
+          
+          console.log(article)
+        }
+        article['placeLocation'] = place[0].coordinate
+        article['placeName'] = place[0].placeName  
+        if (place[0].placeName == "Buying & selling real pure gold shop")
+        {
+          console.log(place[0])
+          
+          console.log(article)
+        }
         article.timestamp = data.query.pages[article.pageid.toString()].fullurl;
 
         articleArray['articles'].push(article)
@@ -412,7 +442,6 @@ class MapExport extends Component {
           lat: location.coordinate.latitude,
           lng: location.coordinate.longitude
         }
-        // console.log("CREATING MARKER FOR", placeName, "AT INDEX", array.index, "LOCATION", coords)
         AllMarkers.push(
           <Marker
             key = {index}
