@@ -125,7 +125,7 @@ class SignUpCredentials extends Component {
             username: this.state.username
         }
 
-        await axios.post("https://wiki-where.herokuapp.com/api/checkuser", detail)
+        await axios.post("https://wiki-where.herokuapp.com/api/user/checkuser", detail)
             .then(res => this.setState({userExists: true}))
             .catch(error => this.setState({userExists: false}));
 
@@ -160,11 +160,11 @@ class SignUpCredentials extends Component {
             email: this.state.email
         }
 
-        await axios.post("https://wiki-where.herokuapp.com/api/signup", signupDetails)
+        await axios.post("https://wiki-where.herokuapp.com/api/user/signup", signupDetails)
             .then(res => this.setState({token: res.data.token, success: true}))
             .catch(error => this.setState({error: true}));
 
-        // localStorage.setItem('token', this.state.token)
+         localStorage.setItem('token', this.state.token)
    }
 
     render() {

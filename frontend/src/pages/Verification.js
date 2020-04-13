@@ -13,7 +13,7 @@ class Verification extends Component {
 
         console.log(token);
 
-        await axios.post(`https://wiki-where.herokuapp.com/api/verify/${token}`)
+        await axios.post(`https://wiki-where.herokuapp.com/api/email/verify/${token}`)
             .then(res => console.log(res))
             .catch(err => console.log(err));
 

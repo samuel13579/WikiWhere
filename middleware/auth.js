@@ -15,6 +15,6 @@ module.exports = function(req, res, next) {
   } catch (e) {
     console.error(e);
     //If the decoded token isnt an actual token, return an error
-    res.status(500).send({ message: "Invalid Token" });
+    res.status(501).send({ message: "Invalid Token" });
   }
 };

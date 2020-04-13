@@ -83,14 +83,19 @@ class MapExport extends Component {
     //         });
     //   });
     // }
-
-    console.log("Userlocation: ")
+    var value = 0
+    this.props.wikiDataLoaded(value);
+    console.log("SEARCHING AT LOCATION: ")
     console.log(this.state.userlocation);
 
     const latitude = this.state.userlocation.lat // you can update it with user's latitude & Longitude
     const longitude = this.state.userlocation.lng
     let radMetter = this.state.radius // Search withing 2 KM radius
   
+    var emptyShit = []
+    this.setState({places_coord: emptyShit})
+    this.setState({places_names: emptyShit})
+
     const proxyurl = "https://humongo-brain.herokuapp.com/";
     const url = 'https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=' + latitude + ',' + longitude + '&radius=' + radMetter + '&key=' + 'AIzaSyCaXl8zW54lcJjxWBjbTWn4I1vPcXkPeyk'
     var next_page_token = ''
@@ -234,6 +239,8 @@ class MapExport extends Component {
 
   async getWikiArticles(places, props)
   {
+    var emptyShit = []
+    this.setState({wikiPages: emptyShit})
     console.log(places)
     var url = ''
     for (let place of places)
@@ -288,7 +295,11 @@ class MapExport extends Component {
   async getTheLinks(props)
   {
     this.setState({wikiPages: this.state.wikiPages})
-
+    var emptyShit = []
+    this.setState({
+      articlesAndPlaces: emptyShit,
+      mapVisible: false
+    })
     const placeCoords = []
     const articlesAndPlaces = []
     for (var place of this.state.wikiPages)
@@ -318,7 +329,8 @@ class MapExport extends Component {
       wikiPages[i]['index'] = i++
     }
     this.props.loadWikiData(articlesAndPlaces);
-    this.props.wikiDataLoaded();
+    var value = 1
+    this.props.wikiDataLoaded(value);
 
     this.setState({
       articlesAndPlaces: articlesAndPlaces,
@@ -370,6 +382,22 @@ class MapExport extends Component {
     console.log("Favorite clicked");
   }
 
+  onMarkerDragEnd(coord)
+  {
+    const { latLng } = coord;
+    const lat = latLng.lat();
+    const lng = latLng.lng();
+    console.log(lat, lng)
+    this.state.userlocation = { lat, lng }
+    this.setState({state: this.state})
+  }
+
+  //LITERALLY DO EVERYTHING OVER LMFAOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO
+  dblClickHandler()
+  {
+    this.fetchNearestPlacesFromGoogle(this.props)
+  }
+
   render(){
 
     const AllMarkers = [];
@@ -402,6 +430,9 @@ class MapExport extends Component {
     <Marker
         key = {1010100}
         position={this.state.userlocation}
+        draggable={true}
+        onDblclick={this.fetchNearestPlacesFromGoogle}
+        onDragend={(t, map, coord) => this.onMarkerDragEnd(coord)}
         name="Current Location"
     ></Marker>
 

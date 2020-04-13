@@ -8,7 +8,7 @@ const User = require("../model/User");
 
 
 
-//@route GET api/wiki/get
+//@route GET api/wiki/wiki/get
 //@desc Get all wiki information
 //@access Public
 
@@ -25,20 +25,32 @@ router.get('/wiki/get', auth, async(req,res) => {
     }
 })
 
-//@route POST api/wikifav/add
+//@route POST api/wiki/wiki/add
 //@desc Get all wiki information
 //@access Public
 
 router.post('/wiki/add', (req, res) => {
     const newWiki = new Wiki({
         userid: req.body.userid,
-        wikifav: req.body.wikifav
+        favorite: req.body.favorite
     })
 
     newWiki.save()
     .then(wiki => res.json(wiki))
     .catch(console.log);
 })
+
+
+//@route DELETE api/wiki/wiki/:id
+//@desc Get all wiki information
+//@access Public
+
+router.delete('/wiki/:id', (req, res) => {
+    console.log(req.params.id);
+    Wiki.findOneAndDelete({'_id' : req.params.id})
+        .then(wiki => wiki.remove().then(()=> res.json({success: true})))
+        .catch(err => res.status(404).json({success: false}));
+});
 
 
 module.exports = router;
