@@ -42,8 +42,8 @@ class LogIn extends Component {
                                     <p style ={{fontFamily: "Garamond"}}>
                                     WikiWhere is a culmination of technology utilizing Google's API
                                     services to derive <br/> user location and information on places around the user.
-                                    The information on places<br/> is then sent through Wikipedia, which finds the most
-                                    relevent and germaine article, and returns <br/> it as a point for the user.<br/>
+                                    The data retrieved from the user's location<br/> is then sent to Wikipedia, which finds the most
+                                    relevant and germane articles and returns <br/> them to the user.<br/>
                                     </p>
                                 </Text>
                                 
@@ -55,7 +55,7 @@ class LogIn extends Component {
                                 <Text style={{fontSize: 26}}>
                                     <p style={{fontFamily: "Garamond"}}>
                                     Just as the name suggests, WikiWhere pulls in data from all around you<br/>
-                                    and returns relevent Wikipedia articles that you may find useful or <br></br> interesting. 
+                                    and return relevent Wikipedia articles that you may find useful or <br></br> interesting. 
                                     Other features include favoriting articles you find enjoyable or finding <br/>articles related to
                                     the one you just viewed.
                                     </p>

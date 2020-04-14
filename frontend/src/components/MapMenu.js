@@ -188,7 +188,7 @@ class MapMenu extends Component {
             title={
               <span>
                 <UnorderedListOutlined/>
-                <span >All Articles</span>
+                <span>Google Places Articles</span>
               </span>
             }
             onTitleClick = { this.onMenuClick }
