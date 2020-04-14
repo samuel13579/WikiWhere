@@ -139,7 +139,7 @@ class LoginCredentials extends Component{
                     </Row>
 
                     <Modal
-                            title="Username Already Exists"
+                            title="Incorrect Login Credentials"
                             visible={this.state.visible}
                             onOk={this.cancel}
                             onCancel={this.cancel}
