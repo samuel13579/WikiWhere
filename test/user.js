@@ -83,6 +83,29 @@ describe('User DataBase', () => {
 
         });
     }); 
+    
+    describe(' /POST user login correct', () => {
+        it(' User Logs in with correct infromation, on verified account', (done) => {
+            let user = {
+                username: "a",
+                password: "a",
+                email: "samuel32259@gmail.com"
+            }
+            try {
+            chai.request(server)
+                .post('/api/user/login')
+                .send(user)
+                .end((err, res) => {
+                    res.should.have.status(200);
+                    res.body.should.be.a('object');
+                    done();
+                });
+            }catch(e) {
+                console.log('error:', err);
+            }
+
+        });
+    });
 
     describe(' /POST /API/WIKI/WIKI/ADD to test Wiki favorite being added', () => {
         it(' Testing to see if favorites get added to wiki favorite', (done) => {
@@ -184,29 +207,7 @@ describe('User DataBase', () => {
 
         });
     }); 
-    
-    describe(' /POST user login correct', () => {
-        it(' User Logs in with correct user, but not verified', (done) => {
-            let user = {
-                username: "a",
-                password: "a",
-                email: "samuel32259@gmail.com"
-            }
-            try {
-            chai.request(server)
-                .post('/api/user/login')
-                .send(user)
-                .end((err, res) => {
-                    res.should.have.status(200);
-                    res.body.should.be.a('object');
-                    done();
-                });
-            }catch(e) {
-                console.log('error:', err);
-            }
-
-        });
-    }); 
+     
 
     describe(' /POST check if user exists', () => {
         it(' User already exists', (done) => {
