@@ -1,12 +1,9 @@
-import React, {Component, Fragment} from 'react';
+import React, {Component } from 'react';
 import 'antd/dist/antd.css';
-import {Link} from 'react-router-dom'
-import { Layout, Menu, Dropdown } from 'antd';
+import { Layout, Menu } from 'antd';
 import {
   UnorderedListOutlined,
-  StarOutlined,
-  SettingOutlined,
-  StarTwoTone
+  StarOutlined
 } from '@ant-design/icons';
 
   // TODO:
@@ -27,14 +24,6 @@ import {
 const { Sider } = Layout;
 const { SubMenu } = Menu;
 
-const contextMenu = (
-  <Menu>
-    <Menu.Item key="1">1st menu item</Menu.Item>
-    <Menu.Item key="2">2nd menu item</Menu.Item>
-    <Menu.Item key="3">3rd menu item</Menu.Item>
-  </Menu>
-)
-
 class MapMenu extends Component {
 
   constructor(props){
@@ -44,36 +33,22 @@ class MapMenu extends Component {
       theme: 'dark',
       current: '1',
       collapsed: false,
-      wikiInfo: [{
-        name: '',
-        coordinates: {
-          lat: 0,
-          lng: 0
-        },
-        url: ''
-      }],
-
-      favorites: []
     };
 
     this.onMenuClick = this.onMenuClick.bind(this)
-    this.setState({wikiInfo: this.props.articleInfo})
   }
 
   onCollapse = collapsed => {
-    console.log(collapsed);
     this.setState({ collapsed });
   };
 
   handleClick = e => {
-    console.log('click ', e);
     this.setState({
       current: e.key,
     });
   };
 
   onMenuClick = (props, menu, e) => {
-    console.log(this.props)
     var index = props.key
     if (this.props.expandedMenus.includes(index))
     {
@@ -119,7 +94,39 @@ class MapMenu extends Component {
 
 
     var allArticles = [];
-    
+    var favoritesList = [];
+    var nearbyWikis = [];
+
+    for (let wiki of this.props.nearbyWikis)
+    {
+      nearbyWikis.push(
+        <Menu.Item key={wiki.pageid} style={{ textAlign: "left"}} onClick={()=> 
+          {
+            window.open(wiki.url, "_blank")
+          }
+        } onContextMenu={(e)=>{
+          e.preventDefault()
+          this.props.addGeotaggedFavoritePrompt(wiki)
+          }}>{wiki.articleTitle}
+      </Menu.Item>
+      )
+    }
+
+    for (let favorite of this.props.favorites)
+    {
+      favoritesList.push(
+              <Menu.Item key={favorite._id} style={{ textAlign: "left"}} onClick={()=> 
+                {
+                  window.open(favorite.favorite.articleURL, "_blank")
+                }
+              } onContextMenu={(e)=>{
+                e.preventDefault()
+                this.props.deleteFavoritePrompt(favorite)
+                }}>{favorite.favorite.articleTitle}
+            </Menu.Item>
+      )
+    }
+
     for (let place of this.props.articleInfo)
     {
       var articleChildren = []
@@ -130,24 +137,21 @@ class MapMenu extends Component {
         articleChildren.push(
               <Menu.Item key={article.timestamp} style={{ textAlign: "left"}} onClick={()=> 
                   {
-                    console.log(article.timestamp)
                     window.open(article.timestamp, "_blank")
                   }
                 } onContextMenu={(e)=>{
                   e.preventDefault()
-                  console.log(article)
                   this.props.addFavoritePrompt(article)
                   }}>{article.title}
               </Menu.Item>
         )
       } 
-      if (place.articles.length == 0)
+      if (place.articles.length === 0)
       {
         articleChildren.push(
           <Menu.Item key={999} style={{ textAlign: "left"}}>No Articles Found</Menu.Item>
         )
       }
-      // console.log("CREATING SUBMENU FOR", place.placeName, "AT INDEX", place.index)
       allArticles.push(<SubMenu 
                           key = {place.index}
                           onTitleClick = { this.onMenuClick }
@@ -162,8 +166,6 @@ class MapMenu extends Component {
                           >
                         </SubMenu>)
     }
-    // console.log(allArticles)
-    // console.log(this.props.expandedMenus)
     return (
         <Sider collapsed={this.state.collapsed} width={300} style={{ overflow: 'auto',height: '100vh', position: 'fixed',}} onCollapse={this.onCollapse}>
         <div className="logo" />
@@ -178,6 +180,7 @@ class MapMenu extends Component {
             }
             onTitleClick = { this.onMenuClick }
             style={{ textAlign: "left"}}
+            children = {favoritesList}
           >
           </SubMenu>
           <SubMenu
@@ -192,17 +195,20 @@ class MapMenu extends Component {
             style={{ textAlign: "left"}}
             children={allArticles}
           >
-          {/* <Menu.Item key="1">Tom</Menu.Item>
-          <Menu.Item key="2">Bill</Menu.Item>
-          <Menu.Item key="3">Alex</Menu.Item> */}
-          
         </SubMenu>
-            <Menu.Item key="54656" style={{ textAlign: "left"}}>
-                <span>
-                    <SettingOutlined/>
-                    <span>Options</span>
-                </span>
-            </Menu.Item>
+        <SubMenu
+          key="sub3"
+          title = {
+            <span>
+              <UnorderedListOutlined/>
+              <span>Geotagged Wikipedia Articles</span>
+            </span>
+          }
+          onTitleClick = { this.onMenuClick }
+          style={{ textAlign: "left" }}
+          children={nearbyWikis}
+          >
+        </SubMenu>
         </Menu>
       </Sider>
     );

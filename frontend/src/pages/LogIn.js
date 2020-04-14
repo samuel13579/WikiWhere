@@ -3,7 +3,7 @@ import { Layout, Typography } from 'antd';
 import LoginHeader from '../components/LoginHeader';
 import { withRouter } from 'react-router-dom';
 import SignUpCredentials from '../components/SignUpCredentials';
-import { Map, GoogleApiWrapper, Marker, InfoWindow, InfoBox } from 'google-maps-react';
+
 
 const { Header, Content, Footer, Sider } = Layout;
 const { Title } = Typography;

@@ -1,9 +1,6 @@
 import React, { Component } from 'react';
-import { Map, GoogleApiWrapper, Marker, InfoWindow, InfoBox } from 'google-maps-react';
-import { Button } from 'antd';
-import {
-  StarTwoTone
-} from '@ant-design/icons';
+import { Map, GoogleApiWrapper, Marker, InfoWindow } from 'google-maps-react';
+import axios from 'axios';
 
 const mapStyles = {
   width: '79%',
@@ -16,9 +13,13 @@ var wikiMarker = {
   url: 'https://upload.wikimedia.org/wikipedia/commons/4/48/Light_Blue_Circle.svg'
 }
 
+var actualWikiMarker = {
+  url: 'https://upload.wikimedia.org/wikipedia/commons/f/fe/OOjs_UI_icon_mapPin.svg'
+}
+
 class MapExport extends Component {
-  
-  constructor(props){
+
+  constructor(props) {
     super(props);
 
     this.state = {
@@ -32,6 +33,7 @@ class MapExport extends Component {
       wikiPages: [],
       wikiArticles: [],
       wikiMapNames: [],
+      wikiPlaces: [],
 
       markerList: [],
       articlesAndPlaces: [],
@@ -47,42 +49,16 @@ class MapExport extends Component {
     this.onMapClicked = this.onMapClicked.bind(this);
     this.onMarkerClick = this.onMarkerClick.bind(this);
     this.returnUrl = this.returnUrl.bind(this);
-    this.favoriteClick = this.favoriteClick.bind(this);
+    this.refreshFavorites = this.refreshFavorites.bind(this)
+    this.getWikiPlaces = this.getWikiPlaces.bind(this)
   }
 
-  // async componentDidMount(){
-  //   if (navigator.geolocation) {
-  //     await navigator.geolocation.getCurrentPosition(async (position) => {
-  //           await this.setState({
-  //                   userlocation: {
-  //                   lat: position.coords.latitude,
-  //                   lng: position.coords.longitude
-  //                   }
-  //           });
-  //     });
-  //   }
-  // }
-
-  sleep(seconds) 
-  {
+  sleep(seconds) {
     var e = new Date().getTime() + (seconds * 1000);
-    while (new Date().getTime() <= e) {}
+    while (new Date().getTime() <= e) { }
   }
 
   fetchNearestPlacesFromGoogle = async (props) => {
-
-    // console.log("Yessor")
-
-    // if (navigator.geolocation) {
-    //   await navigator.geolocation.getCurrentPosition(async (position) => {
-    //         await this.setState({
-    //                 userlocation: {
-    //                 lat: position.coords.latitude,
-    //                 lng: position.coords.longitude
-    //                 }
-    //         });
-    //   });
-    // }
     var value = 0
     this.props.wikiDataLoaded(value);
     console.log("SEARCHING AT LOCATION: ")
@@ -91,25 +67,24 @@ class MapExport extends Component {
     const latitude = this.state.userlocation.lat // you can update it with user's latitude & Longitude
     const longitude = this.state.userlocation.lng
     let radMetter = this.state.radius // Search withing 2 KM radius
-  
+
     var emptyShit = []
-    this.setState({places_coord: emptyShit})
-    this.setState({places_names: emptyShit})
+    this.setState({ places_coord: emptyShit })
+    this.setState({ places_names: emptyShit })
 
     const proxyurl = "https://humongo-brain.herokuapp.com/";
-    const url = 'https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=' + latitude + ',' + longitude + '&radius=' + radMetter + '&key=' + 'AIzaSyCaXl8zW54lcJjxWBjbTWn4I1vPcXkPeyk'
+    const url = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=" + latitude + "," + longitude + "&radius=" + radMetter + "&key=AIzaSyCaXl8zW54lcJjxWBjbTWn4I1vPcXkPeyk"
     var next_page_token = ''
     fetch(proxyurl + url)
       .then(res => {
         return res.json()
       })
       .then(res => {
-      if (res.next_page_token)
-      {
-        next_page_token = res.next_page_token;
-      }
-      var places = [] // This Array WIll contain locations received from google
-        for(let googlePlace of res.results) {
+        if (res.next_page_token) {
+          next_page_token = res.next_page_token;
+        }
+        var places = [] // This Array WIll contain locations received from google
+        for (let googlePlace of res.results) {
           var place = {}
           var lat = googlePlace.geometry.location.lat;
           var lng = googlePlace.geometry.location.lng;
@@ -124,13 +99,15 @@ class MapExport extends Component {
 
           this.state.places_coord.push(coordinate);
           this.state.places_names.push(googlePlace.name);
-  
+
           places.push(place);
         }
         this.setState({
           places_list: places
         })
         this.getWikiArticles(this.state.places_list, props)
+        this.refreshFavorites()
+        this.getWikiPlaces()
         //if (next_page_token != '')
         //{
         //  this.sleep(2);
@@ -140,26 +117,36 @@ class MapExport extends Component {
       .catch(error => {
         console.log(error);
       });
-    }
+  }
 
-  findNextPage(next_page_token, places, props)
-  {
+  async refreshFavorites() {
+    var res;
+    var token = localStorage.getItem("token");
+    try {
+      res = await axios.get("https://wiki-where.herokuapp.com/api/wiki/wiki/get", { headers: { Authorization: `Bearer ${token}` } });
+    }
+    catch (err) {
+      console.log(err);
+    }
+    this.props.loadFavorites(res.data)
+  }
+
+  findNextPage(next_page_token, places, props) {
     const latitude = this.state.userlocation.lat // you can update it with user's latitude & Longitude
     const longitude = this.state.userlocation.lng
     let radMetter = this.state.radius // Search withing 2 KM radius
     var next_next_page_token = ''
     const proxyurl = "https://humongo-brain.herokuapp.com/";
-    const url = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?pagetoken="+ next_page_token + "&key=AIzaSyCaXl8zW54lcJjxWBjbTWn4I1vPcXkPeyk"
+    const url = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?pagetoken=" + next_page_token + "&key=AIzaSyCaXl8zW54lcJjxWBjbTWn4I1vPcXkPeyk"
     fetch(proxyurl + url)
       .then(res => {
         return res.json()
       })
       .then(res => {
-        if (res.next_page_token)
-        {
+        if (res.next_page_token) {
           next_next_page_token = res.next_page_token;
         }
-        for(let googlePlace of res.results) {
+        for (let googlePlace of res.results) {
           var place = {}
           var lat = googlePlace.geometry.location.lat;
           var lng = googlePlace.geometry.location.lng;
@@ -174,41 +161,38 @@ class MapExport extends Component {
 
           this.state.places_coord.push(coordinate);
           this.state.places_names.push(googlePlace.name);
-    
+
           places.push(place);
         }
         this.setState({
           places_list: places
         })
-        if (next_next_page_token != '')
-        {
+        if (next_next_page_token != '') {
           this.sleep(1.5)
           this.thisFunctionExistsPrimarilyDueToActualAutism(next_next_page_token, this.state.places_list, props)
         }
       })
-    .catch(error => {
-      console.log(error);
-    });
+      .catch(error => {
+        console.log(error);
+      });
   }
 
-  thisFunctionExistsPrimarilyDueToActualAutism(next_page_token, places, props)
-  {
+  thisFunctionExistsPrimarilyDueToActualAutism(next_page_token, places, props) {
     const latitude = this.state.userlocation.lat // you can update it with user's latitude & Longitude
     const longitude = this.state.userlocation.lng
     let radMetter = this.state.radius // Search withing 2 KM radius
     var next_next_page_token = ''
     const proxyurl = "https://humongo-brain.herokuapp.com/";
-    const url = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?pagetoken="+ next_page_token + "&key=AIzaSyCaXl8zW54lcJjxWBjbTWn4I1vPcXkPeyk"
+    const url = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?pagetoken=" + next_page_token + "&key=AIzaSyCaXl8zW54lcJjxWBjbTWn4I1vPcXkPeyk"
     fetch(proxyurl + url)
       .then(res => {
         return res.json()
       })
       .then(res => {
-        if (res.next_page_token)
-        {
+        if (res.next_page_token) {
           next_next_page_token = res.next_page_token;
         }
-        for(let googlePlace of res.results) {
+        for (let googlePlace of res.results) {
           var place = {}
           var lat = googlePlace.geometry.location.lat;
           var lng = googlePlace.geometry.location.lng;
@@ -224,7 +208,7 @@ class MapExport extends Component {
 
           this.state.places_coord.push(coordinate);
           this.state.places_names.push(googlePlace.name);
-    
+
           places.push(place);
         }
         this.setState({
@@ -232,69 +216,112 @@ class MapExport extends Component {
         })
         this.getWikiArticles(this.state.places_list, props)
       })
-    .catch(error => {
-      console.log(error);
-    });
+      .catch(error => {
+        console.log(error);
+      });
   }
 
-  async getWikiArticles(places, props)
-  {
+  async getWikiPlaces() {
     var emptyShit = []
-    this.setState({wikiPages: emptyShit})
-    console.log(places)
-    var url = ''
-    for (let place of places)
-    {
-      url = "https://en.wikipedia.org/w/api.php?action=query&list=search&srsearch=" + place.placeName + "%22" + place.placeName + "%22&format=json&srlimit=3&origin=*"
-      await fetch(url)
+    this.setState({ wikiPlaces: emptyShit })
+    var url = "https://en.wikipedia.org/w/api.php?action=query&format=json&list=geosearch&gscoord=" + this.state.userlocation.lat + "%7C" + this.state.userlocation.lng + "&gsradius=2000&gslimit=50&origin=*"
+    await fetch(url)
       .then(res => {
         return res.json()
       })
       .then(res => {
-        // If there is no results with specific searches, return three general searches. (Can be disabled by just deleting this)
-        if (res.query.search.length==0)
-        {
-          url = "https://en.wikipedia.org/w/api.php?action=query&list=search&srsearch=" + place.placeName + "&format=json&srlimit=3&origin=*"
-          fetch(url)
-          .then(newres => {
-            return newres.json()
-          })
-          .then(newres => {
-            var object = [
-              {
-                coordinate: place.coordinate,
-                placeName: place.placeName,
-                articles: newres.query.search
-              }
-            ]
-            this.state.wikiPages.push(object);
-          })
-          .catch(error => {
-            console.log(error)
-          })
+        if (res.query.geosearch.length == 0) {
+          //do nothing
+          console.log("we did nothingAAAAAAAAAAAAAAAAAAAAAAAAAAA")
         }
-        else
-        {
-          var object = [
+        else {
+          var wikiPlaces = []
+          for (let page of res.query.geosearch) {
+            var object =
             {
-              coordinate: place.coordinate,
-              placeName: place.placeName,
-              articles: res.query.search
+              pageid: page.pageid,
+              url: '',
+              coordinate: {
+                lat: page.lat.toString(),
+                lng: page.lon.toString()
+              },
+              articleTitle: page.title,
+              index: 0
             }
-          ]
-          this.state.wikiPages.push(object); 
+            wikiPlaces.push(object)
+          }
+          this.getWikiPlacesLinks(wikiPlaces)
         }
       })
       .catch(error => {
         console.log(error)
       })
+  }
+
+  async getWikiPlacesLinks(wikiPlaces) {
+    for (let page of wikiPlaces) {
+      var url = "https://en.wikipedia.org/w/api.php?action=query&prop=info&pageids=" + page.pageid + "&inprop=url&format=json&origin=*";
+      let response = await fetch(url);
+      let data = await response.json();
+      var wikiURL = data.query.pages[page.pageid.toString()].fullurl;
+      page.url = wikiURL;
+    }
+    this.setState({ wikiPlaces: wikiPlaces })
+    this.props.LoadNearbyArticles(wikiPlaces)
+  }
+
+  async getWikiArticles(places, props) {
+    var emptyShit = []
+    this.setState({ wikiPages: emptyShit })
+    var url = ''
+    for (let place of places) {
+      url = "https://en.wikipedia.org/w/api.php?action=query&list=search&srsearch=" + place.placeName + "%22" + place.placeName + "%22&format=json&srlimit=3&origin=*"
+      await fetch(url)
+        .then(res => {
+          return res.json()
+        })
+        .then(res => {
+          // If there is no results with specific searches, return three general searches. (Can be disabled by just deleting this)
+          if (res.query.search.length == 0) {
+            url = "https://en.wikipedia.org/w/api.php?action=query&list=search&srsearch=" + place.placeName + "&format=json&srlimit=3&origin=*"
+            fetch(url)
+              .then(newres => {
+                return newres.json()
+              })
+              .then(newres => {
+                var object = [
+                  {
+                    coordinate: place.coordinate,
+                    placeName: place.placeName,
+                    articles: newres.query.search
+                  }
+                ]
+                this.state.wikiPages.push(object);
+              })
+              .catch(error => {
+                console.log(error)
+              })
+          }
+          else {
+            var object = [
+              {
+                coordinate: place.coordinate,
+                placeName: place.placeName,
+                articles: res.query.search
+              }
+            ]
+            this.state.wikiPages.push(object);
+          }
+        })
+        .catch(error => {
+          console.log(error)
+        })
     }
     this.getTheLinks(props)
   }
 
-  async getTheLinks(props)
-  {
-    this.setState({wikiPages: this.state.wikiPages})
+  async getTheLinks(props) {
+    this.setState({ wikiPages: this.state.wikiPages })
     var emptyShit = []
     this.setState({
       articlesAndPlaces: emptyShit,
@@ -302,20 +329,17 @@ class MapExport extends Component {
     })
     const placeCoords = []
     const articlesAndPlaces = []
-    for (var place of this.state.wikiPages)
-    {
+    for (var place of this.state.wikiPages) {
       var articleArray = []
       articleArray['placeName'] = place[0].placeName
       articleArray['articles'] = []
-      for (var article of place[0].articles)
-      {
+      for (var article of place[0].articles) {
         var url = "https://en.wikipedia.org/w/api.php?action=query&prop=info&pageids=" + article.pageid + "&inprop=url&format=json&origin=*";
-        
         let response = await fetch(url);
         let data = await response.json();
-
+        article['placeLocation'] = place[0].coordinate
+        article['placeName'] = place[0].placeName
         article.timestamp = data.query.pages[article.pageid.toString()].fullurl;
-
         articleArray['articles'].push(article)
       }
       articlesAndPlaces.push(articleArray);
@@ -323,8 +347,7 @@ class MapExport extends Component {
     }
     var i = 0
     var wikiPages = this.state.wikiPages
-    for (var article of articlesAndPlaces)
-    {
+    for (var article of articlesAndPlaces) {
       article['index'] = i
       wikiPages[i]['index'] = i++
     }
@@ -336,8 +359,6 @@ class MapExport extends Component {
       articlesAndPlaces: articlesAndPlaces,
       mapVisible: true
     })
-
-    console.log(this.state.articlesAndPlaces);
   }
 
   onMarkerClick = (props, marker, e) => {
@@ -363,13 +384,10 @@ class MapExport extends Component {
   }
 
 
-  returnUrl(index){  
-    if (this.state.articlesAndPlaces)
-    {
-      if (this.state.articlesAndPlaces[index])
-      {
-        if (this.state.articlesAndPlaces[index].articles[0])
-        {
+  returnUrl(index) {
+    if (this.state.articlesAndPlaces) {
+      if (this.state.articlesAndPlaces[index]) {
+        if (this.state.articlesAndPlaces[index].articles[0]) {
           return this.state.articlesAndPlaces[index].articles[0].timestamp;
         }
       }
@@ -378,65 +396,87 @@ class MapExport extends Component {
     return null;
   }
 
-  favoriteClick = () => {
-    console.log("Favorite clicked");
-  }
-
-  onMarkerDragEnd(coord)
-  {
+  onMarkerDragEnd(coord) {
     const { latLng } = coord;
     const lat = latLng.lat();
     const lng = latLng.lng();
-    console.log(lat, lng)
     this.state.userlocation = { lat, lng }
-    this.setState({state: this.state})
+    this.setState({ state: this.state })
   }
 
   //LITERALLY DO EVERYTHING OVER LMFAOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO
-  dblClickHandler()
-  {
+  dblClickHandler() {
     this.fetchNearestPlacesFromGoogle(this.props)
   }
 
-  render(){
+  render() {
+
+    const wikiMarkers = [];
+    var i = 50
+    for (var place of this.state.wikiPlaces)
+    {
+      place.index = i++
+    }
+    for (var array of this.state.wikiPlaces) {
+      if (array.index == undefined)
+        continue
+      var articleTitle = array.articleTitle
+      var index = array.index
+      var coords = {
+        lat: array.coordinate.lat,
+        lng: array.coordinate.lng
+      }
+      var url = array.url
+      wikiMarkers.push(
+        <Marker
+          key={index}
+          position={coords}
+          name={articleTitle}
+          onClick={this.onMarkerClick}
+          icon={actualWikiMarker}
+          avaliable_index={index}
+          url={url}
+        >
+        </Marker>
+      )
+    }
 
     const AllMarkers = [];
-    for (var array of this.state.wikiPages)
-    {
-      for (var location of array)
-      {
+    for (var array of this.state.wikiPages) {
+      for (var location of array) {
+        if (array.index == undefined)
+          continue
         var placeName = location.placeName
         var index = array.index
         var coords = {
           lat: location.coordinate.latitude,
           lng: location.coordinate.longitude
         }
-        // console.log("CREATING MARKER FOR", placeName, "AT INDEX", array.index, "LOCATION", coords)
         AllMarkers.push(
           <Marker
-            key = {index}
-            position = {coords}
-            name = {placeName}
-            onClick = {this.onMarkerClick}
+            key={index}
+            position={coords}
+            name={placeName}
+            onClick={this.onMarkerClick}
             icon={wikiMarker}
             avaliable_index={index}
             url={this.returnUrl(index)}
-            >
+          >
           </Marker>
         )
       }
     }
-    const myMarker = 
-    <Marker
-        key = {1010100}
+    const myMarker =
+      <Marker
+        key={1010100}
         position={this.state.userlocation}
         draggable={true}
         onDblclick={this.fetchNearestPlacesFromGoogle}
         onDragend={(t, map, coord) => this.onMarkerDragEnd(coord)}
         name="Current Location"
-    ></Marker>
+      ></Marker>
 
-    return(
+    return (
       <Map
         id="map"
         google={this.props.google}
@@ -450,22 +490,15 @@ class MapExport extends Component {
       >
         {AllMarkers}
         {myMarker}
-
-        {/* <Popconfirm>
-          marker={this.state.activeMarker}
-          visible={this.state.showingInfoWindow}>
-            <div>
-              <h1>{this.state.selectedPlace.name}</h1>
-              <a target="_blank" href={this.state.selectedPlace.url}>Wikipedia Article</a>
-            </div>
-        </Popconfirm> */}
+        {wikiMarkers}
         <InfoWindow
           marker={this.state.activeMarker}
+          key={this.state.activeMarker.key}
           visible={this.state.showingInfoWindow}>
-            <div>
-              <h1>{this.state.selectedPlace.name}</h1>
-              <a target="_blank" href={this.state.selectedPlace.url}>Wikipedia Article</a>
-            </div>
+          <div>
+            <h1>{this.state.selectedPlace.name}</h1>
+            <a target="_blank" href={this.state.selectedPlace.url}>Wikipedia Article</a>
+          </div>
         </InfoWindow>
       </Map>
     );

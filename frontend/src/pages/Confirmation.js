@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
-import { Result, Button, Input } from 'antd';
-import { Link, withRouter } from 'react-router-dom';
-import axios from 'axios';
+import { Result, Button } from 'antd';
+import { withRouter } from 'react-router-dom';
 
 class Confirmation extends Component {
 
