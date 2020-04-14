@@ -148,7 +148,7 @@ class LoginCredentials extends Component{
                                 Okay
                                 </Button>
                             ]}>
-                            <p>Your username or password is incorrect.</p>
+                            <p>Either your username or password is incorrect, or your account hasn't been verified. Please check your email.</p>
                         </Modal>
 
             </Form>
