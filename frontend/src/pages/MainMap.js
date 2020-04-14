@@ -18,7 +18,7 @@ class MainMap extends Component {
 
       wikiInfo: [],
       map_coords: [],
-      expandedMenus: ['sub2'],
+      expandedMenus: [],
       wikiDataLoaded: false,
       userlocation: this.props.userlocation,
       visible: false,
@@ -28,7 +28,8 @@ class MainMap extends Component {
         favorite: {
           articleTitle: ''
         }
-      }
+      },
+      nearbyWikiArticles: []
     }
 
     this.onCollapse = this.onCollapse.bind(this);
@@ -43,17 +44,16 @@ class MainMap extends Component {
     this.deleteFavoritePrompt = this.deleteFavoritePrompt.bind(this)
     this.delete = this.delete.bind(this);
     this.dontDelete = this.dontDelete.bind(this);
+    this.loadNearbyArticles = this.loadNearbyArticles.bind(this);
+    this.addGeotaggedFavoritePrompt = this.addGeotaggedFavoritePrompt.bind(this);
   }
 
   wikiInfoRecieived(info){
-    console.log("Inside of wiki info recienved");
     this.setState({wikiInfo : info});
-    console.log(this.state.wikiInfo);
   }
 
   addFavoritePrompt(article)
   {
-    console.log(article)
     this.setState({
       visible: true,
       favArticle: {
@@ -66,6 +66,30 @@ class MainMap extends Component {
         articleURL: article.timestamp
       }
     })
+  }
+
+  addGeotaggedFavoritePrompt(wiki)
+  {
+    this.setState({
+      visible: true,
+      favArticle: {
+        placeLocation: {
+          lat: wiki.coordinate.lat,
+          lng: wiki.coordinate.lon
+        },
+        articleTitle: wiki.articleTitle,
+        articleURL: wiki.url
+      }
+    })
+  }
+
+  loadNearbyArticles(nearbyWikiArticles)
+  {
+    for (let page of nearbyWikiArticles) {
+      var i = 50;
+      page.index = i++;
+    }
+    this.setState({nearbyWikiArticles: nearbyWikiArticles})
   }
 
   deleteFavoritePrompt(favorite)
@@ -84,7 +108,6 @@ class MainMap extends Component {
   }
 
   onCollapse = collapsed => {
-    console.log(collapsed);
     this.setState({ collapsed });
   };
 
@@ -107,10 +130,8 @@ class MainMap extends Component {
     })
     var res;
     var token = localStorage.getItem("token");
-    console.log({ headers: { Authorization: `Bearer ${token}` } })
     try {
     res = await axios.get("https://wiki-where.herokuapp.com/api/user/me", { headers: { Authorization: `Bearer ${token}` } });
-    console.log(res.data);
   }catch(err){
     console.log(err);
   }
@@ -121,12 +142,9 @@ class MainMap extends Component {
     }
     try{
       let ress = await axios.post("https://wiki-where.herokuapp.com/api/wiki/wiki/add", details);
-      console.log(ress);
     } catch(err) {
       console.log(err);
     }
-
-    console.log("Done")
     this.refreshFavorites();
   }
 
@@ -139,7 +157,6 @@ class MainMap extends Component {
     }
     try{
       let ress = await axios.delete("https://wiki-where.herokuapp.com/api/wiki/wiki/" + details.id);
-      console.log(ress);
     } 
     catch(err) {
       console.log(err);
@@ -152,9 +169,7 @@ class MainMap extends Component {
     var res;
     var token = localStorage.getItem("token");
     try{
-      console.log(token)
       res = await axios.get("https://wiki-where.herokuapp.com/api/wiki/wiki/get", { headers: { Authorization: `Bearer ${token}` }});
-      console.log(res);
     } 
     catch(err) {
       console.log(err);
@@ -188,12 +203,12 @@ class MainMap extends Component {
   render() {
     return (
       <Layout style={{ minHeight: '100vh', position: 'fixed', width: '1910px'}}>
-        <MapMenu favorites={this.state.favorites} articleInfo={this.state.wikiInfo} expandedMenus={this.state.expandedMenus} deleteFavoritePrompt = {this.deleteFavoritePrompt} addFavoritePrompt = {this.addFavoritePrompt}/>
+        <MapMenu favorites={this.state.favorites} articleInfo={this.state.wikiInfo} nearbyWikis={this.state.nearbyWikiArticles} expandedMenus={this.state.expandedMenus} deleteFavoritePrompt = {this.deleteFavoritePrompt} addFavoritePrompt = {this.addFavoritePrompt} addGeotaggedFavoritePrompt = {this.addGeotaggedFavoritePrompt}/>
         <Layout className="site-layout">
           <MapHeader wikiDataLoaded={this.state.wikiDataLoaded}/>
           <br></br>
           <Content className="content-div" style={{ width: "81%", marginLeft: "330px"}}>
-            <MapExport loadFavorites={this.loadFavorites} userlocation={this.state.userlocation} wikiDataLoaded={this.wikiInfoFinishedLoading} loadWikiData={this.wikiInfoRecieived} expandMenu={this.expandMenu} loadCoords={this.coordinates}/>
+            <MapExport loadFavorites={this.loadFavorites} userlocation={this.state.userlocation} LoadNearbyArticles={ this.loadNearbyArticles } wikiDataLoaded={this.wikiInfoFinishedLoading} loadWikiData={this.wikiInfoRecieived} expandMenu={this.expandMenu} loadCoords={this.coordinates}/>
             <Modal
               title="Add to favorites"
               visible={this.state.visible}
