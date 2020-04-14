@@ -27,7 +27,7 @@ class LoginHeader extends Component {
         return(
             <Header className="site-layout-background" style={{height: 80}}>
                 <Title style={{ color: "white", position: 'absolute', marginTop: "25px"}}>
-                    WikiWhere 
+                    <p style={{fontFamily: "Sans Serif", fontStyle: "Microsoft"}}>WikiWhere</p>
                 </Title>
                 <LoginCredentials getCoords={this.getCoords} getToken={this.getToken}/>
             </Header>
@@ -35,4 +35,4 @@ class LoginHeader extends Component {
     }
 }
 
-export default withRouter(LoginHeader);
+export default withRouter(LoginHeader); 

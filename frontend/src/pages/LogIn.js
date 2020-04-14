@@ -34,15 +34,17 @@ class LogIn extends Component {
                     <Layout className="layout" style={{marginTop: 0}}>
                         <Content className="content-container" style={{ margin: '24px 16px 0', overflow: 'initial'}}>
                             <div className="content-div" style={{ textAlign: 'center', width: "1250px", height: "600px"}}>
-                                <Title>
+                                <Title style={{font: "Helvetica"}}>
                                     <br/>
-                                     What is WikiWhere?
+                                     <p style={{font:"Helvetica"}}>What is WikiWhere?</p>
                                 </Title>
-                                <Text style={{fontSize: 20}}>
+                                <Text style={{fontSize: 26}}>
+                                    <p style ={{fontFamily: "Garamond"}}>
                                     WikiWhere is a culmination of technology, utilizing Google's API
                                     services to derive <br/> user location and information on places around the user.
                                     The information on places<br/> is then sent through Wikipedia, which finds the most
-                                    relevent and germaine article, and returns <br/> it as a point for the user.<br/><br/>
+                                    relevent and germaine article, and returns <br/> it as a point for the user.<br/>
+                                    </p>
                                 </Text>
                                 
                                 
@@ -50,11 +52,13 @@ class LogIn extends Component {
                                      What does WikiWhere do?
                                 </Title>
                                 <br/>
-                                <Text style={{fontSize: 20}}>
+                                <Text style={{fontSize: 26}}>
+                                    <p style={{fontFamily: "Garamond"}}>
                                     Just as the name suggests, WikiWhere pulls in data from all around you<br/>
                                     and return relevent Wikipedia articles that you may find useful or <br></br> interesting. 
                                     Other featurs include favoriting articles you find enjoyable or finding <br/>articles related to
                                     the one you just viewed.
+                                    </p>
                                 </Text>
 
                             </div>
@@ -62,7 +66,9 @@ class LogIn extends Component {
                     <Sider className='sidebar-layout' style={{marginTop:24, marginLeft: "1290px", position: "fixed", height: "600px", marginRight: "1%"}} theme="dark" width={600}>
                         <SignUpCredentials/>
                     </Sider>
+                    
                 </Layout>
+                <Footer theme="dark" style={{backgroundColor:"#0f2238", height: "117px"}}></Footer>
             </div>
         );
     }

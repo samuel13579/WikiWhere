@@ -51,7 +51,9 @@ class MapMenu extends Component {
           lng: 0
         },
         url: ''
-      }]
+      }],
+
+      favorites: []
     };
 
     this.onMenuClick = this.onMenuClick.bind(this)
@@ -89,7 +91,33 @@ class MapMenu extends Component {
     }
   }
 
+  // async componentDidMount(){
+
+  //     var res;
+  //     var token = localStorage.getItem("token");
+  //     try {
+  //       res = await axios.get("https://wiki-where.herokuapp.com/api/user/me", { headers: { Authorization: `Bearer ${token}` } });
+  //       console.log(res.data);
+  //     }
+  //     catch(err){
+  //       console.log(err);
+  //     }
+
+  //     try{
+  //       let favoriteArticles = await axios.post("https://wiki-where.herokuapp.com/api/wiki/wiki/get", res.data.id);
+  //       console.log(favoriteArticles);
+  //     }
+  //     catch(err) {
+  //       console.log(err);
+  //     }
+
+
+  // }
+
   render() {
+
+
+
     var allArticles = [];
     
     for (let place of this.props.articleInfo)
@@ -97,6 +125,8 @@ class MapMenu extends Component {
       var articleChildren = []
       for (let article of place.articles)
       {
+        console.log("Article in menu is: ");
+        console.log(article);
         articleChildren.push(
               <Menu.Item key={article.timestamp} style={{ textAlign: "left"}} onClick={()=> 
                   {
@@ -117,7 +147,7 @@ class MapMenu extends Component {
           <Menu.Item key={999} style={{ textAlign: "left"}}>No Articles Found</Menu.Item>
         )
       }
-      console.log("CREATING SUBMENU FOR", place.placeName, "AT INDEX", place.index)
+      // console.log("CREATING SUBMENU FOR", place.placeName, "AT INDEX", place.index)
       allArticles.push(<SubMenu 
                           key = {place.index}
                           onTitleClick = { this.onMenuClick }
@@ -132,8 +162,8 @@ class MapMenu extends Component {
                           >
                         </SubMenu>)
     }
-    console.log(allArticles)
-    console.log(this.props.expandedMenus)
+    // console.log(allArticles)
+    // console.log(this.props.expandedMenus)
     return (
         <Sider collapsed={this.state.collapsed} width={300} style={{ overflow: 'auto',height: '100vh', position: 'fixed',}} onCollapse={this.onCollapse}>
         <div className="logo" />
@@ -149,12 +179,6 @@ class MapMenu extends Component {
             onTitleClick = { this.onMenuClick }
             style={{ textAlign: "left"}}
           >
-            <Menu.Item key="999" 
-            style={{ textAlign: "left" }}>Tom</Menu.Item>
-            <Menu.Item key="456" 
-            style={{ textAlign: "left" }}>Bill</Menu.Item>
-            <Menu.Item key="123" 
-            style={{ textAlign: "left" }}>Alex</Menu.Item>
           </SubMenu>
           <SubMenu
             key="sub2"

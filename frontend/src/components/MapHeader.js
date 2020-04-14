@@ -75,7 +75,7 @@ class MapHeader extends Component {
                         {/* Add some special font either through CSS or imported font */}
                         
                         <LoadingBar doneLoading ={this.props.wikiDataLoaded}></LoadingBar>
-                        <Title style={{marginLeft: 745, position: 'absolute'}}>
+                        <Title style={{marginLeft: "725px", fontFamily: "Sans Serif", position: 'absolute'}}>
                             WikiWhere 
                         
                         </Title>
