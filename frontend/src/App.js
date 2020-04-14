@@ -38,6 +38,10 @@ class App extends Component {
 
   render(){
     return (
+      <html>
+        <head>
+          document.tile="WikiWhere";
+        </head>
         <BrowserRouter>
           <div className="App">
             <Switch>
@@ -48,6 +52,9 @@ class App extends Component {
             </Switch>
           </div>
         </BrowserRouter>
+      </html>
+
+
     );
   }
 }

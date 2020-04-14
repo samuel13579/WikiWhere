@@ -493,7 +493,6 @@ class MapExport extends Component {
         {wikiMarkers}
         <InfoWindow
           marker={this.state.activeMarker}
-          key={this.state.activeMarker.key}
           visible={this.state.showingInfoWindow}>
           <div>
             <h1>{this.state.selectedPlace.name}</h1>
