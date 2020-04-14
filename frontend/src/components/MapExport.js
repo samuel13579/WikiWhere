@@ -1,9 +1,6 @@
 import React, { Component } from 'react';
-import { Map, GoogleApiWrapper, Marker, InfoWindow, InfoBox } from 'google-maps-react';
-import { Button } from 'antd';
-import {
-  StarTwoTone
-} from '@ant-design/icons';
+import { Map, GoogleApiWrapper, Marker, InfoWindow } from 'google-maps-react';
+import axios from 'axios';
 
 const mapStyles = {
   width: '79%',
@@ -48,20 +45,8 @@ class MapExport extends Component {
     this.onMarkerClick = this.onMarkerClick.bind(this);
     this.returnUrl = this.returnUrl.bind(this);
     this.favoriteClick = this.favoriteClick.bind(this);
+    this.refreshFavorites = this.refreshFavorites.bind(this)
   }
-
-  // async componentDidMount(){
-  //   if (navigator.geolocation) {
-  //     await navigator.geolocation.getCurrentPosition(async (position) => {
-  //           await this.setState({
-  //                   userlocation: {
-  //                   lat: position.coords.latitude,
-  //                   lng: position.coords.longitude
-  //                   }
-  //           });
-  //     });
-  //   }
-  // }
 
   sleep(seconds) 
   {
@@ -97,7 +82,7 @@ class MapExport extends Component {
     this.setState({places_names: emptyShit})
 
     const proxyurl = "https://humongo-brain.herokuapp.com/";
-    const url = 'https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=' + latitude + ',' + longitude + '&radius=' + radMetter + '&key=' + 'AIzaSyCaXl8zW54lcJjxWBjbTWn4I1vPcXkPeyk'
+    const url = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=" + latitude + "," + longitude + "&radius=" + radMetter + "&key=AIzaSyCaXl8zW54lcJjxWBjbTWn4I1vPcXkPeyk"
     var next_page_token = ''
     fetch(proxyurl + url)
       .then(res => {
@@ -131,6 +116,7 @@ class MapExport extends Component {
           places_list: places
         })
         this.getWikiArticles(this.state.places_list, props)
+        this.refreshFavorites()
         //if (next_page_token != '')
         //{
         //  this.sleep(2);
@@ -141,6 +127,21 @@ class MapExport extends Component {
         console.log(error);
       });
     }
+
+  async refreshFavorites()
+  {
+    var res;
+    var token = localStorage.getItem("token");
+    try{
+      console.log(token)
+      res = await axios.get("https://wiki-where.herokuapp.com/api/wiki/wiki/get", { headers: { Authorization: `Bearer ${token}` }});
+      console.log(res);
+    } 
+    catch(err) {
+      console.log(err);
+    }
+    this.props.loadFavorites(res.data)
+  }
 
   findNextPage(next_page_token, places, props)
   {
@@ -310,10 +311,23 @@ class MapExport extends Component {
       for (var article of place[0].articles)
       {
         var url = "https://en.wikipedia.org/w/api.php?action=query&prop=info&pageids=" + article.pageid + "&inprop=url&format=json&origin=*";
-        
         let response = await fetch(url);
         let data = await response.json();
 
+        if (place[0].placeName == "Buying & selling real pure gold shop")
+        {
+          console.log(place[0])
+          
+          console.log(article)
+        }
+        article['placeLocation'] = place[0].coordinate
+        article['placeName'] = place[0].placeName  
+        if (place[0].placeName == "Buying & selling real pure gold shop")
+        {
+          console.log(place[0])
+          
+          console.log(article)
+        }
         article.timestamp = data.query.pages[article.pageid.toString()].fullurl;
 
         articleArray['articles'].push(article)
@@ -405,13 +419,15 @@ class MapExport extends Component {
     {
       for (var location of array)
       {
+        if (array.index == undefined)
+          continue
         var placeName = location.placeName
+        console.log("CUM", array.index)
         var index = array.index
         var coords = {
           lat: location.coordinate.latitude,
           lng: location.coordinate.longitude
         }
-        // console.log("CREATING MARKER FOR", placeName, "AT INDEX", array.index, "LOCATION", coords)
         AllMarkers.push(
           <Marker
             key = {index}
@@ -461,6 +477,7 @@ class MapExport extends Component {
         </Popconfirm> */}
         <InfoWindow
           marker={this.state.activeMarker}
+          key = {this.state.activeMarker.key}
           visible={this.state.showingInfoWindow}>
             <div>
               <h1>{this.state.selectedPlace.name}</h1>

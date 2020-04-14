@@ -3,7 +3,7 @@ import MainMap from './pages/MainMap';
 import LogIn from './pages/LogIn';
 import Confirmation from './pages/Confirmation'
 import Verification from './pages/Verification'
-import { BrowserRouter, Route, Switch, useHistory } from 'react-router-dom';
+import { BrowserRouter, Route, Switch } from 'react-router-dom';
 
 import './App.css';
 

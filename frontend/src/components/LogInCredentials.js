@@ -89,7 +89,7 @@ class LoginCredentials extends Component{
 
         await axios.post("https://wiki-where.herokuapp.com/api/user/login", loginDetails)
             .then(res => this.setState({token: res.data.token, success: true}))
-            .catch(err => (console.log("catch"), console.log(err), this.setState({error: true})));
+            .catch(err =>  (this.setState({error: true})));
         
         localStorage.setItem('token', this.state.token)
         

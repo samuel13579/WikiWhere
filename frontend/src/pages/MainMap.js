@@ -22,7 +22,13 @@ class MainMap extends Component {
       wikiDataLoaded: false,
       userlocation: this.props.userlocation,
       visible: false,
-      favArticle: ''
+      favArticle: '',
+      favorites: [],
+      selectedFavorite: {
+        favorite: {
+          articleTitle: ''
+        }
+      }
     }
 
     this.onCollapse = this.onCollapse.bind(this);
@@ -33,6 +39,10 @@ class MainMap extends Component {
     this.addFavoritePrompt = this.addFavoritePrompt.bind(this)
     this.cancel = this.cancel.bind(this);
     this.accept = this.accept.bind(this);
+    this.loadFavorites = this.loadFavorites.bind(this)
+    this.deleteFavoritePrompt = this.deleteFavoritePrompt.bind(this)
+    this.delete = this.delete.bind(this);
+    this.dontDelete = this.dontDelete.bind(this);
   }
 
   wikiInfoRecieived(info){
@@ -43,9 +53,26 @@ class MainMap extends Component {
 
   addFavoritePrompt(article)
   {
+    console.log(article)
     this.setState({
       visible: true,
-      favArticle: article
+      favArticle: {
+        placeName: article.placeName,
+        placeLocation: {
+          lat: article.placeLocation.latitude.toString(),
+          lng: article.placeLocation.longitude.toString()
+        },
+        articleTitle: article.title,
+        articleURL: article.timestamp
+      }
+    })
+  }
+
+  deleteFavoritePrompt(favorite)
+  {
+    this.setState({
+      visibleDelete: true,
+      selectedFavorite: favorite
     })
   }
 
@@ -100,7 +127,52 @@ class MainMap extends Component {
     }
 
     console.log("Done")
+    this.refreshFavorites();
   }
+
+  async delete(){
+    this.setState({
+      visibleDelete:false
+    })
+    const details = {
+      id: this.state.selectedFavorite._id
+    }
+    try{
+      let ress = await axios.delete("https://wiki-where.herokuapp.com/api/wiki/wiki/" + details.id);
+      console.log(ress);
+    } 
+    catch(err) {
+      console.log(err);
+    }
+    this.refreshFavorites();
+  }
+
+  async refreshFavorites()
+  {
+    var res;
+    var token = localStorage.getItem("token");
+    try{
+      console.log(token)
+      res = await axios.get("https://wiki-where.herokuapp.com/api/wiki/wiki/get", { headers: { Authorization: `Bearer ${token}` }});
+      console.log(res);
+    } 
+    catch(err) {
+      console.log(err);
+    }
+    this.loadFavorites(res.data)
+  }
+
+  async loadFavorites(data)
+  {
+    this.setState({favorites: data})
+  }
+
+  dontDelete(e){
+    this.setState({
+      visibleDelete: false
+    })
+  }
+
 
   apiHasLoaded = (map, mapsApi) => {
     this.setState({
@@ -116,12 +188,12 @@ class MainMap extends Component {
   render() {
     return (
       <Layout style={{ minHeight: '100vh', position: 'fixed', width: '1910px'}}>
-        <MapMenu articleInfo={this.state.wikiInfo} expandedMenus={this.state.expandedMenus} addFavoritePrompt = {this.addFavoritePrompt}/>
+        <MapMenu favorites={this.state.favorites} articleInfo={this.state.wikiInfo} expandedMenus={this.state.expandedMenus} deleteFavoritePrompt = {this.deleteFavoritePrompt} addFavoritePrompt = {this.addFavoritePrompt}/>
         <Layout className="site-layout">
           <MapHeader wikiDataLoaded={this.state.wikiDataLoaded}/>
           <br></br>
           <Content className="content-div" style={{ width: "81%", marginLeft: "330px"}}>
-            <MapExport userlocation={this.state.userlocation} wikiDataLoaded={this.wikiInfoFinishedLoading} loadWikiData={this.wikiInfoRecieived} expandMenu={this.expandMenu} loadCoords={this.coordinates}/>
+            <MapExport loadFavorites={this.loadFavorites} userlocation={this.state.userlocation} wikiDataLoaded={this.wikiInfoFinishedLoading} loadWikiData={this.wikiInfoRecieived} expandMenu={this.expandMenu} loadCoords={this.coordinates}/>
             <Modal
               title="Add to favorites"
               visible={this.state.visible}
@@ -129,22 +201,35 @@ class MainMap extends Component {
               onCancel={this.cancel}
               footer={[
                 <div>
-                  <Button key="no" onClick={this.cancel}>
-                    No
-                  </Button>
                   <Button key="yes" onClick={this.accept}>
                     Yes
                   </Button>
+                  <Button key="no" onClick={this.cancel}>
+                    No
+                  </Button>
                 </div>
               ]}>
-              <p>Would you like to add this article to your favorites?</p>
+              <p>Would you like to add [{this.state.favArticle.articleTitle}] to your favorites?</p>
               </Modal>
-                {/* <Marker
-                  position={{lat: this.state.lat, lng: this.state.lng}}
-                  name="Current Location"
-                ></Marker> */}
+              <Modal
+              title="Delete from Favorites"
+              visible={this.state.visibleDelete}
+              onOk={this.delete}
+              onCancel={this.dontDelete}
+              footer={[
+                <div>
+                  <Button key="dontDelete" onClick={this.delete}>
+                    Yes
+                  </Button>
+                  <Button key="delete" onClick={this.dontDelete}>
+                    No
+                  </Button>
+                </div>
+              ]}>
+              <p>Would you like to delete [{this.state.selectedFavorite.favorite.articleTitle}] from your favorites?</p>
+              </Modal>
           </Content>
-          <Footer style={{ textAlign: 'center', marginLeft: "300px"}}>Ant Design ©2018 Created by Ant UED</Footer>
+          <Footer style={{ textAlign: 'center', marginLeft: "300px"}}>Tip: Right click in the menus to add and remove favorites! Also, dragging the red marker and double clicking it will cause your location to change!</Footer>
         </Layout>
       </Layout>
     );
