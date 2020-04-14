@@ -21,13 +21,13 @@ function ButtonOrCheck(props){
     if (props.success)
     {
         return(
-            <CheckCircleFilled style={{color: "green", fontSize: "21"}}></CheckCircleFilled>
+            <CheckCircleFilled style={{color: "green", marginTop: "400px", fontSize: "21"}}></CheckCircleFilled>
         )
     }
     else
     {
         return (
-            <Button type="Primary" ghost={true} style={{marginTop: "10px"}} onClick={props.showModal}>Sign up</Button>
+            <Button type="Primary" ghost={true} style={{marginTop: "400px"}} onClick={props.showModal}>Sign up</Button>
         )
     }
 }
@@ -182,7 +182,7 @@ class SignUpCredentials extends Component {
                     <Form.Item
                         label={<p style={{color: "white", marginTop: 15, fontSize: 16}}>Username:</p>}
                         name="username"
-                        style={{marginLeft: 100, marginRight: 30, marginTop: "20px"}}
+                        style={{marginLeft: 100, position: "fixed", width: "435px", marginRight: 30}}
                         rules={[
                             {
                                 required: true,
@@ -194,9 +194,9 @@ class SignUpCredentials extends Component {
                     </Form.Item>
 
                     <Form.Item
-                        label={<p style={{color: "white", marginTop: 35, fontSize: 16}}>Password:</p>}
+                        label={<p style={{color: "white", marginTop: 20, fontSize: 16}}>Password:</p>}
                         name="password"
-                        style={{marginLeft: 105, marginRight: 30, marginTop: "50px"}}
+                        style={{marginLeft: 105, position: "fixed", marginTop:80, width: "430px", marginRight: 30}}
                         rules={[
                             {
                               required: true,
@@ -205,13 +205,13 @@ class SignUpCredentials extends Component {
                           ]}
                         hasFeedback
                     >
-                    <Input.Password type="password"style={{marginTop:10}} onChange={this.onPasswordChange}/>
+                    <Input.Password type="password"style={{}} onChange={this.onPasswordChange}/>
                     </Form.Item>
 
                     <Form.Item
-                    label={<p style={{color: "white", marginTop: 35, fontSize: 16}}>Confirm Password:</p>}
+                    label={<p style={{color: "white",  marginTop: "40px", fontSize: 16}}>Confirm Password:</p>}
                         name="confirmpassword"
-                        style={{marginLeft: 45, marginRight: 30, marginTop: "50px"}}
+                        style={{marginLeft: 45, position: "fixed", marginTop:150,width: "490px", marginRight: 30}}
                         dependencies={['password']}
                         hasFeedback
                         rules={[
@@ -233,9 +233,9 @@ class SignUpCredentials extends Component {
                     </Form.Item>
 
                     <Form.Item
-                        label={<p style={{color: "white", marginTop: 35, fontSize: 16}}>Email:</p>}
+                        label={<p style={{color: "white",marginTop: 20, fontSize: 16}}>Email:</p>}
                         name="email"
-                        style={{marginLeft: 135, marginRight: 30, marginTop: "50px"}}
+                        style={{marginLeft: 135, position: "fixed", marginTop:240,width: "400px", marginRight: 30,}}
                         rules={[
                             {
                               required: true,
@@ -243,13 +243,13 @@ class SignUpCredentials extends Component {
                             },
                           ]}
                     >
-                    <Input style={{marginTop:10}} onChange={this.onEmailChange}/>
+                    <Input style={{}} onChange={this.onEmailChange}/>
                     </Form.Item>
 
                     <Form.Item
-                        label={<p style={{color: "white", marginTop: 35, fontSize: 16}}>Confirm Email:</p>}
+                        label={<p style={{color: "white",marginTop: 20, fontSize: 16}}>Confirm Email:</p>}
                         name="emailconfirm"
-                        style={{marginLeft: 73, marginRight: 30, marginTop: "50px"}}
+                        style={{marginLeft: 73, position: "fixed", marginTop:310, width: "460px", marginRight: 30}}
                         dependencies={['email']}
                         hasFeedback
                         rules={[
@@ -267,7 +267,7 @@ class SignUpCredentials extends Component {
                             }),
                         ]}
                     >
-                    <Input style={{marginTop:10}} onChange={this.onConfirmEmailChange}/>
+                    <Input style={{}} onChange={this.onConfirmEmailChange}/>
                     </Form.Item>
 
                 <ButtonOrCheck success={this.state.success} showModal={this.showModal}></ButtonOrCheck>
