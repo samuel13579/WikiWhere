@@ -14,7 +14,7 @@
     "dotenv": "^8.2.0",
     "google-map-react": "^1.1.7",
     "google-maps-react": "^2.0.2",
-    "minimist": "^1.2.5",
+    "minimist": "^1.2.6",
     "nodemw": "^0.12.2",
     "react": "^16.13.0",
     "react-confirm-alert": "^2.6.1",
